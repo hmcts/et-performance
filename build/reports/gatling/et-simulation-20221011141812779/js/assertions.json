@@ -1,0 +1,10 @@
+{
+  "simulation": "simulations.ET_Simulation",
+  "simulationId": "et-simulation",
+  "start": 1665497892779,
+  "description": "",
+  "scenarios": ["ETCreateClaim"],
+  "assertions": [
+
+  ]
+}
