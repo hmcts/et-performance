@@ -15,7 +15,6 @@ object ET_MakeAClaimPt2 {
 
   val BaseURL = Environment.baseURL
   val IdamURL = Environment.idamURL
-  val EmploymentURL = Environment.employmentTribunalsURL
 
   val now = LocalDate.now()
   val patternDay = DateTimeFormatter.ofPattern("dd")
@@ -27,7 +26,6 @@ object ET_MakeAClaimPt2 {
   val MaxThinkTime = Environment.maxThinkTime
 
   val CommonHeader = Environment.commonHeader
-  val PostHeader = Environment.postHeader
 
   val postcodeFeeder = csv("postcodes.csv").random
 
@@ -279,10 +277,10 @@ object ET_MakeAClaimPt2 {
           .post(BaseURL + "/respondent/1/respondent-address")
           .headers(CommonHeader)
           .formParam("_csrf", "${csrf}")
-          .formParam("respondentAddress1", "BLUEBELL YARD, FAIRFIELD WAY")
-          .formParam("respondentAddress2", "STAINSACRE LANE INDUSTRIAL ESTATE")
-          .formParam("respondentAddressTown", "WHITBY")
-          .formParam("respondentAddressCountry", "ENGLAND")
+          .formParam("respondentAddress1", "respondentAddress1" + "${ETRandomString}")
+          .formParam("respondentAddress2", "respondentAddress2" + "${ETRandomString}")
+          .formParam("respondentAddressTown", "respondentAddressTown" + "${ETRandomString}")
+          .formParam("respondentAddressCountry", "respondentAddressCountry" + "${ETRandomString}")
           .formParam("respondentAddressPostcode", "LS5 1AA")
           /*
           .formParam("address1", "${addressLines(0)}")

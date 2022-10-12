@@ -1,0 +1,5 @@
+RUN	simulations.ET_Simulation	et-simulation	1665583047387	 	3.3.1
+USER	ETCreateClaim	1	START	1665583048267	1665583048267
+REQUEST	1	ET_010_Home	ET_010_005_Home	1665583048304	1665583048334	KO	j.n.UnknownHostException: et-sya.{env}.platform.hmcts.net: nodename nor servname provided, or not known
+GROUP	1	ET_010_Home	1665583048277	1665583048353	30	KO
+USER	ETCreateClaim	1	END	1665583048267	1665583048358

@@ -48,7 +48,6 @@ class ET_Simulation extends Simulation {
       exec(  _.set("env", s"${env}"))
       .feed(UserFeederET)
         .repeat(2) {
-          // .exec(Homepage.Homepage)
           exec(ET_MakeAClaim.MakeAClaim)
             .exec(ET_MakeAClaimPt2.MakeAClaim)
         }

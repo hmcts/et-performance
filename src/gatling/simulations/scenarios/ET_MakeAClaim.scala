@@ -16,35 +16,23 @@ object ET_MakeAClaim {
 
   val BaseURL = Environment.baseURL
   val IdamURL = Environment.idamURL
-  val EmploymentURL = Environment.employmentTribunalsURL
 
-  val now = LocalDate.now()
-  val patternDay = DateTimeFormatter.ofPattern("dd")
-  val patternMonth = DateTimeFormatter.ofPattern("MM")
-  val patternYear = DateTimeFormatter.ofPattern("yyyy")
-  val patternDate = DateTimeFormatter.ofPattern("yyyyMMdd")
 
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
 
   val CommonHeader = Environment.commonHeader
-  val PostHeader = Environment.postHeader
 
   val postcodeFeeder = csv("postcodes.csv").random
-
-  val rnd = new Random()
 
   val MakeAClaim =
 
     exec(flushHttpCache)
       .exec(flushCookieJar)
-/*
-  .exec(_.setAll(
-    "ETDobDay" -> Common.getDay(),
-    "ETDobMonth" -> Common.getMonth(),
-    "ETDobYear" -> Common.getDobYear()))
 
- */
+  .exec(_.setAll(
+      "ETRandomString" -> (Common.randomString(7))))
+
 
       /*======================================================================================
     * Load the home page
@@ -259,7 +247,7 @@ object ET_MakeAClaim {
 
 
       /*===============================================================================================
-* Sex and preferred title
+* Enter adress details
 ===============================================================================================*/
 
       .group("ET_145_Your_Address_Select") {
@@ -267,10 +255,10 @@ object ET_MakeAClaim {
           .post(BaseURL + "/address-details")
           .headers(CommonHeader)
           .formParam("_csrf", "${csrf}")
-          .formParam("address1", "BLUEBELL YARD, FAIRFIELD WAY")
-          .formParam("address2", "STAINSACRE LANE INDUSTRIAL ESTATE")
-          .formParam("addressTown", "WHITBY")
-          .formParam("addressCountry", "ENGLAND")
+          .formParam("address1", "address1" +  "${ETRandomString}")
+          .formParam("address2", "address2" + "${ETRandomString}")
+          .formParam("addressTown", "addressTown" + "${ETRandomString}")
+          .formParam("addressCountry", "addressCountry" + "${ETRandomString}")
           .formParam("addressPostcode", "LS5 1AA")
           /*
           .formParam("address1", "${addressLines(0)}")
