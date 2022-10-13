@@ -21,7 +21,7 @@ object Common {
   val CommonHeader = Environment.commonHeader
   val PostHeader = Environment.postHeader
 
-  val postcodeFeeder = csv("postcodes.csv").random
+  val postcodeFeeder = csv("postcodes.csv").circular
 
 
   def postcodeLookup() =
@@ -30,8 +30,11 @@ object Common {
         .post(BaseURL + "/address-lookup")
         .headers(PostHeader)
       //  .formParam("postcode", "${postcode}")
-        .formParam("postcode", "YO22 4PU")
+        .formParam("postcode", "${postcode}")
         .formParam("_csrf", "${csrf}"))
+       // .check(regex(""""(street1)_.+" : "(.+?)",(?s).*?"(?:street2)" : "(.+?)",.*?"town" : "(.+?)",.*?"country" : "(.+?)"""")
+      //    .check(regex("""^"street1:"(.*\,$)""")
+       // .ofType[(String, String, String, String)].findRandom.saveAs("addressLines")))
        // .check(regex("""<option value="([0-9]+)">""").findRandom.saveAs("addressIndex")))
 
   def randomString(length: Int) = {
