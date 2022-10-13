@@ -1,4 +1,3 @@
-//do a check to see if the section is complete
 package scenarios
 
 import io.gatling.core.Predef._
@@ -23,7 +22,7 @@ object ET_MakeAClaim {
 
   val CommonHeader = Environment.commonHeader
 
-  val postcodeFeeder = csv("postcodes.csv").random
+  val postcodeFeeder = csv("postcodes.csv").circular
 
   val MakeAClaim =
 

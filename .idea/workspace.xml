@@ -9,7 +9,7 @@
       <change beforePath="$PROJECT_DIR$/src/gatling/resources/postcodes.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/gatling/resources/postcodes.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gatling/simulations/scenarios/ET_MakeAClaim.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/gatling/simulations/scenarios/ET_MakeAClaim.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gatling/simulations/scenarios/ET_MakeAClaimPt2.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/gatling/simulations/scenarios/ET_MakeAClaimPt2.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gatling/simulations/utils/Common.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/gatling/simulations/utils/Common.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gatling/simulations/simulations/ET_Simulation.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/gatling/simulations/simulations/ET_Simulation.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

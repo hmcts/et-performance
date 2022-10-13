@@ -4,6 +4,7 @@ import io.gatling.core.Predef._
 import io.gatling.core.scenario.Simulation
 import scenarios._
 import utils.Environment
+import io.gatling.http.Predef._
 
 import scala.concurrent.duration._
 
@@ -48,7 +49,9 @@ class ET_Simulation extends Simulation {
       exec(  _.set("env", s"${env}"))
       .feed(UserFeederET)
         .repeat(2) {
-          exec(ET_MakeAClaim.MakeAClaim)
+          exec(flushHttpCache)
+            .exec(flushCookieJar)
+          .exec(ET_MakeAClaim.MakeAClaim)
             .exec(ET_MakeAClaimPt2.MakeAClaim)
         }
 
@@ -70,9 +73,7 @@ class ET_Simulation extends Simulation {
    // .assertions(assertions(testType))
 
   setUp(ETCreateClaim.inject(rampUsers(25).during(2100)))
-    // (RUDH.inject(rampUsers(250).during(3200))))
     .protocols(httpProtocol)
     .maxDuration(4400)
-  // .maxDuration(20000)
 
 }

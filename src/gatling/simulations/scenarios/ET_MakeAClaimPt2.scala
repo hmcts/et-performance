@@ -27,8 +27,6 @@ object ET_MakeAClaimPt2 {
 
   val CommonHeader = Environment.commonHeader
 
-  val postcodeFeeder = csv("postcodes.csv").random
-
   val rnd = new Random()
 
   val MakeAClaim =
