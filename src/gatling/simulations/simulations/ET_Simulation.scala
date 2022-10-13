@@ -69,10 +69,10 @@ class ET_Simulation extends Simulation {
   //).protocols(httpProtocol)
    // .assertions(assertions(testType))
 
-  setUp(ETCreateClaim.inject(rampUsers(1).during(1000)))
+  setUp(ETCreateClaim.inject(rampUsers(1).during(2100)))
     // (RUDH.inject(rampUsers(250).during(3200))))
     .protocols(httpProtocol)
-    .maxDuration(20000)
+    .maxDuration(3200)
   // .maxDuration(20000)
 
 }

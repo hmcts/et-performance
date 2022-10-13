@@ -102,7 +102,7 @@ object ET_MakeAClaim {
           .post(BaseURL + "/lip-or-representative")
           .headers(CommonHeader)
           .formParam("_csrf", "${csrf}")
-          .formParam("claimantRepresentedQuestion", "Yes")
+          .formParam("claimantRepresentedQuestion", "No")
           .check(substring("Are you making a claim on your own or with others?")))
         //Your session has expired due to inactivity
       }
