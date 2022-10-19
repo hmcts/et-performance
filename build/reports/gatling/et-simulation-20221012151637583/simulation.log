@@ -1,5 +1,0 @@
-RUN	simulations.ET_Simulation	et-simulation	1665587797583	 	3.3.1
-USER	ETCreateClaim	1	START	1665587798745	1665587798745
-REQUEST	1	ET_010_Home	ET_010_005_Home	1665587798783	1665587799793	KO	j.n.UnknownHostException: et-sya.perftest.platform.hmcts.net: nodename nor servname provided, or not known
-GROUP	1	ET_010_Home	1665587798758	1665587799823	1010	KO
-USER	ETCreateClaim	1	END	1665587798745	1665587799829

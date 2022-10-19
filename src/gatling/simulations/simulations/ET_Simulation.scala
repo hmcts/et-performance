@@ -47,10 +47,14 @@ class ET_Simulation extends Simulation {
   val ETCreateClaim = scenario( "ETCreateClaim")
     .exitBlockOnFail {
       exec(  _.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .exec(flushSessionCookies)
       .feed(UserFeederET)
         .repeat(2) {
           exec(flushHttpCache)
             .exec(flushCookieJar)
+            .exec(flushSessionCookies)
           .exec(ET_MakeAClaim.MakeAClaim)
             .exec(ET_MakeAClaimPt2.MakeAClaim)
         }
@@ -72,7 +76,7 @@ class ET_Simulation extends Simulation {
   //).protocols(httpProtocol)
    // .assertions(assertions(testType))
 
-  setUp(ETCreateClaim.inject(rampUsers(25).during(2100)))
+  setUp(ETCreateClaim.inject(rampUsers(1).during(2100)))
     .protocols(httpProtocol)
     .maxDuration(4400)
 

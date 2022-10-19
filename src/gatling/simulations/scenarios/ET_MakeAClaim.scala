@@ -28,10 +28,11 @@ object ET_MakeAClaim {
 
   exec(flushHttpCache)
     .exec(flushCookieJar)
+    .exec(flushSessionCookies)
+
 
   .exec(_.setAll(
       "ETRandomString" -> (Common.randomString(7))))
-
 
     /*======================================================================================
     * Load the home page
@@ -194,6 +195,7 @@ object ET_MakeAClaim {
       exec(http("ET_110_005_Personal_Details")
         .get(BaseURL + "/dob-details")
         .headers(CommonHeader)
+        .check(CsrfCheck.save)
         .check(substring("What is your date of birth?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
