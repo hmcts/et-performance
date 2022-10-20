@@ -37,6 +37,7 @@ class ET_Simulation extends Simulation {
     .doNotTrackHeader("1")
     .inferHtmlResources()
     .silentResources
+    .disableCaching
 
   before{
     println(s"Test Type: ${testType}")
@@ -47,18 +48,13 @@ class ET_Simulation extends Simulation {
   val ETCreateClaim = scenario( "ETCreateClaim")
     .exitBlockOnFail {
       exec(  _.set("env", s"${env}"))
-        .exec(flushHttpCache)
-        .exec(flushCookieJar)
-        .exec(flushSessionCookies)
+      .exec(flushHttpCache)
+      .exec(flushCookieJar)
       .feed(UserFeederET)
         .repeat(2) {
-          exec(flushHttpCache)
-            .exec(flushCookieJar)
-            .exec(flushSessionCookies)
-          .exec(ET_MakeAClaim.MakeAClaim)
-            .exec(ET_MakeAClaimPt2.MakeAClaim)
+          exec(ET_MakeAClaim.MakeAClaim)
+          .exec(ET_MakeAClaimPt2.MakeAClaim)
         }
-
     }
 
 
@@ -76,7 +72,7 @@ class ET_Simulation extends Simulation {
   //).protocols(httpProtocol)
    // .assertions(assertions(testType))
 
-  setUp(ETCreateClaim.inject(rampUsers(1).during(2100)))
+  setUp(ETCreateClaim.inject(rampUsers(5).during(60)).customPauses(1000.toLong))
     .protocols(httpProtocol)
     .maxDuration(4400)
 
