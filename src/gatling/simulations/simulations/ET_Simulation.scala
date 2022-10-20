@@ -37,7 +37,6 @@ class ET_Simulation extends Simulation {
     .doNotTrackHeader("1")
     .inferHtmlResources()
     .silentResources
-    .disableCaching
 
   before{
     println(s"Test Type: ${testType}")
