@@ -26,12 +26,7 @@ object ET_MakeAClaim {
 
   val MakeAClaim =
 
-  exec(flushHttpCache)
-    .exec(flushCookieJar)
-    .exec(flushSessionCookies)
-
-
-  .exec(_.setAll(
+  exec(_.setAll(
       "ETRandomString" -> (Common.randomString(7))))
 
     /*======================================================================================
@@ -45,6 +40,9 @@ object ET_MakeAClaim {
         .header("sec-fetch-site", "none")
         .check(substring("Make a claim to an employment tribunal")))
     }
+
+    .exec(getCookieValue(CookieKey("et-sya-session").withDomain(BaseURL.replace("https://", "")).withSecure(true).saveAs("etSession")))
+
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
 
 
@@ -85,8 +83,11 @@ object ET_MakeAClaim {
         .exec(http("ET_040_005_Work_Postcode")
           .post(BaseURL + "/work-postcode")
           .headers(CommonHeader)
+          .header("content-type", "application/x-www-form-urlencoded")
           .formParam("_csrf", "${csrf}")
+          .formParam("et-sya-session", "${etSession}")
           .formParam("workPostcode", "${postcode}")
+          .check(CsrfCheck.save)
           .check(substring("Are you making the claim for yourself, or representing someone else?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -100,8 +101,11 @@ object ET_MakeAClaim {
       exec(http("ET_050_005_Claim_Yourself")
         .post(BaseURL + "/lip-or-representative")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("claimantRepresentedQuestion", "No")
+        .check(CsrfCheck.save)
         .check(substring("Are you making a claim on your own or with others?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -115,8 +119,11 @@ object ET_MakeAClaim {
       exec(http("ET_060_005_Claim_Own_Or_Others")
         .post(BaseURL + "/single-or-multiple-claim")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("caseType", "Single")
+        .check(CsrfCheck.save)
         .check(substring("Acas early conciliation certificate")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -130,8 +137,11 @@ object ET_MakeAClaim {
       exec(http("ET_070_005_ACAS_Certificate")
         .post(BaseURL + "/do-you-have-an-acas-no-many-resps")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("acasMultiple", "Yes")
+        .check(CsrfCheck.save)
         .check(substring("What type of claim are you making?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -145,7 +155,9 @@ object ET_MakeAClaim {
       exec(http("ET_080_005_Representative")
         .post(BaseURL + "/type-of-claim")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("typeOfClaim", "discrimination")
         .formParam("typeOfClaim", "whistleBlowing")
         .formParam("otherClaim", "")
@@ -164,11 +176,13 @@ object ET_MakeAClaim {
       exec(http("ET_090_005_Log_In")
         .post(IdamURL + "/login?client_id=et-sya&response_type=code&redirect_uri=" + BaseURL + "/oauth2/callback&state=${state}")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("username", "${username}")
         .formParam("password", "${password}")
         .formParam("save", "Sign in")
         .formParam("selfRegistrationEnabled", "true")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .check(substring("You do not have to complete your claim in one go")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -209,10 +223,13 @@ object ET_MakeAClaim {
       exec(http("ET_120_005_DoB")
         .post(BaseURL + "/dob-details")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("dobDate-day", Common.getDay())
         .formParam("dobDate-month", Common.getMonth())
         .formParam("dobDate-year", Common.getDobYear())
+        .check(CsrfCheck.save)
         .check(substring("Sex and preferred title")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -226,9 +243,12 @@ object ET_MakeAClaim {
       exec(http("ET_130_005_Sex")
         .post(BaseURL + "/sex-and-title")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("claimantSex", "Male")
         .formParam("preferredTitle", "")
+        .check(CsrfCheck.save)
         .check(substring("What is your contact or home address?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -252,12 +272,15 @@ object ET_MakeAClaim {
       exec(http("ET_145_005_Your_Address_Select")
         .post(BaseURL + "/address-details")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("address1", "address1" +  "${ETRandomString}")
         .formParam("address2", "address2" + "${ETRandomString}")
         .formParam("addressTown", "addressTown" + "${ETRandomString}")
         .formParam("addressCountry", "addressCountry" + "${ETRandomString}")
         .formParam("addressPostcode", "${postcode}")
+        .check(CsrfCheck.save)
         .check(substring("What is your telephone number")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -271,8 +294,11 @@ object ET_MakeAClaim {
       exec(http("ET_150_005_Telephone_Number")
         .post(BaseURL + "/telephone-number")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("telNumber", ("07712" + Common.randomNumber(6)))
+        .check(CsrfCheck.save)
         .check(substring("How would you like to be contacted about your claim?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -287,8 +313,11 @@ object ET_MakeAClaim {
       exec(http("ET_160_005_Contact_Method")
         .post(BaseURL + "/how-would-you-like-to-be-updated-about-your-claim")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("claimantContactPreference", "Email")
+        .check(CsrfCheck.save)
         .check(substring("Would you be able to take part in hearings by video and phone?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -302,9 +331,12 @@ object ET_MakeAClaim {
       exec(http("ET_170_005_Hearing_Participation")
         .post(BaseURL + "/would-you-want-to-take-part-in-video-hearings")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("hearingPreferences", "Video")
         .formParam("hearingAssistance", "")
+        .check(CsrfCheck.save)
         .check(substring("Do you have a physical, mental or learning disability or long term health condition that means you need support during your case?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -318,9 +350,12 @@ object ET_MakeAClaim {
       exec(http("ET_180_005_Need_Support")
         .post(BaseURL + "/reasonable-adjustments")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("reasonableAdjustmentsDetail", "")
         .formParam("reasonableAdjustments", "No")
+        .check(CsrfCheck.save)
         .check(substring("Have you completed this section?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -334,7 +369,9 @@ object ET_MakeAClaim {
       exec(http("ET_190_005_Contact_Completed")
         .post(BaseURL + "/personal-details-check")
         .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "${csrf}")
+        .formParam("et-sya-session", "${etSession}")
         .formParam("personalDetailsCheck", "Yes")
         .check(substring("Personal details\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
         .check(substring("Contact details\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
