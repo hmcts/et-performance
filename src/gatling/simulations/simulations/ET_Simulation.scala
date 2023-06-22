@@ -34,6 +34,8 @@ class ET_Simulation extends Simulation {
 
   val httpProtocol = Environment.HttpProtocol
     .baseUrl(BaseURL)
+    .disableCaching
+    .disableAutoReferer
     .doNotTrackHeader("1")
     .inferHtmlResources()
     .silentResources
@@ -46,11 +48,12 @@ class ET_Simulation extends Simulation {
 
   val ETCreateClaim = scenario( "ETCreateClaim")
     .exitBlockOnFail {
+    //  .repeat(1){
       exec(  _.set("env", s"${env}"))
       .exec(flushHttpCache)
       .exec(flushCookieJar)
       .feed(UserFeederET)
-        .repeat(2) {
+        .repeat(1) {
           exec(ET_MakeAClaim.MakeAClaim)
           .exec(ET_MakeAClaimPt2.MakeAClaim)
         }
@@ -71,7 +74,7 @@ class ET_Simulation extends Simulation {
   //).protocols(httpProtocol)
    // .assertions(assertions(testType))
 
-  setUp(ETCreateClaim.inject(rampUsers(1).during(2100)))
+  setUp(ETCreateClaim.inject(rampUsers(50).during(2200)))
     .protocols(httpProtocol)
     .maxDuration(4400)
 

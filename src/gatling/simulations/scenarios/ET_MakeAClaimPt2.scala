@@ -53,7 +53,7 @@ object ET_MakeAClaimPt2 {
 
 
     /*===============================================================================================
-    * Did you work for the organisation or person you’re making your claim against?
+    * Did you work for the organisation or person you’re making your claim against? - yes
     ===============================================================================================*/
 
     .group("ET_210_Work_For_Org") {
@@ -235,7 +235,7 @@ object ET_MakeAClaimPt2 {
         .formParam("claimantPensionWeeklyContribution", "")
         .formParam("claimantPensionContribution", "Not Sure")
         .check(CsrfCheck.save)
-        .check(substring("Do or did you receive any employee benefits?")))
+        .check(substring("Do you or did you receive any employee benefits?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
 
@@ -527,12 +527,15 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_460_Final_Check_Submit") {
       exec(http("ET_460_005_Final_Check_Submit")
-        .get(BaseURL + "/submitDraftCase")
+        .get(BaseURL + "/submitDraftCase?lng=en")
         .headers(CommonHeader)
+        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .check(substring("Your claim has been submitted"))
-         .check(regex("""<dd class="govuk-summary-list__value">
-                        |          (\w{16})""".stripMargin).saveAs("submissionReference")))
+        // .check(regex("""<dd class="govuk-summary-list__value">(\w{16})""".stripMargin).saveAs("submissionReference")))
+        .check(regex("""<dd class="govuk-summary-list__value">\s*(\d+)\s*</dd>""".stripMargin).saveAs("submissionReference")))
     }
+    
+    
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
 
 
@@ -544,7 +547,7 @@ object ET_MakeAClaimPt2 {
       exec(http("ET_470_005_Log_Out")
         .get(BaseURL + "/logout")
         .headers(CommonHeader)
-        .check(substring("Sign in or create an account")))
+        .check(substring("Make a claim to an employment tribunal")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
 

@@ -3,6 +3,7 @@ package scenarios
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import utils.{AuthCheck, Common, CsrfCheck, Environment}
+import java.io.{BufferedWriter, FileWriter}
 
 import scala.concurrent.duration._
 import scala.util.Random
@@ -33,6 +34,10 @@ object ET_MakeAClaim {
     * Load the home page
     ======================================================================================*/
 
+    .exec(flushHttpCache)
+    .exec(flushCookieJar)
+    .exec(flushSessionCookies)
+
     .group("ET_010_Home") {
       exec(http("ET_010_005_Home")
         .get(BaseURL)
@@ -44,6 +49,14 @@ object ET_MakeAClaim {
     .exec(getCookieValue(CookieKey("et-sya-session").withDomain(BaseURL.replace("https://", "")).withSecure(true).saveAs("etSession")))
 
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
+
+    .exec { session =>
+      val fw = new BufferedWriter(new FileWriter("etSession.csv", true))
+      try {
+        fw.write(session("etSession").as[String] + "\r\n")
+      } finally fw.close()
+      session
+    }
 
 
     /*======================================================================================
@@ -84,9 +97,9 @@ object ET_MakeAClaim {
           .post(BaseURL + "/work-postcode")
           .headers(CommonHeader)
           .header("content-type", "application/x-www-form-urlencoded")
-          .formParam("_csrf", "${csrf}")
-          .formParam("et-sya-session", "${etSession}")
-          .formParam("workPostcode", "${postcode}")
+          .formParam("_csrf", "#{csrf}")
+          .formParam("et-sya-session", "#{etSession}")
+          .formParam("workPostcode", "#{postcode}")
           .check(CsrfCheck.save)
           .check(substring("Are you making the claim for yourself, or representing someone else?")))
     }
@@ -102,8 +115,8 @@ object ET_MakeAClaim {
         .post(BaseURL + "/lip-or-representative")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
-        .formParam("_csrf", "${csrf}")
-        .formParam("et-sya-session", "${etSession}")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
         .formParam("claimantRepresentedQuestion", "No")
         .check(CsrfCheck.save)
         .check(substring("Are you making a claim on your own or with others?")))
@@ -120,8 +133,8 @@ object ET_MakeAClaim {
         .post(BaseURL + "/single-or-multiple-claim")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
-        .formParam("_csrf", "${csrf}")
-        .formParam("et-sya-session", "${etSession}")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
         .formParam("caseType", "Single")
         .check(CsrfCheck.save)
         .check(substring("Acas early conciliation certificate")))
@@ -138,8 +151,8 @@ object ET_MakeAClaim {
         .post(BaseURL + "/do-you-have-an-acas-no-many-resps")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
-        .formParam("_csrf", "${csrf}")
-        .formParam("et-sya-session", "${etSession}")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
         .formParam("acasMultiple", "Yes")
         .check(CsrfCheck.save)
         .check(substring("What type of claim are you making?")))
@@ -155,17 +168,29 @@ object ET_MakeAClaim {
       exec(http("ET_080_005_Representative")
         .post(BaseURL + "/type-of-claim")
         .headers(CommonHeader)
+        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .header("content-type", "application/x-www-form-urlencoded")
-        .formParam("_csrf", "${csrf}")
-        .formParam("et-sya-session", "${etSession}")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
         .formParam("typeOfClaim", "discrimination")
         .formParam("typeOfClaim", "whistleBlowing")
         .formParam("otherClaim", "")
-        .check(regex("""callback&state=(\w{8}-\w{4}-\w{4}-\w{4}-\w{12})""").saveAs("state"))
+        .check(regex("""callback&state=(\w{8}-\w{4}-\w{4}-\w{4}-\w{12}-en)""").saveAs("state"))
         .check(CsrfCheck.save)
         .check(substring("Sign in or create an account")))
-    }
+
+
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
+
+
+
+        }
+
+    .exec {
+      session =>
+        println(session)
+        session
+    }
 
 
     /*===============================================================================================
@@ -174,15 +199,15 @@ object ET_MakeAClaim {
 
     .group("ET_090_Log_In") {
       exec(http("ET_090_005_Log_In")
-        .post(IdamURL + "/login?client_id=et-sya&response_type=code&redirect_uri=" + BaseURL + "/oauth2/callback&state=${state}")
+        .post(IdamURL + "/login?client_id=et-sya&response_type=code&redirect_uri=" + BaseURL + "/oauth2/callback&state=#{state}&ui_locales=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
-        .formParam("username", "${username}")
-        .formParam("password", "${password}")
+        .formParam("username", "#{username}")
+        .formParam("password", "#{password}")
         .formParam("save", "Sign in")
         .formParam("selfRegistrationEnabled", "true")
-        .formParam("_csrf", "${csrf}")
-        .formParam("et-sya-session", "${etSession}")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
         .check(substring("You do not have to complete your claim in one go")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -299,7 +324,7 @@ object ET_MakeAClaim {
         .formParam("et-sya-session", "${etSession}")
         .formParam("telNumber", ("07712" + Common.randomNumber(6)))
         .check(CsrfCheck.save)
-        .check(substring("How would you like to be contacted about your claim?")))
+        .check(substring("What format would you like to be contacted in?")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
 
