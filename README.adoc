@@ -1,4 +1,7 @@
-### No Fault Divorce Gatling Performance Tests
+### Employment Tribunal Gatling Performance Tests
+
+This script allows you to make a claim to an employment tribunal
+
 
 To run locally:
 - Performance test against the perftest environment: `./gradlew gatlingRun`
