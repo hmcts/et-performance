@@ -36,9 +36,13 @@ object ET_MakeAClaimPt2 {
     exec(_.setAll(
       "ETRandomString" -> (Common.randomString(7)),
       "ETDobDay" -> Common.getDay(),
-      "ETDobMonth" -> Common.getMonth()))
+      "ETDobMonth" -> Common.getMonth(),
+      "payBeforeTax" -> now.plusYears(5 + rnd.nextInt(15)).format(patternYear),
+      "acasCertNum" -> ("R" + Common.randomNumber(6) + "/" + Common.randomNumber(2) + "/" + Common.randomNumber(2)),
+      "payAfterTax" -> now.plusYears(2 + rnd.nextInt(3)).format(patternYear)))
+     // "acasCertNum" -> ("R" + Common.randomNumber(6) + "/" + Common.randomNumber(2) + "/" + Common.randomNumber(2))))
 
-    /*===============================================================================================
+      /*===============================================================================================
     * Employment Status link click
     ===============================================================================================*/
 
@@ -212,8 +216,8 @@ object ET_MakeAClaimPt2 {
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
-        .formParam("payBeforeTax", now.plusYears(5 + rnd.nextInt(15)).format(patternYear))
-        .formParam("payAfterTax", now.plusYears(2 + rnd.nextInt(3)).format(patternYear))
+        .formParam("payBeforeTax", "#{payBeforeTax}")
+        .formParam("payAfterTax", "#{payAfterTax}")
         .formParam("payInterval", "Months")
         .check(CsrfCheck.save)
         .check(substring("Did the respondent make any contributions to your pension? ")))
@@ -341,7 +345,7 @@ object ET_MakeAClaimPt2 {
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
         .formParam("acasCert", "Yes")
-        .formParam("acasCertNum", "R" + Common.randomNumber(6) + "/" + Common.randomNumber(2) + "/" + Common.randomNumber(2))
+        .formParam("acasCertNum", "#{acasCertNum}")
         .check(substring("Check the respondent details")))
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
