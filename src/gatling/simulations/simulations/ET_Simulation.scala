@@ -4,7 +4,9 @@ import io.gatling.core.Predef._
 import io.gatling.core.scenario.Simulation
 import scenarios._
 import utils.Environment
+import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.http.Predef._
+import io.gatling.core.pause.PauseType
 
 import scala.concurrent.duration._
 
@@ -31,6 +33,18 @@ class ET_Simulation extends Simulation {
   val env = System.getProperty("env", environment) //manually override the environment aat|perftest e.g. ./gradle gatlingRun -Denv=aat
   /* ******************************** */
 
+  /* PERFORMANCE TEST CONFIGURATION */
+  val testDurationMins = 60
+  val numberOfPerformanceTestUsers: Double = 50
+  val numberOfPipelineUsers: Double = 10
+
+
+  //If running in debug mode, disable pauses between steps
+  val pauseOption: PauseType = debugMode match {
+    case "off" => constantPauses
+    case _ => disabledPauses
+  }
+
 
   val httpProtocol = Environment.HttpProtocol
     .baseUrl(BaseURL)
@@ -48,14 +62,14 @@ class ET_Simulation extends Simulation {
 
   val ETCreateClaim = scenario( "ETCreateClaim")
     .exitBlockOnFail {
-    //  .repeat(1){
+      //  .repeat(1){
       exec(  _.set("env", s"${env}"))
-      .exec(flushHttpCache)
-      .exec(flushCookieJar)
-      .feed(UserFeederET)
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(UserFeederET)
         .repeat(1) {
           exec(ET_MakeAClaim.MakeAClaim)
-          .exec(ET_MakeAClaimPt2.MakeAClaim)
+            .exec(ET_MakeAClaimPt2.MakeAClaim)
         }
     }
 
@@ -66,16 +80,47 @@ class ET_Simulation extends Simulation {
         session
     }
 
+  //defines the Gatling simulation model, based on the inputs
+  def simulationProfile(simulationType: String, numberOfPerformanceTestUsers: Double, numberOfPipelineUsers: Double): Seq[OpenInjectionStep] = {
+    simulationType match {
+      case "perftest" =>
+        if (debugMode == "off") {
+          Seq(
+            rampUsers(numberOfPerformanceTestUsers.toInt) during (testDurationMins minutes)
+          )
+        }
+        else {
+          Seq(atOnceUsers(1))
+        }
+      case "pipeline" =>
+        Seq(rampUsers(numberOfPipelineUsers.toInt) during (2 minutes))
+      case _ =>
+        Seq(nothingFor(0))
+    }
+  }
+
+  //defines the test assertions, based on the test type
+  def assertions(simulationType: String): Seq[Assertion] = {
+    simulationType match {
+      case "perftest" | "pipeline" => //currently using the same assertions for a performance test and the pipeline
+        if (debugMode == "off") {
+          Seq(global.successfulRequests.percent.gte(95),
+            details("ET_460_Final_Check_Submit").successfulRequests.percent.gte(90))
+        }
+        else {
+          Seq(global.successfulRequests.percent.is(100))
+        }
+      case _ =>
+        Seq()
+    }
+  }
 
 
-  //setUp(
-  //  NFDCitizenSoleApp.inject(simulationProfile(testType, divorceRatePerSecSole, numberOfPipelineUsersSole)).pauses(pauseOption),
-   // NFDCitizenJointApp.inject(simulationProfile(testType, divorceRatePerSecJoint, numberOfPipelineUsersJoint)).pauses(pauseOption)
-  //).protocols(httpProtocol)
-   // .assertions(assertions(testType))
 
-  setUp(ETCreateClaim.inject(rampUsers(50).during(2200)))
-    .protocols(httpProtocol)
-    .maxDuration(4400)
+  setUp(
+    ETCreateClaim.inject(simulationProfile(testType, numberOfPerformanceTestUsers, numberOfPipelineUsers)).pauses(pauseOption)
+  ).protocols(httpProtocol)
+    .assertions(assertions(testType))
+
 
 }
