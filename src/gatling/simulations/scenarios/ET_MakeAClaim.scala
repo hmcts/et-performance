@@ -48,7 +48,7 @@ object ET_MakeAClaim {
 
     .exec(getCookieValue(CookieKey("et-sya-session").withDomain(BaseURL.replace("https://", "")).withSecure(true).saveAs("etSession")))
 
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
 
@@ -62,7 +62,7 @@ object ET_MakeAClaim {
         .headers(CommonHeader)
         .check(substring("Before you continue")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*======================================================================================
@@ -76,7 +76,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("the postcode where you worked or work?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*======================================================================================
@@ -96,7 +96,7 @@ object ET_MakeAClaim {
           .check(CsrfCheck.save)
           .check(substring("Are you making the claim for yourself, or representing someone else?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*======================================================================================
@@ -114,7 +114,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("Are you making a claim on your own or with others?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*======================================================================================
@@ -132,7 +132,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("Acas early conciliation certificate")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -150,7 +150,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("What type of claim are you making?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -173,7 +173,7 @@ object ET_MakeAClaim {
         .check(substring("Sign in or create an account")))
 
 
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
 
@@ -203,7 +203,7 @@ object ET_MakeAClaim {
         .formParam("et-sya-session", "#{etSession}")
         .check(substring("You do not have to complete your claim in one go")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
       /*===============================================================================================
@@ -216,7 +216,7 @@ object ET_MakeAClaim {
           .headers(CommonHeader)
           .check(substring("Steps to making your claim")))
       }
-      .pause(MinThinkTime seconds, MaxThinkTime seconds)
+      .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -230,7 +230,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("What is your date of birth?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -250,7 +250,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("Sex and preferred title")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -269,7 +269,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("What is your contact or home address?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -279,7 +279,7 @@ object ET_MakeAClaim {
     .group("ET_140_Your_Address_LookUp") {
         exec(Common.postcodeLookup)
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -301,7 +301,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("What is your telephone number")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -319,7 +319,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("What format would you like to be contacted in?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
 
@@ -338,7 +338,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("Would you be able to take part in hearings by video and phone?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -357,7 +357,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("Do you have a physical, mental or learning disability or long term health condition that means you need support during your case?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -376,7 +376,7 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("Have you completed this section?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -396,7 +396,7 @@ object ET_MakeAClaim {
         .check(substring("Your preferences\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
         .check(substring("Steps to making your claim")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
 

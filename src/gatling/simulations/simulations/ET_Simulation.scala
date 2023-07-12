@@ -7,6 +7,7 @@ import utils.Environment
 import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.http.Predef._
 import io.gatling.core.pause.PauseType
+import io.gatling.commons.stats.assertion.Assertion
 
 import scala.concurrent.duration._
 
@@ -34,8 +35,15 @@ class ET_Simulation extends Simulation {
   /* ******************************** */
 
   /* PERFORMANCE TEST CONFIGURATION */
+  val rampUpDurationMins = 2
+  val rampDownDurationMins = 2
   val testDurationMins = 60
-  val numberOfPerformanceTestUsers: Double = 50
+
+
+  val hourlyTarget: Double = 50
+  val ratePerSec = hourlyTarget / 3600
+
+
   val numberOfPipelineUsers: Double = 10
 
 
@@ -62,12 +70,11 @@ class ET_Simulation extends Simulation {
 
   val ETCreateClaim = scenario( "ETCreateClaim")
     .exitBlockOnFail {
-      //  .repeat(1){
       exec(  _.set("env", s"${env}"))
         .exec(flushHttpCache)
         .exec(flushCookieJar)
         .feed(UserFeederET)
-          exec(ET_MakeAClaim.MakeAClaim)
+          .exec(ET_MakeAClaim.MakeAClaim)
             .exec(ET_MakeAClaimPt2.MakeAClaim)
     }
 
@@ -79,15 +86,17 @@ class ET_Simulation extends Simulation {
     }
 
   //defines the Gatling simulation model, based on the inputs
-  def simulationProfile(simulationType: String, numberOfPerformanceTestUsers: Double, numberOfPipelineUsers: Double): Seq[OpenInjectionStep] = {
+  def simulationProfile(simulationType: String, userPerSecRate: Double, numberOfPipelineUsers: Double): Seq[OpenInjectionStep] = {
     simulationType match {
       case "perftest" =>
         if (debugMode == "off") {
           Seq(
-            rampUsers(numberOfPerformanceTestUsers.toInt) during (testDurationMins minutes)
+            rampUsersPerSec(0.00) to (userPerSecRate) during (rampUpDurationMins.minutes),
+            constantUsersPerSec(userPerSecRate) during (testDurationMins.minutes),
+            rampUsersPerSec(userPerSecRate) to (0.00) during (rampDownDurationMins.minutes)
           )
         }
-        else {
+        else{
           Seq(atOnceUsers(1))
         }
       case "pipeline" =>
@@ -116,7 +125,7 @@ class ET_Simulation extends Simulation {
 
 
   setUp(
-    ETCreateClaim.inject(simulationProfile(testType, numberOfPerformanceTestUsers, numberOfPipelineUsers)).pauses(pauseOption)
+    ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
   ).protocols(httpProtocol)
     .assertions(assertions(testType))
 

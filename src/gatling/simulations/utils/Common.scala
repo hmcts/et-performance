@@ -24,7 +24,7 @@ object Common {
   val postcodeFeeder = csv("postcodes.csv").circular
 
 
-  def postcodeLookup() =
+  def postcodeLookup =
     feed(postcodeFeeder)
       .exec(http("XUI_Common_000_PostcodeLookup")
         .post(BaseURL + "/address-lookup")

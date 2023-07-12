@@ -53,7 +53,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Did you work for the organisation or person you’re making your claim against")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -71,7 +71,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Are you still working for the organisation or person")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -89,7 +89,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Employment details")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -107,7 +107,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Employment start date")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -127,7 +127,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("When does your notice period end?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -148,7 +148,7 @@ object ET_MakeAClaimPt2 {
         //has to be a future date
         .check(substring("Is your notice period in weeks or months?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -166,7 +166,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("How many months in your notice period?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -184,7 +184,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("What are your average weekly hours?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -202,7 +202,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Your pay")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -222,7 +222,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Did the respondent make any contributions to your pension? ")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -241,7 +241,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Do you or did you receive any employee benefits?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -260,7 +260,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("What is the name of the respondent")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -278,7 +278,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("What is the address of")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -288,7 +288,7 @@ object ET_MakeAClaimPt2 {
     .group("ET_330_Respondent_Address_LookUp") {
       exec(Common.postcodeLookup)
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -312,7 +312,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Did you work at")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -330,7 +330,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Do you have an Acas certificate number for")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -348,7 +348,7 @@ object ET_MakeAClaimPt2 {
         .formParam("acasCertNum", "#{acasCertNum}")
         .check(substring("Check the respondent details")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -362,7 +362,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Have you completed this section?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -381,7 +381,7 @@ object ET_MakeAClaimPt2 {
         .check(substring("Respondent details\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
         .check(substring("Steps to making your claim")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -395,7 +395,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("What type of discrimination are you claiming?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -415,7 +415,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Describe what happened to you")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -434,7 +434,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("What do you want if your claim is successful?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -452,7 +452,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("What compensation are you seeking?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -471,7 +471,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Whistleblowing claims")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -490,7 +490,7 @@ object ET_MakeAClaimPt2 {
         .check(CsrfCheck.save)
         .check(substring("Have you completed this section?")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -509,7 +509,7 @@ object ET_MakeAClaimPt2 {
         .check(substring("Tell us what you want from your claim\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
         .check(substring("Steps to making your claim")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -522,7 +522,7 @@ object ET_MakeAClaimPt2 {
         .headers(CommonHeader)
         .check(substring("Check your answers")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -540,7 +540,7 @@ object ET_MakeAClaimPt2 {
     }
     
     
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
@@ -553,7 +553,7 @@ object ET_MakeAClaimPt2 {
         .headers(CommonHeader)
         .check(substring("Make a claim to an employment tribunal")))
     }
-    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
 
