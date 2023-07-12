@@ -67,10 +67,8 @@ class ET_Simulation extends Simulation {
         .exec(flushHttpCache)
         .exec(flushCookieJar)
         .feed(UserFeederET)
-        .repeat(1) {
           exec(ET_MakeAClaim.MakeAClaim)
             .exec(ET_MakeAClaimPt2.MakeAClaim)
-        }
     }
 
 
@@ -93,7 +91,7 @@ class ET_Simulation extends Simulation {
           Seq(atOnceUsers(1))
         }
       case "pipeline" =>
-        Seq(rampUsers(numberOfPipelineUsers.toInt) during (2 minutes))
+        Seq(rampUsers(numberOfPipelineUsers.toInt) during (2.minutes))
       case _ =>
         Seq(nothingFor(0))
     }
