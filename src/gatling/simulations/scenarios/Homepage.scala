@@ -31,7 +31,7 @@ object Homepage {
           .header("sec-fetch-site", "none")
           .check(substring("Make a claim to an employment tribunal")))
       }
-      .pause(MinThinkTime seconds, MaxThinkTime seconds)
+      .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
 }
