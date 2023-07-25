@@ -40,7 +40,7 @@ class ET_Simulation extends Simulation {
   val testDurationMins = 60
 
 
-  val hourlyTarget: Double = 50
+  val hourlyTarget: Double = 10
   val ratePerSec = hourlyTarget / 3600
 
 
@@ -78,7 +78,6 @@ class ET_Simulation extends Simulation {
             .exec(ET_MakeAClaimPt2.MakeAClaim)
     }
 
-
     .exec {
       session =>
         println(session)
@@ -100,7 +99,7 @@ class ET_Simulation extends Simulation {
           Seq(atOnceUsers(1))
         }
       case "pipeline" =>
-        Seq(rampUsers(numberOfPipelineUsers.toInt) during (2.minutes))
+        Seq(rampUsers(numberOfPipelineUsers.toInt) during (20.minutes))
       case _ =>
         Seq(nothingFor(0))
     }
