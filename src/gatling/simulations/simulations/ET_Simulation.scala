@@ -99,7 +99,7 @@ class ET_Simulation extends Simulation {
           Seq(atOnceUsers(1))
         }
       case "pipeline" =>
-        Seq(rampUsers(numberOfPipelineUsers.toInt) during (20.minutes))
+        Seq(rampUsers(numberOfPipelineUsers.toInt) during (2.minutes))
       case _ =>
         Seq(nothingFor(0))
     }
