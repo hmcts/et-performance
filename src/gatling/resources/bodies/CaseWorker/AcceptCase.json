@@ -1,0 +1,22 @@
+{
+  "data": {
+    "preAcceptCase": {
+      "caseAccepted": "Yes",
+      "dateAccepted": "2023-08-24"
+    }
+  },
+  "event": {
+    "id": "preAcceptanceCase",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "preAcceptCase": {
+      "caseAccepted": "Yes",
+      "dateAccepted": "2023-08-24"
+    }
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

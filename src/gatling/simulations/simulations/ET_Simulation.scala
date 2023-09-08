@@ -40,11 +40,11 @@ class ET_Simulation extends Simulation {
   val testDurationMins = 60
 
 
-  val hourlyTarget: Double = 10
+  val hourlyTarget: Double = 100
   val ratePerSec = hourlyTarget / 3600
 
 
-  val numberOfPipelineUsers: Double = 10
+  val numberOfPipelineUsers: Double = 100
 
 
   //If running in debug mode, disable pauses between steps
