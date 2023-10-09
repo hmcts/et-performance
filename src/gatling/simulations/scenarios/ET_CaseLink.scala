@@ -110,6 +110,7 @@ object ET_CaseLink {
     }
   
     .pause(MinThinkTime, MaxThinkTime)
+    .pause(25)
   
   
   
@@ -221,6 +222,7 @@ object ET_CaseLink {
     }
   
     .pause(MinThinkTime, MaxThinkTime)
+    .pause(50)
   
   
 }

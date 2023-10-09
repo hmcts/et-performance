@@ -107,20 +107,20 @@ object ET_CaseFlag {
     }
   
     .pause(MinThinkTime, MaxThinkTime)
+    .pause(50)
   
     /*======================================================================================
     * View Flag - by click on Flag
     ======================================================================================*/
-  
-    .exec(http("ET_CaseFlag_070_005_ReviewFlagDetails")
+    .group("ET_CaseFlag_070_ViewFlagDetails ") {
+    exec(http("ET_CaseFlag_070_005_ReviewFlagDetails")
       .get("/api/user/details?refreshRoleAssignments=undefined")
       .headers(CommonHeader)
       .check(jsonPath("$..token").optional.saveAs("bearertoken"))
        .check(substring("canShareCases"))
     )
-  
-    .group("ET_CaseFlag_070_ViewFlagDetails ") {
-      exec(http("ET_CaseFlag_070_010_ReviewFlagDetails")
+     
+     .exec(http("ET_CaseFlag_070_010_ReviewFlagDetails")
         .options("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
         .headers(CommonHeader)
       )
@@ -137,7 +137,7 @@ object ET_CaseFlag {
     }
   
     .pause(MinThinkTime, MaxThinkTime)
-  
+    .pause(25)
   
   
     /*======================================================================================
@@ -179,12 +179,31 @@ object ET_CaseFlag {
     ======================================================================================*/
   
     .group("ET_CaseFlag_090_UpdateFlagComments") {
-      exec(http("XUI_PRL_070_005_UpdateFlagComments")
+      exec(http("ET_CaseFlag_090_005_UpdateFlagComments")
         .post("/data/cases/#{caseId}/events")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.create-event.v2+json;charset=UTF-8")
         .body(ElFileBody("bodies/caseflag/UpdateFlagSubmit.json"))
         .check(substring("case_type")))
+  
+        .exec(http("ET_CaseFlag_090_010_UpdateFlagComments")
+          .get("/data/internal/cases/#{caseId}")
+          .headers(CommonHeader)
+          .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")
+          .check(substring("#{caseId}"))
+        )
+  
+        .exec(http("ET_CaseFlag_090_015_ReviewFlagDetails")
+          .options("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
+          .headers(CommonHeader)
+        )
+  
+        .exec(http("ET_CaseFlag_090_020_ReviewFlagDetails")
+          .post("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
+          .headers(CommonHeader)
+          .body(ElFileBody("bodies/caseflag/Updatecaseflag.json"))
+          .check(substring("view")))
+      
     }
   
     .pause(MinThinkTime, MaxThinkTime)

@@ -9,20 +9,20 @@
       "partyName": "Respondent man",
       "details": [
         {
-          "id": "fb646a63-fa1e-428c-816c-0b27c942ff3f",
+          "id": "1fc79bbf-6284-4a8b-8aba-2b93b0a8b408",
           "value": {
             "name": "Step free / wheelchair access",
             "path": [
               {
-                "id": "214aa851-d871-471d-b3a2-2678b8465a27",
+                "id": "f9b7a784-45d0-40f3-9002-74b2979411a1",
                 "value": "Party"
               },
               {
-                "id": "3589ec6e-4dde-4a57-8bb8-c5d0ece8eee5",
+                "id": "4455c0e2-4a89-4bf0-a96e-3e9426b3d3fd",
                 "value": "Reasonable adjustment"
               },
               {
-                "id": "4754dd17-ec81-4830-a932-9f1f05837872",
+                "id": "12936205-2386-46db-8fbf-7ce9951cc210",
                 "value": "I need adjustments to get to, into and around our buildings"
               }
             ],
@@ -34,7 +34,7 @@
             "dateTimeCreated": "#{dateTimeCreated}",
             "hearingRelevant": "Yes",
             "otherDescription": null,
-            "dateTimeModified": "2023-10-09T11:00:23.563Z"
+            "dateTimeModified": "2023-10-09T11:40:38.657Z"
           }
         }
       ],
@@ -47,6 +47,6 @@
     "summary": "",
     "description": ""
   },
-  "event_token": "#{event_token_manage}",
+  "event_token": "#{event_token_manageflag}",
   "ignore_warning": false
 }
