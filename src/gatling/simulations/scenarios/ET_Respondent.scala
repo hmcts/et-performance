@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 
 object ET_Respondent {
 
-  val xuiURL = Environment.xuiURL
+  val xuiURL = Environment.baseURL
   val IdamURL = Environment.idamURL
 
 

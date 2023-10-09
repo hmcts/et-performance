@@ -1,0 +1,78 @@
+{
+  "data": {
+    "claimant_TypeOfClaimant": "Individual",
+    "claimantIndType": {
+      "claimant_preferred_title": "Mr",
+      "claimant_title_other": null,
+      "claimant_first_names": "Perftest",
+      "claimant_last_name": "Flaglink",
+      "claimant_date_of_birth": "1983-08-01",
+      "claimant_sex": "Male",
+      "claimant_gender_identity_same": null,
+      "claimant_gender_identity": null,
+      "claimant_title1": null,
+      "claimant_gender": null
+    },
+    "claimantType": {
+      "claimant_phone_number": "07865432456",
+      "claimant_mobile_number": null,
+      "claimant_email_address": null,
+      "claimant_contact_preference": null,
+      "claimant_contact_language": null,
+      "claimant_hearing_language": null,
+      "claimant_addressUK": {
+        "AddressLine1": "5 Dale Road",
+        "AddressLine2": "",
+        "AddressLine3": "Drighlington",
+        "PostTown": "Bradford",
+        "County": "",
+        "Country": "United Kingdom",
+        "PostCode": "BD11 1ND"
+      }
+    }
+  },
+  "event": {
+    "id": "initiateCase",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "receiptDate": "2023-09-24",
+    "feeGroupReference": "0123456789012346",
+    "managingOffice": "Leeds",
+    "multipleReference": null,
+    "leadClaimant": null,
+    "claimant_TypeOfClaimant": "Individual",
+    "claimantIndType": {
+      "claimant_preferred_title": "Mr",
+      "claimant_title_other": null,
+      "claimant_first_names": "Perftest",
+      "claimant_last_name": "Flaglink",
+      "claimant_date_of_birth": "1983-08-01",
+      "claimant_sex": "Male",
+      "claimant_gender_identity_same": null,
+      "claimant_gender_identity": null,
+      "claimant_title1": null,
+      "claimant_gender": null
+    },
+    "claimantType": {
+      "claimant_phone_number": "07865432456",
+      "claimant_mobile_number": null,
+      "claimant_email_address": null,
+      "claimant_contact_preference": null,
+      "claimant_contact_language": null,
+      "claimant_hearing_language": null,
+      "claimant_addressUK": {
+        "AddressLine1": "5 Dale Road",
+        "AddressLine2": "",
+        "AddressLine3": "Drighlington",
+        "PostTown": "Bradford",
+        "County": "",
+        "Country": "United Kingdom",
+        "PostCode": "BD11 1ND"
+      }
+    }
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false
+}

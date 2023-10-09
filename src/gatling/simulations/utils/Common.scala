@@ -2,9 +2,9 @@ package utils
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
+import utils.Environment.commonHeader
 
-
-import java.time.LocalDate
+import java.time.{LocalDate, ZonedDateTime}
 import java.time.format.DateTimeFormatter
 import scala.util.Random
 
@@ -17,7 +17,7 @@ object Common {
   val patternYear = DateTimeFormatter.ofPattern("yyyy")
   val patternDate = DateTimeFormatter.ofPattern("yyyyMMdd")
   val BaseURL = Environment.baseURL
-  val XuiURL = Environment.xuiURL
+ // val XuiURL = Environment.xuiURL
 
   val CommonHeader = Environment.commonHeader
   val PostHeader = Environment.postHeader
@@ -50,6 +50,10 @@ object Common {
 
   def getDate(): String = {
     now.format(patternDate)
+  }
+  
+  def getCurrentDateTime (): String = {
+    ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"))
   }
 
   def getDay(): String = {
@@ -89,63 +93,78 @@ object Common {
 
   val configJson =
     exec(http("XUI_Common_000_ConfigJson")
-      .get(XuiURL + "/assets/config/config.json")
+      .get("/assets/config/config.json")
       .header("accept", "application/json, text/plain, */*")
       .check(substring("caseEditorConfig")))
 
   val TsAndCs =
     exec(http("XUI_Common_000_TsAndCs")
-      .get(XuiURL + "/api/configuration?configurationKey=termsAndConditionsEnabled")
+      .get("/api/configuration?configurationKey=termsAndConditionsEnabled")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(substring("false")))
 
   val userDetails =
     exec(http("XUI_Common_000_UserDetails")
-      .get(XuiURL + "/api/user/details")
+      .get("/api/user/details")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*"))
 
   val configUI =
     exec(http("XUI_Common_000_ConfigUI")
-      .get(XuiURL + "/external/config/ui")
+      .get("/external/config/ui")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(substring("ccdGatewayUrl")))
 
   val isAuthenticated =
     exec(http("XUI_Common_000_IsAuthenticated")
-      .get(XuiURL + "/auth/isAuthenticated")
+      .get("/auth/isAuthenticated")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(regex("true|false")))
 
   val profile =
     exec(http("XUI_Common_000_Profile")
-      .get(XuiURL + "/data/internal/profile")
+      .get("/data/internal/profile")
       .headers(Environment.commonHeader)
       .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-user-profile.v2+json;charset=UTF-8")
       .check(jsonPath("$.user.idam.id").notNull))
 
   val monitoringTools =
     exec(http("XUI_Common_000_MonitoringTools")
-      .get(XuiURL + "/api/monitoring-tools")
+      .get("/api/monitoring-tools")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(jsonPath("$.key").notNull))
 
   val caseShareOrgs =
     exec(http("XUI_Common_000_CaseShareOrgs")
-      .get(XuiURL + "/api/caseshare/orgs")
+      .get("/api/caseshare/orgs")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*"))
 
   val orgDetails =
     exec(http("XUI_Common_000_OrgDetails")
-      .get(XuiURL + "/api/organisation")
+      .get("/api/organisation")
       .headers(Environment.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(regex("name|Organisation route error"))
       .check(status.in(200, 304, 403)))
+  
+  val caseActivityGet =
+    exec(http("XUI_Common_000_ActivityOptions")
+      .options("/activity/cases/${caseId}/activity")
+      .headers(commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .header("sec-fetch-site", "same-site")
+      .check(status.in(200, 304, 403)))
+      
+      .exec(http("XUI_Common_000_ActivityGet")
+        .get("/activity/cases/${caseId}/activity")
+        .headers(commonHeader)
+        .header("accept", "application/json, text/plain, */*")
+        .header("sec-fetch-site", "same-site")
+        .check(status.in(200, 304, 403)))
 
 }

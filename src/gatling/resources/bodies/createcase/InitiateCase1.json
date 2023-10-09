@@ -1,0 +1,23 @@
+{
+  "data": {
+    "receiptDate": "2023-09-24",
+    "feeGroupReference": "0123456789012346",
+    "managingOffice": "Leeds",
+    "multipleReference": null,
+    "leadClaimant": null
+  },
+  "event": {
+    "id": "initiateCase",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "receiptDate": "2023-09-24",
+    "feeGroupReference": "0123456789012346",
+    "managingOffice": "Leeds",
+    "multipleReference": null,
+    "leadClaimant": null
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false
+}

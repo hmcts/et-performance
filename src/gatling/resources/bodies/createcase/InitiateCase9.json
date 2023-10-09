@@ -1,0 +1,194 @@
+{
+  "data": {
+    "claimantHearingPreference": {
+      "hearing_assistance": "grumpy",
+      "reasonable_adjustments": null,
+      "reasonable_adjustments_detail": null,
+      "contact_language": null,
+      "hearing_language": null,
+      "hearing_preferences": [
+        "Neither"
+      ]
+    }
+  },
+  "event": {
+    "id": "initiateCase",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "receiptDate": "2023-09-24",
+    "feeGroupReference": "0123456789012346",
+    "managingOffice": "Leeds",
+    "multipleReference": null,
+    "leadClaimant": null,
+    "claimant_TypeOfClaimant": "Individual",
+    "claimantIndType": {
+      "claimant_preferred_title": "Mr",
+      "claimant_title_other": null,
+      "claimant_first_names": "Perftest",
+      "claimant_last_name": "Flaglink",
+      "claimant_date_of_birth": "1983-08-01",
+      "claimant_sex": "Male",
+      "claimant_gender_identity_same": null,
+      "claimant_gender_identity": null,
+      "claimant_title1": null,
+      "claimant_gender": null
+    },
+    "claimantType": {
+      "claimant_phone_number": null,
+      "claimant_mobile_number": null,
+      "claimant_email_address": null,
+      "claimant_contact_preference": null,
+      "claimant_contact_language": null,
+      "claimant_hearing_language": null,
+      "claimant_addressUK": {
+        "AddressLine1": "5 Dale Road",
+        "AddressLine2": "",
+        "AddressLine3": "Drighlington",
+        "PostTown": "Bradford",
+        "County": "",
+        "Country": "United Kingdom",
+        "PostCode": "BD11 1ND"
+      }
+    },
+    "respondentCollection": [
+      {
+        "value": {
+          "respondent_name": "Respondent man",
+          "respondent_ACAS_question": "Yes",
+          "respondent_ACAS": "0123456789",
+          "respondent_phone1": null,
+          "responseReceived": "Yes",
+          "responseContinue": null,
+          "extensionRequested": null,
+          "extensionGranted": null,
+          "extensionDate": null,
+          "extensionResubmitted": null,
+          "responseReceivedDate": null,
+          "responseStruckOut": null,
+          "responseRespondentName": null,
+          "responseReference": null,
+          "response_status": null,
+          "responseToClaim": null,
+          "rejection_reason": null,
+          "rejection_reason_other": null,
+          "responseOutOfTime": null,
+          "responseNotOnPrescribedForm": null,
+          "responseRequiredInfoAbsent": null,
+          "responseStruckOutDate": null,
+          "responseStruckOutChairman": null,
+          "responseStruckOutReason": null,
+          "respondent_phone2": null,
+          "respondent_email": null,
+          "respondent_contact_preference": null,
+          "responseRespondentPhone1": null,
+          "responseRespondentPhone2": null,
+          "responseRespondentEmail": null,
+          "responseRespondentContactPreference": null,
+          "response_referred_to_judge": null,
+          "response_returned_from_judge": null,
+          "responseNotes": null,
+          "et3VettingCompleted": null,
+          "et3ResponseIsClaimantNameCorrect": null,
+          "et3ResponseClaimantNameCorrection": null,
+          "et3ResponseRespondentCompanyNumber": null,
+          "et3ResponseRespondentEmployerType": null,
+          "et3ResponseRespondentPreferredTitle": null,
+          "et3ResponseRespondentContactName": null,
+          "et3ResponseContactReason": null,
+          "et3ResponseDXAddress": null,
+          "et3ResponseEmploymentCount": null,
+          "et3ResponseMultipleSites": null,
+          "et3ResponseSiteEmploymentCount": null,
+          "et3ResponseAcasAgree": null,
+          "et3ResponseAcasAgreeReason": null,
+          "et3ResponseAreDatesCorrect": null,
+          "et3ResponseEmploymentStartDate": null,
+          "et3ResponseEmploymentEndDate": null,
+          "et3ResponseEmploymentInformation": null,
+          "et3ResponseContinuingEmployment": null,
+          "et3ResponseIsJobTitleCorrect": null,
+          "et3ResponseClaimantWeeklyHours": null,
+          "et3ResponseCorrectJobTitle": null,
+          "et3ResponseClaimantCorrectHours": null,
+          "et3ResponseEarningDetailsCorrect": null,
+          "et3ResponsePayFrequency": null,
+          "et3ResponsePayBeforeTax": null,
+          "et3ResponsePayTakehome": null,
+          "et3ResponseIsNoticeCorrect": null,
+          "et3ResponseCorrectNoticeDetails": null,
+          "et3ResponseIsPensionCorrect": null,
+          "et3ResponsePensionCorrectDetails": null,
+          "et3ResponseRespondentContestClaim": null,
+          "et3ResponseContestClaimDetails": null,
+          "et3ResponseEmployerClaim": null,
+          "et3ResponseEmployerClaimDetails": null,
+          "et3ResponseRespondentSupportNeeded": null,
+          "et3ResponseRespondentSupportDetails": null,
+          "personalDetailsSection": null,
+          "claimDetailsSection": null,
+          "employmentDetailsSection": null,
+          "respondent_address": {
+            "AddressLine1": "Valley Farm",
+            "AddressLine2": "Dale Road",
+            "AddressLine3": "Drighlington",
+            "PostTown": "Bradford",
+            "County": "",
+            "Country": "United Kingdom",
+            "PostCode": "BD11 1ND"
+          },
+          "et3ResponseHearingRepresentative": [],
+          "et3ResponseHearingRespondent": []
+        },
+        "id": "#{event_id}"
+      }
+    ],
+    "claimantWorkAddressQuestion": "Yes",
+    "claimantWorkAddressQRespondent": {
+      "value": {
+        "code": "Respondent man",
+        "label": "Respondent man - Valley Farm, Dale Road, Drighlington, Bradford, BD11 1ND, United Kingdom"
+      },
+      "list_items": [
+        {
+          "code": "Respondent man",
+          "label": "Respondent man - Valley Farm, Dale Road, Drighlington, Bradford, BD11 1ND, United Kingdom"
+        }
+      ]
+    },
+    "claimantOtherType": {
+      "claimant_occupation": "engineer",
+      "claimant_employed_from": "2022-01-01",
+      "claimant_employed_currently": "No",
+      "claimant_employed_to": "2023-01-01",
+      "claimant_disabled": "No",
+      "claimant_notice_period": null,
+      "claimant_notice_period_unit": null,
+      "claimant_notice_period_duration": null,
+      "claimant_average_weekly_hours": null,
+      "claimant_pay_before_tax": null,
+      "claimant_pay_after_tax": null,
+      "claimant_pay_cycle": null,
+      "claimant_pension_contribution": null,
+      "claimant_pension_weekly_contribution": null,
+      "claimant_benefits": null,
+      "claimant_benefits_detail": null,
+      "pastEmployer": null,
+      "stillWorking": null
+    },
+    "claimantRepresentedQuestion": "No",
+    "claimantHearingPreference": {
+      "hearing_assistance": "grumpy",
+      "reasonable_adjustments": null,
+      "reasonable_adjustments_detail": null,
+      "contact_language": null,
+      "hearing_language": null,
+      "hearing_preferences": [
+        "Neither"
+      ]
+    }
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false
+}

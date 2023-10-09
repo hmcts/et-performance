@@ -15,6 +15,9 @@ class ET_Simulation extends Simulation {
 
   val BaseURL = Environment.baseURL
   val UserFeederET = csv("UserDataET.csv").circular
+  val UserFeederETXUI = csv("caseWorkerUsers.csv").circular
+  val CaseLinkFeeder = csv("CaseLinkCases.csv").circular
+  val CaseFlagFeeder = csv("CaseFlagCases.csv").circular
 
   /* TEST TYPE DEFINITION */
   /* pipeline = nightly pipeline against the AAT environment (see the Jenkins_nightly file) */
@@ -35,12 +38,12 @@ class ET_Simulation extends Simulation {
   /* ******************************** */
 
   /* PERFORMANCE TEST CONFIGURATION */
-  val rampUpDurationMins = 2
-  val rampDownDurationMins = 2
-  val testDurationMins = 60
+  val rampUpDurationMins = 1//2
+  val rampDownDurationMins = 1//2
+  val testDurationMins = 5//60
 
 
-  val hourlyTarget: Double = 100
+  val hourlyTarget: Double = 1//100
   val ratePerSec = hourlyTarget / 3600
 
 
@@ -68,22 +71,53 @@ class ET_Simulation extends Simulation {
     println(s"Debug Mode: ${debugMode}")
   }
 
-  val ETCreateClaim = scenario( "ETCreateClaim")
+  val ETXUIClaim = scenario( "ETCreateClaim")
     .exitBlockOnFail {
       exec(  _.set("env", s"${env}"))
         .exec(flushHttpCache)
         .exec(flushCookieJar)
+        .feed(UserFeederETXUI)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+          .exec(ET_CaseCreation.MakeAClaim)
+          
+    }
+  
+  val ETXUICaseLink = scenario("ET Case Link")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(UserFeederETXUI).feed(CaseLinkFeeder)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseLink.manageCaseLink)
+      
+    }
+  
+  val ETXUICaseFlag = scenario("ET Case Flag")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(UserFeederETXUI).feed(CaseFlagFeeder)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseFlag.manageCaseFlag)
+      
+    }
+  
+  val ETCreateClaim = scenario("ETCreateClaim")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
         .feed(UserFeederET)
-          .exec(ET_MakeAClaim.MakeAClaim)
-            .exec(ET_MakeAClaimPt2.MakeAClaim)
+        .exec(ET_MakeAClaim.MakeAClaim)
+        .exec(ET_MakeAClaimPt2.MakeAClaim)
     }
-
-    .exec {
-      session =>
-        println(session)
-        session
-    }
-
+  
+  
   //defines the Gatling simulation model, based on the inputs
   def simulationProfile(simulationType: String, userPerSecRate: Double, numberOfPipelineUsers: Double): Seq[OpenInjectionStep] = {
     simulationType match {
@@ -124,9 +158,15 @@ class ET_Simulation extends Simulation {
 
 
   setUp(
-    ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
+   // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
+   // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
+      //ETXUIClaim.inject(nothingFor(5), rampUsers(40) during (1200))
+   //ETXUICaseLink.inject(nothingFor(5), rampUsers(1) during (10))
+    ETXUICaseFlag.inject(nothingFor(5), rampUsers(1) during (10))
+    
+      
   ).protocols(httpProtocol)
-    .assertions(assertions(testType))
+   // .assertions(assertions(testType))
 
 
 }

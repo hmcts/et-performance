@@ -1,0 +1,29 @@
+{
+  "data": {
+    "caseLinks": [
+      {
+        "id": "#{linkcaseId}",
+        "value": {
+          "CaseReference": "#{linkcaseId}",
+          "CaseType": "ET_EnglandWales",
+          "CreatedDateTime": "#{currentDateTime}",
+          "ReasonForLink": [
+            {
+              "value": {
+                "Reason": "CLRC015",
+                "OtherDescription": ""
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "event": {
+    "id": "createCaseLink",
+    "summary": "",
+    "description": ""
+  },
+  "event_token": "#{event_token_link}",
+  "ignore_warning": false
+}
