@@ -154,15 +154,13 @@ class ET_Simulation extends Simulation {
         Seq()
     }
   }
-
-
-
+  
   setUp(
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
-      //ETXUIClaim.inject(nothingFor(5), rampUsers(40) during (1200))
-   ETXUICaseLink.inject(nothingFor(5), rampUsers(10) during (3600)),
-    ETXUICaseFlag.inject(nothingFor(25), rampUsers(15) during (3600))
+    // ETXUIClaim.inject(nothingFor(5), rampUsers(40) during (1200))
+   ETXUICaseLink.inject(nothingFor(60), rampUsers(10) during (3600)),
+    ETXUICaseFlag.inject(nothingFor(15), rampUsers(20) during (3600))
   ).protocols(httpProtocol)
    // .assertions(assertions(testType))
 

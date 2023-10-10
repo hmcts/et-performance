@@ -161,21 +161,48 @@ object ET_CaseFlag {
           //.check(jsonPath("$.case_fields[1].value.partyName").saveAs("respondentName"))
           .check(jsonPath("$.case_fields[0].value.partyName").saveAs("claimantName"))
           .check(jsonPath("$..formatted_value.details[0].value.dateTimeCreated").saveAs("dateTimeCreated"))
+          .check(jsonPath("$..value.details[0].id").saveAs("stepfreeid"))
+          .check(jsonPath("$..value.details[0].value.path[0].id").saveAs("partyid"))
+          .check(jsonPath("$..value.details[0].value.path[1].id").saveAs("reasonableadjid"))
+          .check(jsonPath("$..value.details[0].value.path[2].id").saveAs("ineedadjid"))
+          
          // .check(jsonPath("$..formatted_value.details[0].value.dateTimeModified").saveAs("dateTimeModified"))
           
         )
+  
+        .exec(http("ET_CaseFlag_080_015_InitiateManageCaseFlag")
+          .get("/data/internal/profile")
+          .headers(CommonHeader)
+          .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-user-profile.v2+json;charset=UTF-8")
+          .check(substring("create")))
       
         .exec(http("ET_CaseFlag_080_015_InitiateManageCaseFlag")
           .get("/workallocation/case/tasks/#{caseId}/event/manageFlags/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")
           .headers(CommonHeader)
           .check(substring("tasks")))
+        
+          .exec (http("ET_CaseFlag_080_020_InitiateManageCaseFlag")
+          .get("/api/user/details?refreshRoleAssignments=undefined")
+          .headers(CommonHeader)
+          .check(jsonPath("$..token").optional.saveAs("bearertokenmanage"))
+          .check(substring("canShareCases"))
+          )
+  
+        .exec(http("ET_CaseFlag_090_020_ReviewFlagDetails")
+          .post("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
+          .headers(CommonHeader)
+          .header("Authorization", "#{bearertokenmanage}")
+          .body(ElFileBody("bodies/caseflag/Updatecaseflag.json"))
+          .check(substring("edit")))
+        
     
     }
   
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+    .pause(20)
   
     /*======================================================================================
-    * Update Case Flag Comment - Submit flag Comments
+    * Update Case Flag Comment - Submit flag Comments update
     ======================================================================================*/
   
     .group("ET_CaseFlag_090_UpdateFlagComments") {
@@ -201,11 +228,13 @@ object ET_CaseFlag {
         .exec(http("ET_CaseFlag_090_020_ReviewFlagDetails")
           .post("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
           .headers(CommonHeader)
+          .header("Authorization", "#{bearertokenmanage}")
           .body(ElFileBody("bodies/caseflag/Updatecaseflag.json"))
-          .check(substring("view")))
+          .check(substring("edit")))
       
     }
   
     .pause(MinThinkTime, MaxThinkTime)
+    .pause(20)
   
 }

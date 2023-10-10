@@ -9,27 +9,27 @@
       "partyName": "Respondent man",
       "details": [
         {
-          "id": "1fc79bbf-6284-4a8b-8aba-2b93b0a8b408",
+          "id": "#{stepfreeid}",
           "value": {
             "name": "Step free / wheelchair access",
             "path": [
               {
-                "id": "f9b7a784-45d0-40f3-9002-74b2979411a1",
+                "id": "#{partyid}",
                 "value": "Party"
               },
               {
-                "id": "4455c0e2-4a89-4bf0-a96e-3e9426b3d3fd",
+                "id": "#{reasonableadjid}",
                 "value": "Reasonable adjustment"
               },
               {
-                "id": "12936205-2386-46db-8fbf-7ce9951cc210",
+                "id": "#{ineedadjid}",
                 "value": "I need adjustments to get to, into and around our buildings"
               }
             ],
-            "status": "Active",
+            "status": "inActive",
             "flagCode": "RA0019",
             "subTypeKey": null,
-            "flagComment": "flag create comment",
+            "flagComment": "flag create comment updated",
             "subTypeValue": null,
             "dateTimeCreated": "#{dateTimeCreated}",
             "hearingRelevant": "Yes",
