@@ -176,19 +176,19 @@ object ET_CaseFlag {
           .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-user-profile.v2+json;charset=UTF-8")
           .check(substring("create")))
       
-        .exec(http("ET_CaseFlag_080_015_InitiateManageCaseFlag")
+        .exec(http("ET_CaseFlag_080_020_InitiateManageCaseFlag")
           .get("/workallocation/case/tasks/#{caseId}/event/manageFlags/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")
           .headers(CommonHeader)
           .check(substring("tasks")))
         
-          .exec (http("ET_CaseFlag_080_020_InitiateManageCaseFlag")
+          .exec (http("ET_CaseFlag_080_025_InitiateManageCaseFlag")
           .get("/api/user/details?refreshRoleAssignments=undefined")
           .headers(CommonHeader)
           .check(jsonPath("$..token").optional.saveAs("bearertokenmanage"))
           .check(substring("canShareCases"))
           )
   
-        .exec(http("ET_CaseFlag_090_020_ReviewFlagDetails")
+        .exec(http("ET_CaseFlag_080_030_ReviewFlagDetails")
           .post("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
           .headers(CommonHeader)
           .header("Authorization", "#{bearertokenmanage}")

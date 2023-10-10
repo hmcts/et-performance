@@ -61,8 +61,8 @@ class ET_Simulation extends Simulation {
     .baseUrl(BaseURL)
     .disableCaching
     .disableAutoReferer
-    .doNotTrackHeader("1")
-    .inferHtmlResources()
+   // .doNotTrackHeader("1")
+   // .inferHtmlResources()
     .silentResources
 
   before{
@@ -159,7 +159,7 @@ class ET_Simulation extends Simulation {
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
     // ETXUIClaim.inject(nothingFor(5), rampUsers(30) during (1200))
-   ETXUICaseLink.inject(nothingFor(10), rampUsers(10) during (3600)),
+  ETXUICaseLink.inject(nothingFor(10), rampUsers(10) during (3600)),
     ETXUICaseFlag.inject(nothingFor(55), rampUsers(20) during (3600))
   ).protocols(httpProtocol)
    // .assertions(assertions(testType))
