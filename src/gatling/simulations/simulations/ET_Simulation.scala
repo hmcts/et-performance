@@ -15,7 +15,8 @@ class ET_Simulation extends Simulation {
 
   val BaseURL = Environment.baseURL
   val UserFeederET = csv("UserDataET.csv").circular
-  val UserFeederETXUI = csv("caseWorkerUsers.csv").circular
+  val CaseLinkUserFeederETXUI = csv("ETCaseLinkUsers.csv").circular
+  val CaseFlagUserFeederETXUI = csv("ETCaseFlagUsers.csv").circular
   val CaseLinkFeeder = csv("CaseLinkCases.csv").circular
   val CaseFlagFeeder = csv("CaseFlagCases.csv").circular
 
@@ -74,9 +75,9 @@ class ET_Simulation extends Simulation {
   val ETXUIClaim = scenario( "ETCreateClaim")
     .exitBlockOnFail {
       exec(  _.set("env", s"${env}"))
-        .exec(flushHttpCache)
-        .exec(flushCookieJar)
-        .feed(UserFeederETXUI)
+       /* .exec(flushHttpCache)
+        .exec(flushCookieJar)*/
+        .feed(CaseLinkUserFeederETXUI)
         .exec(Homepage.XUIHomePage)
         .exec(Login.XUILogin)
           .exec(ET_CaseCreation.MakeAClaim)
@@ -86,24 +87,26 @@ class ET_Simulation extends Simulation {
   val ETXUICaseLink = scenario("ET Case Link")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
-        .exec(flushHttpCache)
-        .exec(flushCookieJar)
-        .feed(UserFeederETXUI).feed(CaseLinkFeeder)
+       /* .exec(flushHttpCache)
+        .exec(flushCookieJar)*/
+        .feed(CaseLinkUserFeederETXUI).feed(CaseLinkFeeder)
         .exec(Homepage.XUIHomePage)
         .exec(Login.XUILogin)
         .exec(ET_CaseLink.manageCaseLink)
+        .exec(Logout.XUILogout)
       
     }
   
   val ETXUICaseFlag = scenario("ET Case Flag")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
-        .exec(flushHttpCache)
-        .exec(flushCookieJar)
-        .feed(UserFeederETXUI).feed(CaseFlagFeeder)
+       /* .exec(flushHttpCache)
+        .exec(flushCookieJar)*/
+        .feed(CaseFlagUserFeederETXUI).feed(CaseFlagFeeder)
         .exec(Homepage.XUIHomePage)
         .exec(Login.XUILogin)
         .exec(ET_CaseFlag.manageCaseFlag)
+        .exec(Logout.XUILogout)
       
     }
   
@@ -158,9 +161,9 @@ class ET_Simulation extends Simulation {
   setUp(
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
-    // ETXUIClaim.inject(nothingFor(5), rampUsers(30) during (1200))
+  //   ETXUIClaim.inject(nothingFor(5), rampUsers(20) during (1200))
   ETXUICaseLink.inject(nothingFor(10), rampUsers(10) during (3600)),
-    ETXUICaseFlag.inject(nothingFor(55), rampUsers(20) during (3600))
+    ETXUICaseFlag.inject(nothingFor(25), rampUsers(22) during (3600))
   ).protocols(httpProtocol)
    // .assertions(assertions(testType))
 
