@@ -19,6 +19,7 @@ class ET_Simulation extends Simulation {
   val CaseFlagUserFeederETXUI = csv("ETCaseFlagUsers.csv").circular
   val CaseLinkFeeder = csv("CaseLinkCases.csv").circular
   val CaseFlagFeeder = csv("CaseFlagCases.csv").circular
+  val CaseFileViewFeeder = csv("CaseFileViewCases.csv").circular
 
   /* TEST TYPE DEFINITION */
   /* pipeline = nightly pipeline against the AAT environment (see the Jenkins_nightly file) */
@@ -120,6 +121,45 @@ class ET_Simulation extends Simulation {
         .exec(ET_MakeAClaimPt2.MakeAClaim)
     }
   
+  /** Following scenario is for uploading the documents to existing cases  */
+
+  val ETUploadDocs = scenario("ET Upload Documents")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(CaseLinkUserFeederETXUI).feed(CaseFlagFeeder)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseDocUpload.DocUpload)
+        .exec(Logout.XUILogout)
+    }
+  
+  /** Following scenario is for uploading the documents to existing cases */
+  
+  val ETUploadDocs2 = scenario("ET Upload Documents2")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(CaseLinkUserFeederETXUI).feed(CaseFlagFeeder)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseDocUpload2.DocUpload2)
+        .exec(Logout.XUILogout)
+    }
+  
+  val ETCaseFileView = scenario("ET Upload Documents2")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(CaseLinkUserFeederETXUI).feed(CaseFileViewFeeder)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseFileView.CaseFileView)
+        .exec(Logout.XUILogout)
+    }
   
   //defines the Gatling simulation model, based on the inputs
   def simulationProfile(simulationType: String, userPerSecRate: Double, numberOfPipelineUsers: Double): Seq[OpenInjectionStep] = {
@@ -162,10 +202,12 @@ class ET_Simulation extends Simulation {
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
     //ETXUIClaim.inject(nothingFor(5), rampUsers(100) during (3600))
- ETXUICaseLink.inject(nothingFor(10), rampUsers(25) during (3600)),
-  ETXUICaseFlag.inject(nothingFor(25), rampUsers(60) during (3600))
+   // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
+    // ETUploadDocs2.inject(nothingFor(5), rampUsers(1) during (1))
+  ETXUICaseLink.inject(nothingFor(10), rampUsers(10) during (3600)),
+  ETXUICaseFlag.inject(nothingFor(30), rampUsers(20) during (3600)),
+    ETCaseFileView.inject(nothingFor(2), rampUsers(40) during (3600))
   ).protocols(httpProtocol)
    // .assertions(assertions(testType))
-
-
+  
 }

@@ -175,7 +175,7 @@ object ET_CaseCreation {
           .check(jsonPath("$.id").optional.saveAs("caseId"))
         )
   
-        .exec(http("Civil_CreateClaim_005_Submit")
+        .exec(http("Civil_CreateClaim_010_Submit")
           .get("/data/internal/cases/#{caseId}")
           .headers(CommonHeader)
           .check(substring("ET_EnglandWales"))

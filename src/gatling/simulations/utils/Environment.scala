@@ -11,8 +11,8 @@ object Environment {
   val idamURL = "https://idam-web-public.#{env}.platform.hmcts.net"
 
 
-  val minThinkTime = 8
-  val maxThinkTime = 10
+  val minThinkTime = 12
+  val maxThinkTime = 14
 
   val HttpProtocol = http
 
@@ -37,6 +37,13 @@ object Environment {
     "sec-fetch-dest" -> "empty",
     "sec-fetch-mode" -> "cors",
     "sec-fetch-site" -> "same-origin")
+  
+  val commonHeaderUpload = Map(
+    "accept-encoding" -> "gzip, deflate, br",
+    "accept-language" -> "en-GB,en;q=0.9",
+    "sec-fetch-dest" -> "empty",
+    "sec-fetch-mode" -> "cors",
+    "sec-fetch-site" -> "same-origin")
 
   val postHeader = Map(
     "accept" -> "*/*",
@@ -45,6 +52,10 @@ object Environment {
     "sec-fetch-dest" -> "empty",
     "sec-fetch-mode" -> "cors",
     "sec-fetch-site" -> "same-origin"
+  )
+  
+  val postHeader1 = Map(
+    "content-type" -> "application/x-www-form-urlencoded"
   )
 
 }
