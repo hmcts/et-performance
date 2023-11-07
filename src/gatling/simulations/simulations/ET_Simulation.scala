@@ -201,7 +201,7 @@ class ET_Simulation extends Simulation {
   setUp(
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
-    //ETXUIClaim.inject(nothingFor(5), rampUsers(100) during (3600))
+    //ETXUIClaim.inject(nothingFor(5), rampUsers(40) during (1800))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
     // ETUploadDocs2.inject(nothingFor(5), rampUsers(1) during (1))
   ETXUICaseLink.inject(nothingFor(10), rampUsers(10) during (3600)),
