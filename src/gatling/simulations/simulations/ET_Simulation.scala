@@ -207,6 +207,9 @@ class ET_Simulation extends Simulation {
   ETXUICaseLink.inject(nothingFor(10), rampUsers(10) during (3600)),
   ETXUICaseFlag.inject(nothingFor(30), rampUsers(20) during (3600)),
     ETCaseFileView.inject(nothingFor(50), rampUsers(45) during (3600))
+   /* ETXUICaseLink.inject(nothingFor(10), rampUsers(1) during (3)),
+  ETXUICaseFlag.inject(nothingFor(30), rampUsers(1) during (36)),
+  ETCaseFileView.inject(nothingFor(50), rampUsers(1) during (36))*/
   ).protocols(httpProtocol)
    // .assertions(assertions(testType))
   
