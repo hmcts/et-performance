@@ -92,6 +92,7 @@ class ET_Simulation extends Simulation {
         .exec(flushCookieJar)*/
         .feed(CaseLinkUserFeederETXUI).feed(CaseLinkFeeder)
         .exec(Homepage.XUIHomePage)
+        .pause(10)
         .exec(Login.XUILogin)
         .exec(ET_CaseLink.manageCaseLink)
         .exec(Logout.XUILogout)
@@ -105,6 +106,7 @@ class ET_Simulation extends Simulation {
         .exec(flushCookieJar)*/
         .feed(CaseFlagUserFeederETXUI).feed(CaseFlagFeeder)
         .exec(Homepage.XUIHomePage)
+        .pause(10)
         .exec(Login.XUILogin)
         .exec(ET_CaseFlag.manageCaseFlag)
         .exec(Logout.XUILogout)
@@ -204,9 +206,9 @@ class ET_Simulation extends Simulation {
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(40) during (1800))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
     // ETUploadDocs2.inject(nothingFor(5), rampUsers(1) during (1))
-  ETXUICaseLink.inject(nothingFor(10), rampUsers(10) during (3600)),
-  ETXUICaseFlag.inject(nothingFor(30), rampUsers(20) during (3600)),
-    ETCaseFileView.inject(nothingFor(50), rampUsers(45) during (3600))
+  ETXUICaseLink.inject(nothingFor(10), rampUsers(30) during (3600)),
+  ETXUICaseFlag.inject(nothingFor(30), rampUsers(50) during (3600)),
+ //   ETCaseFileView.inject(nothingFor(50), rampUsers(45) during (3600))
    /* ETXUICaseLink.inject(nothingFor(10), rampUsers(1) during (3)),
   ETXUICaseFlag.inject(nothingFor(30), rampUsers(1) during (36)),
   ETCaseFileView.inject(nothingFor(50), rampUsers(1) during (36))*/
