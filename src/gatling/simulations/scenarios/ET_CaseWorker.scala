@@ -17,13 +17,16 @@ object ET_CaseWorker {
   val MaxThinkTime = Environment.maxThinkTime
 
   val CommonHeader = Environment.commonHeader
+  val NavHeader = Environment.navHeader
 
   val postcodeFeeder = csv("postcodes.csv").circular
 
   val MakeAClaim =
 
   exec(_.setAll(
-      "ETCWRandomString" -> (Common.randomString(7))))
+      "ETCWRandomString" -> (Common.randomString(7)),
+    "caseId" -> ("1665482203245489")
+  ))
 
     /*======================================================================================
     * Find Case
@@ -31,24 +34,19 @@ object ET_CaseWorker {
 
 
 
-    .group("ET_CW_500_FindCase") {
+  /*  .group("ET_CW_500_FindCase") {
       exec(http("ET_CW_500_005_Find_Case")
-        .get(xuiURL + "/api/role-access/roles/manageLabellingRoleAssignment/#{caseId}")
-        .headers(CommonHeader)
-        .header("sec-fetch-site", "none")
-        .check(substring("Claimant")))
-
-      .exec(http("ET_CW_500_010_Find_Case")
-        .get(xuiURL + "/api/wa-supported-jurisdiction/get")
-        .headers(CommonHeader)
-        .header("sec-fetch-site", "none")
-        .check(substring("CIVIL")))
+        .get(xuiURL + "/data/internal/cases/#{caseId}")
+        .headers(NavHeader)
+        .check(substring("Submitted")))
 
         .exec(Common.userDetails)
 
     }
 
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+   */
 
 
 
@@ -59,15 +57,21 @@ object ET_CaseWorker {
     .group("ET_CW_510_Case_Vetting") {
       exec(http("ET_CW_510_005_Case_Vetting")
         .get(xuiURL + "/workallocation/case/tasks/#{caseId}/event/et1Vetting/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")
-        .headers(CommonHeader)
-        .check(substring("Before you start")))
+        .headers(NavHeader)
+        .header("accept", "application/json")
+        .check(substring("task_required_for_event")))
 
-      .exec(Common.profile)
-
-      exec(http("ET_CW_510_010_Case_Vetting")
+      .exec(http("ET_CW_510_010_Case_Vetting")
         .get(xuiURL + "/data/internal/cases/#{caseId}/event-triggers/et1Vetting?ignore-warning=false")
-        .headers(CommonHeader)
-        .check(substring("Before you start")))
+        .headers(NavHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-start-event-trigger.v2+json;charset=UTF-8")
+        .check(jsonPath("$.event_token").saveAs("event_token"))
+        .check(jsonPath("$.case_fields[1].formatted_value").saveAs("et1VettingBeforeYouStart"))
+        .check(jsonPath("$.case_fields[3].formatted_value").saveAs("et1VettingClaimantDetailsMarkUp"))
+        .check(jsonPath("$.case_fields[5].formatted_value").saveAs("et1VettingRespondentDetailsMarkUp"))
+        .check(jsonPath("$.case_fields[11].formatted_value").saveAs("et1VettingRespondentAcasDetails1"))
+        .check(jsonPath("$.case_fields[48].formatted_value").saveAs("existingJurisdictionCodes"))
+        .check(substring("et1Vetting")))
 
         .exec(Common.userDetails)
 
@@ -82,7 +86,8 @@ object ET_CaseWorker {
     .group("ET_CW_520_Before_You_Start") {
       exec(http("ET_CW_520_005_Before_You_Start")
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting1")
-        .headers(CommonHeader)
+        .headers(NavHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
         .body(ElFileBody("bodies/CaseWorker/EtBeforeYouStart.json"))
         .check(substring("et1VettingBeforeYouStart")))
 
@@ -92,7 +97,7 @@ object ET_CaseWorker {
 
 
     /*======================================================================================
-    * Minimum required information
+    * Minimum required information - yes
     ======================================================================================*/
 
     .group("ET_CW_530_Min_Required_Information") {
@@ -100,7 +105,7 @@ object ET_CaseWorker {
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting2")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/CaseWorker/MinRequiredInformation.json"))
-        .check(substring("et1VettingBeforeYouStart")))
+        .check(substring("et1VettingCanServeClaimGeneralNote")))
 
         .exec(Common.userDetails)
     }
@@ -181,6 +186,7 @@ object ET_CaseWorker {
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting7")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/CaseWorker/TribunalLocation.json"))
+        .check(jsonPath("$.data.et1AddressDetails").saveAs("et1AddressDetails"))
         .check(substring("isTrackAllocationCorrect")))
 
         .exec(Common.userDetails)
@@ -197,7 +203,7 @@ object ET_CaseWorker {
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting8")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/CaseWorker/ListingDetails.json"))
-        .check(substring("isTrackAllocationCorrect")))
+        .check(substring("jurCodesCollection")))
 
         .exec(Common.userDetails)
     }

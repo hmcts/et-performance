@@ -220,7 +220,7 @@ object ET_Respondent {
 
     .group("ET_Respond_760_Make_Application_Submit") {
       exec(http("ET_Respond_760_005_Make_Application_Submit")
-        .post(xuiURL + "/data/cases/1692974573081186/events")
+        .post(xuiURL + "/data/cases/#{caseId}/events")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/Respondent/EtMakeApplicationSubmit.json"))
         .check(substring("CALLBACK_COMPLETED")))
@@ -237,7 +237,7 @@ object ET_Respondent {
 
     .group("ET_Respond_770_All_Applications") {
       exec(http("ET_Respond_770_005_All_Applications")
-        .get(xuiURL + "/cases/case-details/1692974573081186/trigger/respondentTseAllApplications/respondentTseAllApplications1")
+        .get(xuiURL + "/cases/case-details/#{caseId}/trigger/respondentTseAllApplications/respondentTseAllApplications1")
         .headers(CommonHeader)
         .check(substring("All applications")))
 
@@ -270,7 +270,7 @@ object ET_Respondent {
 
     .group("ET_Respond_780_Return_To_Case_Details") {
       exec(http("ET_Respond_780_005_Return_To_Case_Details")
-        .post(xuiURL + "/data/cases/1692974573081186/events")
+        .post(xuiURL + "/data/cases/#{caseId}/events")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/Respondent/EtReturnToCaseDetails.json"))
         .check(substring("Accepted")))

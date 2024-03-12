@@ -15,6 +15,7 @@ class ET_Simulation extends Simulation {
 
   val BaseURL = Environment.baseURL
   val UserFeederET = csv("UserDataET.csv").circular
+  val UserFeederETCase = csv("caseWorkerUsers.csv").circular
 
   /* TEST TYPE DEFINITION */
   /* pipeline = nightly pipeline against the AAT environment (see the Jenkins_nightly file) */
@@ -56,11 +57,12 @@ class ET_Simulation extends Simulation {
 
   val httpProtocol = Environment.HttpProtocol
     .baseUrl(BaseURL)
-    .disableCaching
-    .disableAutoReferer
-    .doNotTrackHeader("1")
+  //  .disableCaching
+  //  .disableAutoReferer
+  //  .doNotTrackHeader("1")
     .inferHtmlResources()
     .silentResources
+    .header("experimental", "true")
 
   before{
     println(s"Test Type: ${testType}")
@@ -76,6 +78,24 @@ class ET_Simulation extends Simulation {
         .feed(UserFeederET)
           .exec(ET_MakeAClaim.MakeAClaim)
             .exec(ET_MakeAClaimPt2.MakeAClaim)
+    }
+
+    .exec {
+      session =>
+        println(session)
+        session
+    }
+
+
+  val ETCaseWorker = scenario( "ETCaseWorker")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}")
+        .set("caseType", "ET_EnglandWales")
+      )
+        .feed(UserFeederETCase)
+        .exec(RespondentLogin.XUIHomePage)
+        .exec(RespondentLogin.XUILogin)
+        .exec(ET_CaseWorker.MakeAClaim)
     }
 
     .exec {
@@ -124,7 +144,7 @@ class ET_Simulation extends Simulation {
 
 
   setUp(
-    ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
+    ETCaseWorker.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
   ).protocols(httpProtocol)
     .assertions(assertions(testType))
 

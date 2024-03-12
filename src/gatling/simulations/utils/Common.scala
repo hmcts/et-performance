@@ -82,7 +82,7 @@ object Common {
 
   val configurationui =
     exec(http("XUI_Common_000_ConfigurationUI")
-      .get("/external/configuration-ui/")
+      .get(XuiURL + "/external/configuration-ui/")
       .headers(Environment.commonHeader)
       .header("accept", "*/*")
       .check(substring("ccdGatewayUrl")))

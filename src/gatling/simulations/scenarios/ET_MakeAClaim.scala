@@ -176,7 +176,6 @@ object ET_MakeAClaim {
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
-
         }
 
     .exec {

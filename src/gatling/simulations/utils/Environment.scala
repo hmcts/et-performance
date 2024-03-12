@@ -6,7 +6,7 @@ import io.gatling.http.Predef._
 object Environment {
 
   val baseURL = "https://et-sya.#{env}.platform.hmcts.net"
-  val xuiURL = "https://manage-case.${env}.platform.hmcts.net"
+  val xuiURL = "https://manage-case.#{env}.platform.hmcts.net"
   val idamURL = "https://idam-web-public.#{env}.platform.hmcts.net"
 
 
@@ -24,6 +24,16 @@ object Environment {
     "sec-fetch-site" -> "same-origin",
     "sec-fetch-user" -> "?1",
     "upgrade-insecure-requests" -> "1"
+  )
+
+  val navHeader = Map(
+    "accept" -> "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json",
+    "accept-encoding" -> "gzip, deflate, br",
+    "accept-language" -> "en-GB,en-US;q=0.9,en;q=0.8",
+    "sec-fetch-dest" -> "empty",
+    "sec-fetch-mode" -> "cors",
+    "sec-fetch-site" -> "same-origin",
+    "sec-fetch-user" -> "?1"
   )
 
   val postHeader = Map(

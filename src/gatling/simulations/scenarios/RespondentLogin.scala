@@ -2,12 +2,12 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Common, Environment}
+import utils.{Common, CsrfCheck, Environment}
 
 object RespondentLogin {
-  
+
   val IdamUrl = Environment.idamURL
-  val XuiUrl = Environment.baseURL
+  val XuiUrl = Environment.xuiURL
 
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
@@ -21,7 +21,7 @@ object RespondentLogin {
 
       .group("XUI_010_Homepage") {
         exec(http("XUI_010_005_Homepage")
-          .get("/")
+          .get(XuiUrl)
           .headers(Environment.commonHeader)
           .header("sec-fetch-site", "none"))
 
@@ -40,9 +40,9 @@ object RespondentLogin {
           .exec(http("XUI_010_010_AuthLogin")
             .get(XuiUrl + "/auth/login")
             .headers(Environment.commonHeader)
-          //  .check(CsrfCheck.save)
+            .check(CsrfCheck.save)
             .check(regex("/oauth2/callback&amp;state=(.*)&amp;nonce=").saveAs("state"))
-            .check(regex("&nonce=(.*)&response_type").saveAs("nonce")))
+            .check(regex("nonce=(.*)&amp;response_type").saveAs("nonce")))
       }
 
       .pause(MinThinkTime, MaxThinkTime)
@@ -56,12 +56,14 @@ object RespondentLogin {
 
     group("XUI_020_Login") {
       exec(http("XUI_020_005_Login")
-        .post(IdamUrl + "/login?client_id=xuiwebapp&redirect_uri=" + XuiUrl + "/oauth2/callback&state=${state}&nonce=${nonce}&response_type=code&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user&prompt=")
-        .formParam("username", "${user}")
-        .formParam("password", "${password}")
-        .formParam("save", "Sign in")
+        .post(IdamUrl + "/login?client_id=xuiwebapp&redirect_uri=" + XuiUrl + "/oauth2/callback&state=#{state}&nonce=#{nonce}&response_type=code&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user&prompt=")
+        .formParam("username", "#{user}")
+        .formParam("password", "#{password}")
+        .formParam("azureLoginEnabled", "true")
+        .formParam("mojLoginEnabled", "true")
         .formParam("selfRegistrationEnabled", "false")
-        .formParam("_csrf", "${csrf}")
+        .formParam("save", "Sign in")
+        .formParam("_csrf", "#{csrf}")
         .headers(Environment.commonHeader)
         .headers(Environment.postHeader)
         .check(regex("Manage cases")))
@@ -87,30 +89,34 @@ object RespondentLogin {
 
      // .exec(Common.caseActivityGet)
 
-      .exec(http("XUI_020_010_Jurisdictions")
-        .get("/aggregated/caseworkers/:uid/jurisdictions?access=read")
+    /*  .exec(http("XUI_020_010_Jurisdictions")
+        .get(XuiUrl + "/aggregated/caseworkers/:uid/jurisdictions?access=read")
         .headers(Environment.commonHeader)
         .header("accept", "application/json")
         .check(substring("id")))
+
+     */
 
       .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(XuiUrl.replace("https://", "")).saveAs("XSRFToken")))
 
       .exec(Common.orgDetails)
       
-      .exec(http("XUI_020_015_WorkBasketInputs")
-        .get("/data/internal/case-types/${caseType}/work-basket-inputs")
+  /*    .exec(http("XUI_020_015_WorkBasketInputs")
+        .get(XuiUrl + "/data/internal/case-types/#{caseType}/work-basket-inputs")
         .headers(Environment.commonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-workbasket-input-details.v2+json;charset=UTF-8")
         .check(regex("workbasketInputs|Not Found"))
         .check(status.in(200, 404)))
 
       .exec(http("XUI_020_020_SearchCases")
-        .post("/data/internal/searchCases?ctid=${caseType}&use_case=WORKBASKET&view=WORKBASKET&page=1")
+        .post(XuiUrl + "/data/internal/searchCases?ctid=#{caseType}&use_case=WORKBASKET&view=WORKBASKET&page=1")
         .headers(Environment.commonHeader)
         .header("accept", "application/json")
-        .formParam("x-xsrf-token", "${XSRFToken}")
+        .formParam("x-xsrf-token", "#{XSRFToken}")
         .body(StringBody("""{"size":25}"""))
         .check(substring("columns")))
+
+   */
 
 
     }
