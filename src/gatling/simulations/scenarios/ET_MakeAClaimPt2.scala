@@ -152,7 +152,7 @@ object ET_MakeAClaimPt2 {
 
 
     /*===============================================================================================
-    * Is your notice period in weeks or months?
+    * Is your notice period in weeks or months? Months
     ===============================================================================================*/
 
     .group("ET_260_Weeks_Or_Months") {
@@ -488,9 +488,27 @@ object ET_MakeAClaimPt2 {
         .formParam("whistleblowingEntityName", "")
         .formParam("whistleblowingClaim", "No")
         .check(CsrfCheck.save)
-        .check(substring("Have you completed this section?")))
+        .check(substring("Are there are any existing cases which may be linked to this new claim?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+      /*===============================================================================================
+      * Linked cases - no
+      ===============================================================================================*/
+
+      .group("ET_435_Linked_Cases") {
+        exec(http("ET_435_005_Linked_Cases")
+          .post(BaseURL + "/linked-cases?lng=en")
+          .headers(CommonHeader)
+          .header("content-type", "application/x-www-form-urlencoded")
+          .formParam("_csrf", "#{csrf}")
+          .formParam("et-sya-session", "#{etSession}")
+          .formParam("linkedCases", "No")
+          .formParam("linkedCasesDetail", "")
+          .check(CsrfCheck.save)
+          .check(substring("Have you completed this section?")))
+      }
+      .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
     /*===============================================================================================
