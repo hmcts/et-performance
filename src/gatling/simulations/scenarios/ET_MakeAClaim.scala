@@ -172,12 +172,9 @@ object ET_MakeAClaim {
         .check(CsrfCheck.save)
         .check(substring("Sign in or create an account")))
 
-
+    }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-
-        }
 
     .exec {
       session =>
@@ -361,7 +358,7 @@ object ET_MakeAClaim {
 
 
     /*===============================================================================================
-    * Would you be able to take part in hearings by video and phone? - Yes, I can take part in video hearings
+    * Extra support during your case? - No, I do not need any extra support at this time
     ===============================================================================================*/
 
     .group("ET_180_Need_Support") {
