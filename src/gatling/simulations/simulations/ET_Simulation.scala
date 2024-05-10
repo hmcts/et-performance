@@ -64,7 +64,7 @@ class ET_Simulation extends Simulation {
     .disableCaching
     .disableAutoReferer
    // .doNotTrackHeader("1")
-   // .inferHtmlResources()
+    .inferHtmlResources()
     .silentResources
 
   before{
