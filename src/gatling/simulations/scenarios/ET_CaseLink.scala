@@ -28,7 +28,7 @@ object ET_CaseLink {
   ))
 
     /*======================================================================================
-    * ET -Case Link  - select Create Case Links from the Next Step on case detail page
+    * ET -Case Link  - Initiate Case Link
     ======================================================================================*/
   
     .group("ET_CaseLink_030_InitiateCaseLink") {

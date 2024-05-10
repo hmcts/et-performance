@@ -85,6 +85,29 @@ class ET_Simulation extends Simulation {
           
     }
   
+  /*
+  Following is initiate a claim
+   */
+  
+  val XUIETFormClaimScenario = scenario("ET Form Claim Scenario")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+         .exec(flushHttpCache)
+         .exec(flushCookieJar)
+        .feed(CaseLinkUserFeederETXUI)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(XUI_ETCaseCreation.InitiateAClaim)
+        .exec(XUI_ETCaseCreation.ETFormClaimantDetailsSection1)
+        .exec(XUI_ETCaseCreation.ETFormEmploymentDetailsSection2)
+        .exec(XUI_ETCaseCreation.ETFormClaimDetailsSection3)
+        .exec(XUI_ETCaseCreation.submitETForm)
+      
+      
+      
+      
+    }
+  
   val ETXUICaseLink = scenario("ET Case Link")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
@@ -203,11 +226,12 @@ class ET_Simulation extends Simulation {
   setUp(
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
-  //  ETXUIClaim.inject(nothingFor(5), rampUsers(40) during (1800))
+    XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
+  //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
     // ETUploadDocs2.inject(nothingFor(5), rampUsers(1) during (1))
-  ETXUICaseLink.inject(nothingFor(10), rampUsers(30) during (3600)),
-  ETXUICaseFlag.inject(nothingFor(30), rampUsers(50) during (3600)),
+ // ETXUICaseLink.inject(nothingFor(10), rampUsers(30) during (3600)),
+ // ETXUICaseFlag.inject(nothingFor(30), rampUsers(50) during (3600)),
  //   ETCaseFileView.inject(nothingFor(50), rampUsers(45) during (3600))
    /* ETXUICaseLink.inject(nothingFor(10), rampUsers(1) during (3)),
   ETXUICaseFlag.inject(nothingFor(30), rampUsers(1) during (36)),

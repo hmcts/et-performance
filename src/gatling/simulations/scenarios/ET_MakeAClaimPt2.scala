@@ -167,8 +167,7 @@ object ET_MakeAClaimPt2 {
         .check(substring("How many months in your notice period?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-
+    
     /*===============================================================================================
     * How many months of your notice period are you being paid for?
     ===============================================================================================*/
@@ -510,8 +509,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Steps to making your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-
     /*===============================================================================================
     * Check your answers link
     ===============================================================================================*/
@@ -538,11 +535,7 @@ object ET_MakeAClaimPt2 {
         // .check(regex("""<dd class="govuk-summary-list__value">(\w{16})""".stripMargin).saveAs("submissionReference")))
         .check(regex("""<dd class="govuk-summary-list__value">\s*(\d+)\s*</dd>""".stripMargin).saveAs("submissionReference")))
     }
-    
-    
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-
     /*===============================================================================================
     * Log Out
     ===============================================================================================*/
@@ -554,7 +547,5 @@ object ET_MakeAClaimPt2 {
         .check(substring("Make a claim to an employment tribunal")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-
-
+  
 }

@@ -64,7 +64,7 @@ object ET_CaseCreation {
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase1")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
-        .body(ElFileBody("bodies/createcase/InitiateCase1.json"))
+        .body(ElFileBody("bodies/createcase/initiateCase1.json"))
         .check(substring("initiateCase1"))
         .check(status.is(200))
         .check(jsonPath("$.event_token").optional.saveAs("event_token"))
@@ -186,7 +186,7 @@ object ET_CaseCreation {
     }
   
     .exec { session =>
-      val fw = new BufferedWriter(new FileWriter("ETcases.csv", true))
+      val fw = new BufferedWriter(new FileWriter("ETcasesold.csv", true))
       try {
         fw.write(session("caseId").as[String] + "\r\n")
       } finally fw.close()

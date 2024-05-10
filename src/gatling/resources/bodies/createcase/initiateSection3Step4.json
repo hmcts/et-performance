@@ -1,0 +1,23 @@
+{
+  "data": {
+    "claimSuccessful": []
+  },
+  "event": {
+    "id": "et1SectionThree",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "et1SectionThreeClaimDetails": "asasasasasasa",
+    "et1SectionThreeTypeOfClaim": [
+      "discrimination"
+    ],
+    "discriminationTypesOfClaim": [
+      "Age"
+    ],
+    "claimSuccessful": []
+  },
+  "event_token": "#{event_token_section3}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

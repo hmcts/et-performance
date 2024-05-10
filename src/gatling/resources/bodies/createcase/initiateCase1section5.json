@@ -1,0 +1,54 @@
+{
+  "data": {
+    "representativeAttendHearing": [
+      "Video"
+    ],
+    "hearingContactLanguage": [
+      "English"
+    ],
+    "claimantAttendHearing": [
+      "Video"
+    ],
+    "claimantHearingContactLanguage": [
+      "English"
+    ]
+  },
+  "event": {
+    "id": "et1SectionOne",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "claimantFirstName": "perf first",
+    "claimantLastName": "perf last",
+    "claimantDateOfBirth": "1982-08-01",
+    "claimantSex": [
+      "Male"
+    ],
+    "claimantPreferredTitle": null,
+    "claimantContactAddress": {
+      "AddressLine1": "19 Ebley Road",
+      "AddressLine2": "",
+      "AddressLine3": "",
+      "PostTown": "Birmingham",
+      "County": "",
+      "Country": "United Kingdom",
+      "PostCode": "B20 2LX"
+    },
+    "representativeAttendHearing": [
+      "Video"
+    ],
+    "hearingContactLanguage": [
+      "English"
+    ],
+    "claimantAttendHearing": [
+      "Video"
+    ],
+    "claimantHearingContactLanguage": [
+      "English"
+    ]
+  },
+  "event_token": "#{event_token_section1}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

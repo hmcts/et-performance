@@ -132,7 +132,6 @@ object ET_CaseFlag {
           .body(ElFileBody("bodies/caseflag/Viewcaseflag.json"))
           .check(substring("view")))
       
-       
     
     }
   

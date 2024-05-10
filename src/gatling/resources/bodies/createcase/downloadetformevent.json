@@ -1,0 +1,11 @@
+{
+  "data": {},
+  "event": {
+    "id": "createDraftEt1",
+    "summary": "",
+    "description": ""
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false
+}
+

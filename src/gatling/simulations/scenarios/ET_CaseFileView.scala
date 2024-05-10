@@ -37,9 +37,6 @@ object ET_CaseFileView {
         .headers(CommonHeader)
         .header("accept", "application/json")
         .check(substring("categories")))
-      
-       
-    
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
     .pause(20)
