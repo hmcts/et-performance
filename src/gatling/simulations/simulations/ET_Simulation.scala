@@ -44,13 +44,10 @@ class ET_Simulation extends Simulation {
   val rampDownDurationMins = 1//2
   val testDurationMins = 5//60
 
-
   val hourlyTarget: Double = 1//100
   val ratePerSec = hourlyTarget / 3600
 
-
   val numberOfPipelineUsers: Double = 100
-
 
   //If running in debug mode, disable pauses between steps
   val pauseOption: PauseType = debugMode match {
@@ -225,8 +222,8 @@ class ET_Simulation extends Simulation {
   
   setUp(
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
-   // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
-    XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
+    ETCreateClaim.inject(rampUsers(1) during (10))
+   // XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
     // ETUploadDocs2.inject(nothingFor(5), rampUsers(1) during (1))
