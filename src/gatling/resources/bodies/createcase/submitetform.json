@@ -1,0 +1,20 @@
+{
+  "data": {
+    "submitEt1Confirmation": [
+      "Yes"
+    ]
+  },
+  "event": {
+    "id": "submitEt1Draft",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "submitEt1Confirmation": [
+      "Yes"
+    ]
+  },
+  "event_token": "#{event_token_submit}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

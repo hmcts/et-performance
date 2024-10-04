@@ -1,0 +1,16 @@
+{
+  "data": {
+    "tseViewApplicationOpenOrClosed": "Open"
+  },
+  "event": {
+    "id": "viewRespondentTSEApplications",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "tseViewApplicationOpenOrClosed": "Open"
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

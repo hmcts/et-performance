@@ -1,0 +1,12 @@
+{
+  "data": {},
+  "event": {
+    "id": "et1SectionOne",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {},
+  "event_token": "#{event_token_section1}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

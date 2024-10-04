@@ -1,0 +1,26 @@
+{
+  "data": {
+    "claimantJobTitle": null,
+    "claimantStartDate": null,
+    "claimantEndDate": null
+  },
+  "event": {
+    "id": "et1SectionTwo",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "didClaimantWorkForOrg": [
+      "Yes"
+    ],
+    "claimantStillWorking": [
+      "No longer working"
+    ],
+    "claimantJobTitle": null,
+    "claimantStartDate": null,
+    "claimantEndDate": null
+  },
+  "event_token": "#{event_token_section2}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

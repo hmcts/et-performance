@@ -1,0 +1,12 @@
+{
+  "data": {
+    "resTseTableMarkUp": "| No | Application type | Applicant | Application date | Response due | Number of responses | Status |\r\n|:---------|:---------|:---------|:---------|:---------|:---------|:---------|\r\n|1|Postpone a hearing|Respondent|29 August 2023|5 September 2023|0|Open|\r\n|2|Amend response|Respondent|29 August 2023|5 September 2023|0|Open|"
+  },
+  "event": {
+    "id": "respondentTseAllApplications",
+    "summary": "",
+    "description": ""
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false
+}

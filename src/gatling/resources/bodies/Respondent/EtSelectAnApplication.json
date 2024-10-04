@@ -1,0 +1,38 @@
+{
+  "data": {
+    "tseRespondSelectApplication": {
+      "value": {
+        "code": "1",
+        "label": "1 Postpone a hearing"
+      },
+      "list_items": [
+        {
+          "code": "1",
+          "label": "1 Postpone a hearing"
+        }
+      ]
+    }
+  },
+  "event": {
+    "id": "tseRespond",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "tseRespondSelectApplication": {
+      "value": {
+        "code": "1",
+        "label": "1 Postpone a hearing"
+      },
+      "list_items": [
+        {
+          "code": "1",
+          "label": "1 Postpone a hearing"
+        }
+      ]
+    }
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

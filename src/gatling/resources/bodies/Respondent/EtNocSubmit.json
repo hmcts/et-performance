@@ -1,0 +1,17 @@
+{
+  "case_id": "#{caseId}",
+  "answers": [
+    {
+      "question_id": "respondentName",
+      "value": "jWLoXToRespondent"
+    },
+    {
+      "question_id": "claimantFirstName",
+      "value": "perftest"
+    },
+    {
+      "question_id": "claimantLastName",
+      "value": "Employment"
+    }
+  ]
+}

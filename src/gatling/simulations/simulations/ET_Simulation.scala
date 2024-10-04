@@ -15,6 +15,11 @@ class ET_Simulation extends Simulation {
 
   val BaseURL = Environment.baseURL
   val UserFeederET = csv("UserDataET.csv").circular
+  val CaseLinkUserFeederETXUI = csv("ETCaseLinkUsers.csv").circular
+  val CaseFlagUserFeederETXUI = csv("ETCaseFlagUsers.csv").circular
+  val CaseLinkFeeder = csv("CaseLinkCases.csv").circular
+  val CaseFlagFeeder = csv("CaseFlagCases.csv").circular
+  val CaseFileViewFeeder = csv("CaseFileViewCases.csv").circular
 
   /* TEST TYPE DEFINITION */
   /* pipeline = nightly pipeline against the AAT environment (see the Jenkins_nightly file) */
@@ -35,16 +40,16 @@ class ET_Simulation extends Simulation {
   /* ******************************** */
 
   /* PERFORMANCE TEST CONFIGURATION */
-  val rampUpDurationMins = 2
-  val rampDownDurationMins = 2
-  val testDurationMins = 60
+  val rampUpDurationMins = 1//2
+  val rampDownDurationMins = 1//2
+  val testDurationMins = 5//60
 
 
-  val hourlyTarget: Double = 10
+  val hourlyTarget: Double = 1//100
   val ratePerSec = hourlyTarget / 3600
 
 
-  val numberOfPipelineUsers: Double = 10
+  val numberOfPipelineUsers: Double = 100
 
 
   //If running in debug mode, disable pauses between steps
@@ -58,7 +63,7 @@ class ET_Simulation extends Simulation {
     .baseUrl(BaseURL)
     .disableCaching
     .disableAutoReferer
-    .doNotTrackHeader("1")
+   // .doNotTrackHeader("1")
     .inferHtmlResources()
     .silentResources
 
@@ -68,22 +73,119 @@ class ET_Simulation extends Simulation {
     println(s"Debug Mode: ${debugMode}")
   }
 
-  val ETCreateClaim = scenario( "ETCreateClaim")
+  val ETXUIClaim = scenario( "ETCreateClaim")
     .exitBlockOnFail {
       exec(  _.set("env", s"${env}"))
+       /* .exec(flushHttpCache)
+        .exec(flushCookieJar)*/
+        .feed(CaseLinkUserFeederETXUI)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+          .exec(ET_CaseCreation.MakeAClaim)
+          
+    }
+  
+  /*
+  Following is initiate a claim
+   */
+  
+  val XUIETFormClaimScenario = scenario("ET Form Claim Scenario")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+         .exec(flushHttpCache)
+         .exec(flushCookieJar)
+        .feed(CaseLinkUserFeederETXUI)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(XUI_ETCaseCreation.InitiateAClaim)
+        .exec(XUI_ETCaseCreation.ETFormClaimantDetailsSection1)
+        .exec(XUI_ETCaseCreation.ETFormEmploymentDetailsSection2)
+        .exec(XUI_ETCaseCreation.ETFormClaimDetailsSection3)
+        .exec(XUI_ETCaseCreation.submitETForm)
+      
+      
+      
+      
+    }
+  
+  val ETXUICaseLink = scenario("ET Case Link")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+       /* .exec(flushHttpCache)
+        .exec(flushCookieJar)*/
+        .feed(CaseLinkUserFeederETXUI).feed(CaseLinkFeeder)
+        .exec(Homepage.XUIHomePage)
+        .pause(10)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseLink.manageCaseLink)
+        .exec(Logout.XUILogout)
+      
+    }
+  
+  val ETXUICaseFlag = scenario("ET Case Flag")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+       /* .exec(flushHttpCache)
+        .exec(flushCookieJar)*/
+        .feed(CaseFlagUserFeederETXUI).feed(CaseFlagFeeder)
+        .exec(Homepage.XUIHomePage)
+        .pause(10)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseFlag.manageCaseFlag)
+        .exec(Logout.XUILogout)
+      
+    }
+  
+  val ETCreateClaim = scenario("ETCreateClaim")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
         .exec(flushHttpCache)
         .exec(flushCookieJar)
         .feed(UserFeederET)
-          .exec(ET_MakeAClaim.MakeAClaim)
-            .exec(ET_MakeAClaimPt2.MakeAClaim)
+        .exec(ET_MakeAClaim.MakeAClaim)
+        .exec(ET_MakeAClaimPt2.MakeAClaim)
     }
+  
+  /** Following scenario is for uploading the documents to existing cases  */
 
-    .exec {
-      session =>
-        println(session)
-        session
+  val ETUploadDocs = scenario("ET Upload Documents")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(CaseLinkUserFeederETXUI).feed(CaseFlagFeeder)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseDocUpload.DocUpload)
+        .exec(Logout.XUILogout)
     }
-
+  
+  /** Following scenario is for uploading the documents to existing cases */
+  
+  val ETUploadDocs2 = scenario("ET Upload Documents2")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(CaseLinkUserFeederETXUI).feed(CaseFlagFeeder)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseDocUpload2.DocUpload2)
+        .exec(Logout.XUILogout)
+    }
+  
+  val ETCaseFileView = scenario("ET Upload Documents2")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(CaseLinkUserFeederETXUI).feed(CaseFileViewFeeder)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseFileView.CaseFileView)
+        .exec(Logout.XUILogout)
+    }
+  
   //defines the Gatling simulation model, based on the inputs
   def simulationProfile(simulationType: String, userPerSecRate: Double, numberOfPipelineUsers: Double): Seq[OpenInjectionStep] = {
     simulationType match {
@@ -120,13 +222,21 @@ class ET_Simulation extends Simulation {
         Seq()
     }
   }
-
-
-
+  
   setUp(
-    ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
+   // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
+   // ETCreateClaim.inject(nothingFor(5), rampUsers(1) during (10))
+    XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
+  //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
+   // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
+    // ETUploadDocs2.inject(nothingFor(5), rampUsers(1) during (1))
+ // ETXUICaseLink.inject(nothingFor(10), rampUsers(30) during (3600)),
+ // ETXUICaseFlag.inject(nothingFor(30), rampUsers(50) during (3600)),
+ //   ETCaseFileView.inject(nothingFor(50), rampUsers(45) during (3600))
+   /* ETXUICaseLink.inject(nothingFor(10), rampUsers(1) during (3)),
+  ETXUICaseFlag.inject(nothingFor(30), rampUsers(1) during (36)),
+  ETCaseFileView.inject(nothingFor(50), rampUsers(1) during (36))*/
   ).protocols(httpProtocol)
-    .assertions(assertions(testType))
-
-
+   // .assertions(assertions(testType))
+  
 }

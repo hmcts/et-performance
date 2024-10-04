@@ -1,0 +1,35 @@
+{
+  "data": {
+    "tseApplicationSummaryAndResponsesMarkup": "|Application||\r\n|--|--|\r\n|||\r\n|||\r\n|Applicant|Respondent|\r\n|Type of application|Postpone a hearing|\r\n|Application date|29 August 2023|\r\n|What do you want to tell or ask the tribunal?|test|\r\n|Supporting material|<a href=\"/documents/b063ca97-2341-4adf-93a0-0da0bfa679d5/binary\" target=\"_blank\">ET3-Form-Display-At-Top-Page-Section</a>|\r\n|Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?|Yes|\r\n|||\r\n|||\r\n|Response 1||\r\n|Response from|Respondent|\r\n|Response date|30 August 2023|\r\n|What's your response to the respondent's application|YEs I did it|\r\n|Document|<a href=\"/documents/f93784c5-5ae2-4700-86e6-286480b363cd/binary\" target=\"_blank\">TestFile</a>|\r\n|Description|Uploaded file|\r\n|Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?|Yes|"
+  },
+  "event": {
+    "id": "viewRespondentTSEApplications",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "tseViewApplicationOpenOrClosed": "Open",
+    "tseViewApplicationSelect": {
+      "value": {
+        "code": "1",
+        "label": "1 Postpone a hearing"
+      },
+      "selectedLabel": "1 Postpone a hearing",
+      "selectedCode": "1",
+      "list_items": [
+        {
+          "code": "1",
+          "label": "1 Postpone a hearing"
+        },
+        {
+          "code": "2",
+          "label": "2 Amend response"
+        }
+      ]
+    },
+    "tseApplicationSummaryAndResponsesMarkup": "|Application||\r\n|--|--|\r\n|||\r\n|||\r\n|Applicant|Respondent|\r\n|Type of application|Postpone a hearing|\r\n|Application date|29 August 2023|\r\n|What do you want to tell or ask the tribunal?|test|\r\n|Supporting material|<a href=\"/documents/b063ca97-2341-4adf-93a0-0da0bfa679d5/binary\" target=\"_blank\">ET3-Form-Display-At-Top-Page-Section</a>|\r\n|Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?|Yes|\r\n|||\r\n|||\r\n|Response 1||\r\n|Response from|Respondent|\r\n|Response date|30 August 2023|\r\n|What's your response to the respondent's application|YEs I did it|\r\n|Document|<a href=\"/documents/f93784c5-5ae2-4700-86e6-286480b363cd/binary\" target=\"_blank\">TestFile</a>|\r\n|Description|Uploaded file|\r\n|Do you want to copy this correspondence to the other party to satisfy the Rules of Procedure?|Yes|"
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

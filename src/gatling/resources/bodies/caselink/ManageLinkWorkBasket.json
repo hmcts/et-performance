@@ -1,0 +1,1 @@
+{"query":{"terms":{"reference":["#{linkcaseId}"]}},"size":25}

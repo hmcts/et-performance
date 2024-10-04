@@ -1,0 +1,240 @@
+{
+  "data": {
+    "documentCollection": [
+      {
+        "value": {
+          "typeOfDocument": "ACAS Certificate",
+          "shortDescription": "asasasasasasas",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_ACAS}",
+            "document_binary_url": "#{documentURL_ACAS}/binary",
+            "document_filename": "ACAS-1MB.pdf",
+            "document_hash": "#{hashToken_ACAS}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "ACAS Certificate",
+          "shortDescription": "asasasasasas",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_ACAS1}",
+            "document_binary_url": "#{documentURL_ACAS1}/binary",
+            "document_filename": "ACAS-1MB - Copy.pdf",
+            "document_hash": "#{hashToken_ACAS1}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Acknowledgement of claim",
+          "shortDescription": "sasasasaa",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_Ack}",
+            "document_binary_url": "#{documentURL_Ack}/binary",
+            "document_filename": "Acknowledgement-1MB.pdf",
+            "document_hash": "#{hashToken_Ack}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Acknowledgement of claim",
+          "shortDescription": "asasasasasasasasa",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_Ack1}",
+            "document_binary_url": "#{documentURL_Ack1}/binary",
+            "document_filename": "Acknowledgement-1MB - Copy.pdf",
+            "document_hash": "#{hashToken_Ack1}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Notice of a claim",
+          "shortDescription": "fdfdfdfdfdfd",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_Notice}",
+            "document_binary_url": "#{documentURL_Notice}/binary",
+            "document_filename": "NoticeOfClaim-1MB.pdf",
+            "document_hash": "#{hashToken_Notice}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Notice of a claim",
+          "shortDescription": "asasasasasas",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_Notice1}",
+            "document_binary_url": "#{documentURL_Notice1}/binary",
+            "document_filename": "NoticeOfClaim-1MB - Copy.pdf",
+            "document_hash": "#{hashToken_Notice1}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Tribunal case file",
+          "shortDescription": null,
+          "uploadedDocument": {
+            "document_url": "#{documentURL_TribunalCaseFile}",
+            "document_binary_url": "#{documentURL_TribunalCaseFile}/binary",
+            "document_filename": "TribunalCaseFile-1MB.pdf",
+            "document_hash": "#{hashToken_TribunalCaseFile}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Tribunal case file",
+          "shortDescription": "asaasas",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_TribunalCaseFile1}",
+            "document_binary_url": "#{documentURL_TribunalCaseFile1}/binary",
+            "document_filename": "TribunalCaseFile-1MB - Copy.pdf",
+            "document_hash": "#{hashToken_TribunalCaseFile1}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Tribunal Order/Deposit Order",
+          "shortDescription": "asasasasasasas",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_TribunalOrder}",
+            "document_binary_url": "#{documentURL_TribunalOrder}/binary",
+            "document_filename": "TribunalOrder-1MB.pdf",
+            "document_hash": "#{hashToken_TribunalOrder}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Tribunal Order/Deposit Order",
+          "shortDescription": "asasasasasa",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_TribunalOrder1}",
+            "document_binary_url": "#{documentURL_TribunalOrder1}/binary",
+            "document_filename": "TribunalOrder-1MB - Copy.pdf",
+            "document_hash": "#{hashToken_TribunalOrder1}"
+          }
+        },
+        "id": null
+      },
+      {
+        "value": {
+          "typeOfDocument": "Other",
+          "shortDescription": null,
+          "uploadedDocument": {
+            "document_url": "#{documentURL_Other}",
+            "document_binary_url": "#{documentURL_Other}/binary",
+            "document_filename": "Other-1MB.pdf",
+            "document_hash": "#{hashToken_Other}"
+          }
+        },
+        "id": null
+      },
+
+      {
+        "value": {
+          "typeOfDocument": "ACAS Certificate",
+          "shortDescription": "asasasasasasas",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_ACAS2}",
+            "document_binary_url": "#{documentURL_ACAS2}/binary",
+            "document_filename": "ACAS-1MB - 1.pdf",
+            "document_hash": "#{hashToken_ACAS2}"
+          }
+        },
+        "id": null
+      },
+
+      {
+        "value": {
+          "typeOfDocument": "Acknowledgement of claim",
+          "shortDescription": "sasasasaa",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_Ack2}",
+            "document_binary_url": "#{documentURL_Ack2}/binary",
+            "document_filename": "Acknowledgement-1MB - 1.pdf",
+            "document_hash": "#{hashToken_Ack2}"
+          }
+        },
+        "id": null
+      },
+
+      {
+        "value": {
+          "typeOfDocument": "Notice of a claim",
+          "shortDescription": "fdfdfdfdfdfd",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_Notice2}",
+            "document_binary_url": "#{documentURL_Notice2}/binary",
+            "document_filename": "NoticeOfClaim-1MB - 1.pdf",
+            "document_hash": "#{hashToken_Notice2}"
+          }
+        },
+        "id": null
+      },
+
+      {
+        "value": {
+          "typeOfDocument": "Tribunal case file",
+          "shortDescription": null,
+          "uploadedDocument": {
+            "document_url": "#{documentURL_TribunalCaseFile2}",
+            "document_binary_url": "#{documentURL_TribunalCaseFile2}/binary",
+            "document_filename": "TribunalCaseFile-1MB - 1.pdf",
+            "document_hash": "#{hashToken_TribunalCaseFile2}"
+          }
+        },
+        "id": null
+      },
+
+      {
+        "value": {
+          "typeOfDocument": "Tribunal Order/Deposit Order",
+          "shortDescription": "asasasasasasas",
+          "uploadedDocument": {
+            "document_url": "#{documentURL_TribunalOrder2}",
+            "document_binary_url": "#{documentURL_TribunalOrder2}/binary",
+            "document_filename": "TribunalOrder-1MB - 1.pdf",
+            "document_hash": "#{hashToken_TribunalOrder2}"
+          }
+        },
+        "id": null
+      },
+
+      {
+        "value": {
+          "typeOfDocument": "Other",
+          "shortDescription": null,
+          "uploadedDocument": {
+            "document_url": "#{documentURL_Other2}",
+            "document_binary_url": "#{documentURL_Other2}/binary",
+            "document_filename": "Other-1MB - 1.pdf",
+            "document_hash": "#{hashToken_Other2}"
+          }
+        },
+        "id": null
+      }
+    ]
+  },
+  "event": {
+    "id": "uploadDocument",
+    "summary": "",
+    "description": ""
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false
+}

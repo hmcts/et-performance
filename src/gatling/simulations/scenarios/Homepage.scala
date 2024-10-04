@@ -2,7 +2,9 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Environment, CsrfCheck}
+import utils.Environment.commonHeader
+import utils.{Common, CsrfCheck, Environment}
+
 import scala.concurrent.duration._
 
 object Homepage {
@@ -14,24 +16,43 @@ object Homepage {
   val MaxThinkTime = Environment.maxThinkTime
 
   val CommonHeader = Environment.commonHeader
-
-  val Homepage =
-
+  
+  /*====================================================================================
+  *Manage Case Homepage
+  *=====================================================================================*/
+  
+  val XUIHomePage =
+    
     exec(flushHttpCache)
-    .exec(flushCookieJar)
-
-      /*======================================================================================
-    * Load the home page
-    ======================================================================================*/
-
-      .group("ET_010_Home") {
-        exec(http("ET_010_005_Home")
-          .get(BaseURL)
-          .headers(CommonHeader)
-          .header("sec-fetch-site", "none")
-          .check(substring("Make a claim to an employment tribunal")))
+      .exec(flushCookieJar)
+      
+      .group("XUI_010_Homepage") {
+        exec(http("XUI_010_005_Homepage")
+          .get("/")
+          .headers(commonHeader)
+          .header("sec-fetch-site", "none"))
+          
+          .exec(Common.configurationui)
+          
+          .exec(Common.configJson)
+          
+          .exec(Common.TsAndCs)
+          
+          .exec(Common.configUI)
+          
+          .exec(Common.userDetails)
+          
+          .exec(Common.isAuthenticated)
+          
+          .exec(http("XUI_010_010_AuthLogin")
+            .get("/auth/login")
+            .headers(commonHeader)
+            .check(CsrfCheck.save)
+            .check(regex("/oauth2/callback&amp;state=(.*)&amp;nonce=").saveAs("state"))
+            .check(regex("&nonce=(.*)&response_type").saveAs("nonce")))
       }
-      .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+      
+      .pause(MinThinkTime, MaxThinkTime)
 
 
 }

@@ -1,0 +1,47 @@
+{
+  "data": {
+    "tseViewApplicationSelect": {
+      "value": {
+        "code": "1",
+        "label": "1 Postpone a hearing"
+      },
+      "list_items": [
+        {
+          "code": "1",
+          "label": "1 Postpone a hearing"
+        },
+        {
+          "code": "2",
+          "label": "2 Amend response"
+        }
+      ]
+    }
+  },
+  "event": {
+    "id": "viewRespondentTSEApplications",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "tseViewApplicationOpenOrClosed": "Open",
+    "tseViewApplicationSelect": {
+      "value": {
+        "code": "1",
+        "label": "1 Postpone a hearing"
+      },
+      "list_items": [
+        {
+          "code": "1",
+          "label": "1 Postpone a hearing"
+        },
+        {
+          "code": "2",
+          "label": "2 Amend response"
+        }
+      ]
+    }
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

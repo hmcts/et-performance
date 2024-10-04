@@ -1,0 +1,52 @@
+{
+  "data": {
+    "claimantFlags": {
+      "roleOnCase": "claimant",
+      "partyName": "Perftest Flaglink"
+    },
+    "respondentFlags": {
+      "roleOnCase": "respondent",
+      "partyName": "Respondent man",
+      "details": [
+        {
+          "id": "#{stepfreeid}",
+          "value": {
+            "name": "Step free / wheelchair access",
+            "path": [
+              {
+                "id": "#{partyid}",
+                "value": "Party"
+              },
+              {
+                "id": "#{reasonableadjid}",
+                "value": "Reasonable adjustment"
+              },
+              {
+                "id": "#{ineedadjid}",
+                "value": "I need adjustments to get to, into and around our buildings"
+              }
+            ],
+            "status": "inActive",
+            "flagCode": "RA0019",
+            "subTypeKey": null,
+            "flagComment": "flag create comment updated",
+            "subTypeValue": null,
+            "dateTimeCreated": "#{dateTimeCreated}",
+            "hearingRelevant": "Yes",
+            "otherDescription": null,
+            "dateTimeModified": "2023-10-09T11:40:38.657Z"
+          }
+        }
+      ],
+      "flagComments": "flag create comment"
+    },
+    "caseFlags": {}
+  },
+  "event": {
+    "id": "manageFlags",
+    "summary": "",
+    "description": ""
+  },
+  "event_token": "#{event_token_manageflag}",
+  "ignore_warning": false
+}

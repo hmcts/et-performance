@@ -20,9 +20,7 @@ object ET_MakeAClaim {
 
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
-
   val CommonHeader = Environment.commonHeader
-
   val postcodeFeeder = csv("postcodes.csv").circular
 
   val MakeAClaim =
