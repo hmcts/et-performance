@@ -67,17 +67,17 @@ object ET_MakeAClaim {
     * Click on 'Continue'
     ======================================================================================*/
 
-    .group("ET_030_Before_You_Continue") {
+   .group("ET_030_Before_You_Continue") {
       exec(http("ET_030_005_Before_You_Continue")
-        .get(BaseURL + "/work-postcode")
+        .get(BaseURL + "/lip-or-representative?lng=en")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
-        .check(substring("the postcode where you worked or work?")))
+        .check(substring("Claiming on your own")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
-    /*======================================================================================
+ /*   /*======================================================================================
     * Enter your work postcode
     ======================================================================================*/
 
@@ -96,14 +96,14 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
+*/
     /*======================================================================================
     * Are you making the claim for yourself, or representing someone else? - my own claim
     ======================================================================================*/
 
     .group("ET_050_Claim_Yourself") {
       exec(http("ET_050_005_Claim_Yourself")
-        .post(BaseURL + "/lip-or-representative")
+        .post(BaseURL + "/lip-or-representative?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -114,6 +114,7 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
+    //Redirect: GET https://et-sya.perftest.platform.hmcts.net/single-or-multiple-claim?lng=en
 
     /*======================================================================================
     * Are you making a claim on your own or with others? - Own claim
@@ -121,17 +122,37 @@ object ET_MakeAClaim {
 
     .group("ET_060_Claim_Own_Or_Others") {
       exec(http("ET_060_005_Claim_Own_Or_Others")
-        .post(BaseURL + "/single-or-multiple-claim")
+        .post(BaseURL + "/single-or-multiple-claim?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
         .formParam("caseType", "Single")
         .check(CsrfCheck.save)
+        .check(substring("Where you can make your claim")))
+    }
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    // Redirect: GET https://et-sya.perftest.platform.hmcts.net/claim-jurisdiction-selection?lng=en
+
+    /*======================================================================================
+    * Where you can make your claim ? - England & Wales
+    ======================================================================================*/
+
+    .group("ET_065_Where_You_Can_Make_Claim") {
+      exec(http("ET_065_005_ET_070_Where_You_Can_Make_Claim")
+        .post(BaseURL + "/claim-jurisdiction-selection?lng=en")
+        .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
+        .formParam("claimJurisdiction", "ET_EnglandWales")
+        .check(CsrfCheck.save)
         .check(substring("Acas early conciliation certificate")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
+    // Redirect: GET https://et-sya.perftest.platform.hmcts.net/do-you-have-an-acas-no-many-resps?lng=en
 
     /*===============================================================================================
     * Do you have an ‘Acas early conciliation certificate’ for the respondent or respondents you're claiming against? - Yes
@@ -139,7 +160,7 @@ object ET_MakeAClaim {
 
     .group("ET_070_ACAS_Certificate") {
       exec(http("ET_070_005_ACAS_Certificate")
-        .post(BaseURL + "/do-you-have-an-acas-no-many-resps")
+        .post(BaseURL + "/do-you-have-an-acas-no-many-resps?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -150,6 +171,7 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
+    // Redirect: GET https://et-sya.perftest.platform.hmcts.net/type-of-claim?lng=en
 
     /*===============================================================================================
     * What type of claim are you making? - Discrimination, Whistle blowing
@@ -157,7 +179,7 @@ object ET_MakeAClaim {
 
     .group("ET_080_Representative") {
       exec(http("ET_080_005_Representative")
-        .post(BaseURL + "/type-of-claim")
+        .post(BaseURL + "/type-of-claim?lng=en")
         .headers(CommonHeader)
         .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .header("content-type", "application/x-www-form-urlencoded")

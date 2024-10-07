@@ -12,12 +12,10 @@ object ET_CaseWorker {
   val xuiURL = Environment.baseURL
   val IdamURL = Environment.idamURL
 
-
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
 
   val CommonHeader = Environment.commonHeader
-
   val postcodeFeeder = csv("postcodes.csv").circular
 
   val MakeAClaim =
@@ -28,8 +26,6 @@ object ET_CaseWorker {
     /*======================================================================================
     * Find Case
     ======================================================================================*/
-
-
 
     .group("ET_CW_500_FindCase") {
       exec(http("ET_CW_500_005_Find_Case")
@@ -45,12 +41,9 @@ object ET_CaseWorker {
         .check(substring("CIVIL")))
 
         .exec(Common.userDetails)
-
     }
 
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-
 
     /*======================================================================================
     * Click on 'ET1 Case Vetting'
@@ -70,10 +63,8 @@ object ET_CaseWorker {
         .check(substring("Before you start")))
 
         .exec(Common.userDetails)
-
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*======================================================================================
     * Before you Start
@@ -90,7 +81,6 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*======================================================================================
     * Minimum required information
     ======================================================================================*/
@@ -106,8 +96,7 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
+  /*======================================================================================
   * Minimum required information - Acas Certificate
   ======================================================================================*/
 
@@ -122,11 +111,9 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-
-    /*======================================================================================
-* Possible substantive defects
-======================================================================================*/
+  /*======================================================================================
+  * Possible substantive defects
+  ======================================================================================*/
 
     .group("ET_CW_550_Possible_Substantive_Defects") {
       exec(http("ET_CW_550_005_Possible_Substantive_Defects")
@@ -139,10 +126,9 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Jurisdiction Codes - yes
-======================================================================================*/
+  /*======================================================================================
+  * Jurisdiction Codes - yes
+  ======================================================================================*/
 
     .group("ET_CW_560_Jurisdiction_Codes") {
       exec(http("ET_CW_560_005_Jurisdiction_Codes")
@@ -155,10 +141,9 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Track allocation - yes
-======================================================================================*/
+  /*======================================================================================
+  * Track allocation - yes
+  ======================================================================================*/
 
     .group("ET_CW_570_Track_Allocation") {
       exec(http("ET_CW_570_005_Track_Allocation")
@@ -171,10 +156,9 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Tribunal location - yes
-======================================================================================*/
+  /*======================================================================================
+  * Tribunal location - yes
+  ======================================================================================*/
 
     .group("ET_CW_580_Tribunal_Location") {
       exec(http("ET_CW_580_005_Tribunal_Location")
@@ -187,10 +171,9 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Listing Details - no
-======================================================================================*/
+  /*======================================================================================
+  * Listing Details - no
+  ======================================================================================*/
 
     .group("ET_CW_590_Listing_Details") {
       exec(http("ET_CW_590_005_Listing_Details")
@@ -203,9 +186,8 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Further questions
+  /*======================================================================================
+  * Further questions
 ======================================================================================*/
 
     .group("ET_CW_600_Further_Questions") {
@@ -219,9 +201,8 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Possible referral to a judge or legal officer
+  /*======================================================================================
+  * Possible referral to a judge or legal officer
 ======================================================================================*/
 
     .group("ET_CW_610_Possible_Referral") {
@@ -235,10 +216,9 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Possible referral to Regional Employment Judge or Vice-President
-======================================================================================*/
+  /*======================================================================================
+  * Possible referral to Regional Employment Judge or Vice-President
+  ======================================================================================*/
 
     .group("ET_CW_620_Possible_Referral_Employ_Judge") {
       exec(http("ET_CW_620_005_Possible_Referral_Employ_Judge")
@@ -251,26 +231,25 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
+  /*======================================================================================
+  * Does the claim include any other factors
+  ======================================================================================*/
 
-    /*======================================================================================
-* Does the claim include any other factors
-======================================================================================*/
+      .group("ET_CW_630_Other_Factors") {
+        exec(http("ET_CW_630_005_Other_Factors")
+          .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting12")
+          .headers(CommonHeader)
+          .body(ElFileBody("bodies/CaseWorker/OtherFactors.json"))
+          .check(substring("et1OtherReferralGeneralNotes")))
 
-    .group("ET_CW_630_Other_Factors") {
-      exec(http("ET_CW_630_005_Other_Factors")
-        .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting12")
-        .headers(CommonHeader)
-        .body(ElFileBody("bodies/CaseWorker/OtherFactors.json"))
-        .check(substring("et1OtherReferralGeneralNotes")))
-
-        .exec(Common.userDetails)
-    }
-    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+          .exec(Common.userDetails)
+      }
+      .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
-    /*======================================================================================
-* Final Notes
-======================================================================================*/
+      /*======================================================================================
+  * Final Notes
+  ======================================================================================*/
 
     .group("ET_CW_640_Final_Notes") {
       exec(http("ET_CW_640_005_Final_Notes")
@@ -283,9 +262,8 @@ object ET_CaseWorker {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Check Your Answers
+  /*======================================================================================
+  * Check Your Answers
 ======================================================================================*/
 
     .group("ET_CW_650_Vet_Check_Answers") {
@@ -296,15 +274,12 @@ object ET_CaseWorker {
         .check(substring("$.state").is("Vetted")))
 
         .exec(Common.userDetails)
-
-
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    /*======================================================================================
-* Accept or Reject Case Link
-======================================================================================*/
+  /*======================================================================================
+  * Accept or Reject Case Link
+  ======================================================================================*/
 
     .group("ET_CW_660_Accept_Or_Reject") {
       exec(http("ET_CW_660_005_Accept_Or_Reject")
@@ -329,8 +304,8 @@ object ET_CaseWorker {
 
 
     /*======================================================================================
-* Accept Case
-======================================================================================*/
+  * Accept Case
+  ======================================================================================*/
 
     .group("ET_CW_670_Accept_Case") {
       exec(http("ET_CW_670_005_Accept_Case")
@@ -342,10 +317,8 @@ object ET_CaseWorker {
 
         .exec(Common.userDetails)
 
-
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
 
 }
