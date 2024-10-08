@@ -2,7 +2,8 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Common, CsrfCheck, Environment}
+import utils.{Common, CsrfCheck, Environment, Headers}
+import java.io.{BufferedWriter, FileWriter}
 
 import scala.concurrent.duration._
 
@@ -24,10 +25,39 @@ object ET_CaseWorker {
       "ETCWRandomString" -> (Common.randomString(7))))
 
     /*======================================================================================
+    * Open Case
+    ======================================================================================*/
+
+       .exec(http("XUI_PRL_XXX_290_SelectCase")
+      .get(xuiURL + "/data/internal/cases/#{caseId}")
+      .headers(Headers.xuiHeader)
+      .check(jsonPath("$.case_id").is("#{caseId}")))
+
+   // .exec(http("XUI_PRL_XXX_045_OpenCase")
+   //   .get(xuiURL + "/data/internal/cases/#{caseId}")
+   //   .headers(Headers.xuiHeader)
+   //   .check(jsonPath("$.tabs[7].fields[3].value.firstName").saveAs("ApplicantFirstName"))
+   //   .check(jsonPath("$.tabs[7].fields[3].value.lastName").saveAs("ApplicantLastName"))
+   //   .check(jsonPath("$.tabs[8].fields[11].value.firstName").saveAs("RespondentFirstName"))
+   //  .check(jsonPath("$.tabs[8].fields[11].value.lastName").saveAs("RespondentLastName"))
+   //  .check(status.in(200,204))
+   //   .check(jsonPath("$.case_id").is("#{caseId}")))
+
+    .exec(Common.waJurisdictions)
+    .exec(Common.activity)
+    .exec(Common.userDetails)
+    .exec(Common.caseActivityGet)
+    .exec(Common.isAuthenticated)
+
+    .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(xuiURL.replace("https://", "")).saveAs("XSRFToken")))
+
+    .pause(MinThinkTime, MaxThinkTime)
+
+    /*======================================================================================
     * Find Case
     ======================================================================================*/
 
-    .group("ET_CW_500_FindCase") {
+    /*.group("ET_CW_500_FindCase") {
       exec(http("ET_CW_500_005_Find_Case")
         .get(xuiURL + "/api/role-access/roles/manageLabellingRoleAssignment/#{caseId}")
         .headers(CommonHeader)
@@ -45,6 +75,7 @@ object ET_CaseWorker {
 
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
+*/
     /*======================================================================================
     * Click on 'ET1 Case Vetting'
     ======================================================================================*/
@@ -60,6 +91,7 @@ object ET_CaseWorker {
       exec(http("ET_CW_510_010_Case_Vetting")
         .get(xuiURL + "/data/internal/cases/#{caseId}/event-triggers/et1Vetting?ignore-warning=false")
         .headers(CommonHeader)
+        .check(jsonPath("$.event_token").saveAs("event_token"))
         .check(substring("Before you start")))
 
         .exec(Common.userDetails)
@@ -319,6 +351,12 @@ object ET_CaseWorker {
 
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    .exec {
+      session =>
+        println(session)
+        session
+    }
 
 
 }

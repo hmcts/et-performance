@@ -3,7 +3,7 @@ package scenarios
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import utils.Environment.{commonHeader, commonHeader1, postHeader}
-import utils.{Common, Environment}
+import utils.{Common, Environment, Headers}
 
 object Login {
 
@@ -26,32 +26,34 @@ object Login {
         .formParam("password", "#{password}")
         .formParam("save", "Sign in")
         .formParam("selfRegistrationEnabled", "false")
+        .formParam("azureLoginEnabled", "true")
+        .formParam("mojLoginEnabled", "true")
         .formParam("_csrf", "#{csrf}")
         .headers(commonHeader1)
         .headers(postHeader)
         .check(regex("Manage cases")))
 
       .exec(Common.configurationui)
-
       .exec(Common.configJson)
-
       .exec(Common.TsAndCs)
-
       .exec(Common.configUI)
-
       .exec(Common.userDetails)
-
       .exec(Common.isAuthenticated)
-
       .exec(Common.monitoringTools)
+      .exec(Common.isAuthenticated)
+      
+
+
 
       //if there is no in-flight case, set the case to 0 for the activity calls
       .doIf("#{caseId.isUndefined()}") {
         exec(_.set("caseId", "0"))
       }
 
-      .exec(Common.caseActivityGet)
-        .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(BaseURL.replace("https://", "")).saveAs("XSRFToken")))
+    .pause(MinThinkTime , MaxThinkTime)
+
+      //.exec(Common.caseActivityGet)
+      //  .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(BaseURL.replace("https://", "")).saveAs("XSRFToken")))
 
     /*  .exec(http("XUI_020_010_Jurisdictions")
         .get("/aggregated/caseworkers/:uid/jurisdictions?access=read")
@@ -80,6 +82,5 @@ object Login {
         .check(substring("columns")))*/
 
     }
-    .pause(MinThinkTime , MaxThinkTime)
 
 }

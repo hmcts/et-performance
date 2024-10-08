@@ -2,7 +2,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{AuthCheck, Common, CsrfCheck, Environment}
+import utils.{AuthCheck, Common, CsrfCheck, Environment, Headers}
 import java.io.{BufferedWriter, FileWriter}
 
 import scala.concurrent.duration._
@@ -15,6 +15,7 @@ import scala.util.Random
 object ET_MakeAClaim {
 
   val BaseURL = Environment.baseURL
+  val baseURLETUIApp = Environment.baseURLETUIApp
   val IdamURL = Environment.idamURL
 
 
@@ -38,13 +39,13 @@ object ET_MakeAClaim {
 
     .group("ET_010_Home") {
       exec(http("ET_010_005_Home")
-        .get(BaseURL)
+        .get(baseURLETUIApp)
         .headers(CommonHeader)
         .header("sec-fetch-site", "none")
         .check(substring("Make a claim to an employment tribunal")))
     }
 
-    .exec(getCookieValue(CookieKey("et-sya-session").withDomain(BaseURL.replace("https://", "")).withSecure(true).saveAs("etSession")))
+    .exec(getCookieValue(CookieKey("et-sya-session").withDomain(baseURLETUIApp.replace("https://", "")).withSecure(true).saveAs("etSession")))
 
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
@@ -56,7 +57,7 @@ object ET_MakeAClaim {
 
     .group("ET_020_Start") {
       exec(http("ET_020_005_Start")
-        .get(BaseURL + "/checklist")
+        .get(baseURLETUIApp + "/checklist")
         .headers(CommonHeader)
         .check(substring("Before you continue")))
     }
@@ -69,7 +70,7 @@ object ET_MakeAClaim {
 
    .group("ET_030_Before_You_Continue") {
       exec(http("ET_030_005_Before_You_Continue")
-        .get(BaseURL + "/lip-or-representative?lng=en")
+        .get(baseURLETUIApp + "/lip-or-representative?lng=en")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("Claiming on your own")))
@@ -85,7 +86,7 @@ object ET_MakeAClaim {
       feed(postcodeFeeder)
 
         .exec(http("ET_040_005_Work_Postcode")
-          .post(BaseURL + "/work-postcode")
+          .post(baseURLETUIApp + "/work-postcode")
           .headers(CommonHeader)
           .header("content-type", "application/x-www-form-urlencoded")
           .formParam("_csrf", "#{csrf}")
@@ -103,7 +104,7 @@ object ET_MakeAClaim {
 
     .group("ET_050_Claim_Yourself") {
       exec(http("ET_050_005_Claim_Yourself")
-        .post(BaseURL + "/lip-or-representative?lng=en")
+        .post(baseURLETUIApp + "/lip-or-representative?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -122,7 +123,7 @@ object ET_MakeAClaim {
 
     .group("ET_060_Claim_Own_Or_Others") {
       exec(http("ET_060_005_Claim_Own_Or_Others")
-        .post(BaseURL + "/single-or-multiple-claim?lng=en")
+        .post(baseURLETUIApp + "/single-or-multiple-claim?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -141,7 +142,7 @@ object ET_MakeAClaim {
 
     .group("ET_065_Where_You_Can_Make_Claim") {
       exec(http("ET_065_005_ET_070_Where_You_Can_Make_Claim")
-        .post(BaseURL + "/claim-jurisdiction-selection?lng=en")
+        .post(baseURLETUIApp + "/claim-jurisdiction-selection?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -160,7 +161,7 @@ object ET_MakeAClaim {
 
     .group("ET_070_ACAS_Certificate") {
       exec(http("ET_070_005_ACAS_Certificate")
-        .post(BaseURL + "/do-you-have-an-acas-no-many-resps?lng=en")
+        .post(baseURLETUIApp + "/do-you-have-an-acas-no-many-resps?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -179,7 +180,7 @@ object ET_MakeAClaim {
 
     .group("ET_080_Representative") {
       exec(http("ET_080_005_Representative")
-        .post(BaseURL + "/type-of-claim?lng=en")
+        .post(baseURLETUIApp + "/type-of-claim?lng=en")
         .headers(CommonHeader)
         .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .header("content-type", "application/x-www-form-urlencoded")
@@ -202,14 +203,13 @@ object ET_MakeAClaim {
         session
     }
 
-
     /*===============================================================================================
     * Log in
     ===============================================================================================*/
 
     .group("ET_090_Log_In") {
       exec(http("ET_090_005_Log_In")
-        .post(IdamURL + "/login?client_id=et-sya&response_type=code&redirect_uri=" + BaseURL + "/oauth2/callback&state=#{state}&ui_locales=en")
+        .post(IdamURL + "/login?client_id=et-sya&response_type=code&redirect_uri=" + baseURLETUIApp + "/oauth2/callback&state=#{state}&ui_locales=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("username", "#{username}")
@@ -229,7 +229,7 @@ object ET_MakeAClaim {
 
       .group("ET_100_One_Go") {
         exec(http("ET_100_005_One_Go")
-          .get(BaseURL + "/steps-to-making-your-claim")
+          .get(baseURLETUIApp + "/steps-to-making-your-claim")
           .headers(CommonHeader)
           .check(substring("Steps to making your claim")))
       }
@@ -242,7 +242,7 @@ object ET_MakeAClaim {
 
     .group("ET_110_Personal_Details") {
       exec(http("ET_110_005_Personal_Details")
-        .get(BaseURL + "/dob-details")
+        .get(baseURLETUIApp + "/dob-details")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("What is your date of birth?")))
@@ -256,7 +256,7 @@ object ET_MakeAClaim {
 
     .group("ET_120_DoB") {
       exec(http("ET_120_005_DoB")
-        .post(BaseURL + "/dob-details")
+        .post(baseURLETUIApp + "/dob-details")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -276,7 +276,7 @@ object ET_MakeAClaim {
 
     .group("ET_130_Sex") {
       exec(http("ET_130_005_Sex")
-        .post(BaseURL + "/sex-and-title")
+        .post(baseURLETUIApp + "/sex-and-title")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -305,7 +305,7 @@ object ET_MakeAClaim {
 
     .group("ET_145_Your_Address_Select") {
       exec(http("ET_145_005_Your_Address_Select")
-        .post(BaseURL + "/address-details")
+        .post(baseURLETUIApp + "/address-details")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -327,7 +327,7 @@ object ET_MakeAClaim {
 
     .group("ET_150_Telephone_Number") {
       exec(http("ET_150_005_Telephone_Number")
-        .post(BaseURL + "/telephone-number")
+        .post(baseURLETUIApp + "/telephone-number")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -346,7 +346,7 @@ object ET_MakeAClaim {
 
     .group("ET_160_Contact_Method") {
       exec(http("ET_160_005_Contact_Method")
-        .post(BaseURL + "/how-would-you-like-to-be-updated-about-your-claim")
+        .post(baseURLETUIApp + "/how-would-you-like-to-be-updated-about-your-claim")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -364,7 +364,7 @@ object ET_MakeAClaim {
 
     .group("ET_170_Hearing_Participation") {
       exec(http("ET_170_005_Hearing_Participation")
-        .post(BaseURL + "/would-you-want-to-take-part-in-video-hearings")
+        .post(baseURLETUIApp + "/would-you-want-to-take-part-in-video-hearings")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -383,7 +383,7 @@ object ET_MakeAClaim {
 
     .group("ET_180_Need_Support") {
       exec(http("ET_180_005_Need_Support")
-        .post(BaseURL + "/reasonable-adjustments")
+        .post(baseURLETUIApp + "/reasonable-adjustments")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -402,7 +402,7 @@ object ET_MakeAClaim {
 
     .group("ET_190_Contact_Completed") {
       exec(http("ET_190_005_Contact_Completed")
-        .post(BaseURL + "/personal-details-check")
+        .post(baseURLETUIApp + "/personal-details-check")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")

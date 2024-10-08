@@ -4,6 +4,7 @@ package scenarios
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import utils.{Common, CsrfCheck, Environment}
+import java.io.{BufferedWriter, FileWriter}
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -14,6 +15,7 @@ import scala.util.Random
 object ET_MakeAClaimPt2 {
 
   val BaseURL = Environment.baseURL
+  val baseURLETUIApp = Environment.baseURLETUIApp
   val IdamURL = Environment.idamURL
 
   val now = LocalDate.now()
@@ -48,7 +50,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_200_Employment_Status") {
       exec(http("ET_200_005_Employment_Status")
-        .get(BaseURL + "/past-employer")
+        .get(baseURLETUIApp + "/past-employer")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("Did you work for the organisation or person you’re making your claim against")))
@@ -62,7 +64,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_210_Work_For_Org") {
       exec(http("ET_210_005_Work_For_Organisation")
-        .post(BaseURL + "/past-employer")
+        .post(baseURLETUIApp + "/past-employer")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -80,7 +82,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_220_Still_Work_For_Org") {
       exec(http("ET_220_005_Still_Work_For_Org")
-        .post(BaseURL + "/are-you-still-working")
+        .post(baseURLETUIApp + "/are-you-still-working")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -98,7 +100,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_230_Employment_Details") {
       exec(http("ET_230_005_Employment_Details")
-        .post(BaseURL + "/job-title")
+        .post(baseURLETUIApp + "/job-title")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -116,7 +118,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_240_Start_Date") {
       exec(http("ET_240_005_Start_Date")
-        .post(BaseURL + "/start-date")
+        .post(baseURLETUIApp + "/start-date")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -136,7 +138,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_250_Notice_End") {
       exec(http("ET_250_005_Notice_End")
-        .post(BaseURL + "/notice-end")
+        .post(baseURLETUIApp + "/notice-end")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -157,7 +159,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_260_Weeks_Or_Months") {
       exec(http("ET_260_005_Weeks_Or_Months")
-        .post(BaseURL + "/notice-type")
+        .post(baseURLETUIApp + "/notice-type")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -174,7 +176,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_270_Number_Of_Months") {
       exec(http("ET_270_005_Number_Of_Months")
-        .post(BaseURL + "/notice-length")
+        .post(baseURLETUIApp + "/notice-length")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -192,7 +194,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_280_Weekly_Hours") {
       exec(http("ET_280_005_Weekly_Hours")
-        .post(BaseURL + "/average-weekly-hours")
+        .post(baseURLETUIApp + "/average-weekly-hours")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -210,7 +212,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_290_Your_Pay") {
       exec(http("ET_290_005_Your_Pay")
-        .post(BaseURL + "/pay")
+        .post(baseURLETUIApp + "/pay")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -230,7 +232,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_300_Pension_Contributions") {
       exec(http("ET_300_005_Pension_Contributions")
-        .post(BaseURL + "/pension")
+        .post(baseURLETUIApp + "/pension")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -249,7 +251,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_310_Employee_Benefits") {
       exec(http("ET_310_005_Employee_Benefits")
-        .post(BaseURL + "/benefits")
+        .post(baseURLETUIApp + "/benefits")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -268,7 +270,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_320_Respondent_Name") {
       exec(http("ET_320_005_Respondent_Name")
-        .post(BaseURL + "/respondent/1/respondent-name")
+        .post(baseURLETUIApp + "/respondent/1/respondent-name")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -298,7 +300,7 @@ object ET_MakeAClaimPt2 {
       feed(postcodeFeeder)
 
       .exec(http("ET_335_Respondent_Address_LookUp")
-        .post(BaseURL + "/respondent/1/respondent-address")
+        .post(baseURLETUIApp + "/respondent/1/respondent-address")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -320,7 +322,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_340_Work_At") {
       exec(http("ET_340_005_Work_At")
-        .post(BaseURL + "/respondent/1/work-address")
+        .post(baseURLETUIApp + "/respondent/1/work-address")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -338,7 +340,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_350_Respondent_Acas") {
       exec(http("ET_350_Respondent_Acas")
-        .post(BaseURL + "/respondent/1/acas-cert-num")
+        .post(baseURLETUIApp + "/respondent/1/acas-cert-num")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -356,7 +358,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_360_Respondent_Check") {
       exec(http("ET_360_005_Respondent_Check")
-        .get(BaseURL + "/employment-respondent-task-check")
+        .get(baseURLETUIApp + "/employment-respondent-task-check")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("Have you completed this section?")))
@@ -370,7 +372,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_370_Respondent_Submit") {
       exec(http("ET_370_005_Respondent_Submit")
-        .post(BaseURL + "/employment-respondent-task-check")
+        .post(baseURLETUIApp + "/employment-respondent-task-check")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -389,7 +391,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_380_Claim_Details") {
       exec(http("ET_380_005_Claim_Details")
-        .get(BaseURL + "/claim-type-discrimination")
+        .get(baseURLETUIApp + "/claim-type-discrimination")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("What type of discrimination are you claiming?")))
@@ -403,7 +405,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_390_Type_Of_Descrimination") {
       exec(http("ET_390_Type_Of_Descrimination")
-        .post(BaseURL + "/claim-type-discrimination")
+        .post(baseURLETUIApp + "/claim-type-discrimination")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -423,7 +425,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_400_Describe_What_Happened") {
       exec(http("ET_400_005_Describe_What_Happened")
-        .post(BaseURL + "/describe-what-happened?_csrf=#{csrf}")
+        .post(baseURLETUIApp + "/describe-what-happened?_csrf=#{csrf}")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -442,7 +444,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_410_Outcome_If_Successful") {
       exec(http("ET_410_005_Outcome_If_Successful")
-        .post(BaseURL + "/tell-us-what-you-want")
+        .post(baseURLETUIApp + "/tell-us-what-you-want")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -460,7 +462,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_420_Compensation") {
       exec(http("ET_420_005_Compensation")
-        .post(BaseURL + "/compensation")
+        .post(baseURLETUIApp + "/compensation")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -479,7 +481,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_430_Whistleblowing") {
       exec(http("ET_430_005_Whistleblowing")
-        .post(BaseURL + "/whistleblowing-claims")
+        .post(baseURLETUIApp + "/whistleblowing-claims")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -497,7 +499,7 @@ object ET_MakeAClaimPt2 {
 
       .group("ET_435_Linked_Cases") {
         exec(http("ET_435_005_Linked_Cases")
-          .post(BaseURL + "/linked-cases?lng=en")
+          .post(baseURLETUIApp + "/linked-cases?lng=en")
           .headers(CommonHeader)
           .header("content-type", "application/x-www-form-urlencoded")
           .formParam("_csrf", "#{csrf}")
@@ -516,7 +518,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_440_Claim_Section_Complete") {
       exec(http("ET_440_005_Claim_Section_Complete")
-        .post(BaseURL + "/claim-details-check")
+        .post(baseURLETUIApp + "/claim-details-check")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -533,7 +535,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_450_Final_Check_Answers") {
       exec(http("ET_450_005_Final_Check_Answers")
-        .get(BaseURL + "/check-your-answers")
+        .get(baseURLETUIApp + "/check-your-answers")
         .headers(CommonHeader)
         .check(substring("Check your answers")))
     }
@@ -546,12 +548,13 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_460_Final_Check_Submit") {
       exec(http("ET_460_005_Final_Check_Submit")
-        .get(BaseURL + "/submitDraftCase?lng=en")
+        .get(baseURLETUIApp + "/submitDraftCase?lng=en")
         .headers(CommonHeader)
         .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .check(substring("Your claim has been submitted"))
         // .check(regex("""<dd class="govuk-summary-list__value">(\w{16})""".stripMargin).saveAs("submissionReference")))
-        .check(regex("""<dd class="govuk-summary-list__value">\s*(\d+)\s*</dd>""".stripMargin).saveAs("submissionReference")))
+        .check(regex("""<dd class="govuk-summary-list__value">\s*(\d+)\s*</dd>""".stripMargin).saveAs("submissionReference"))
+        .check(regex("""<dd class="govuk-summary-list__value">\s*(\d+)\s*</dd>""".stripMargin).saveAs("caseId")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
     /*===============================================================================================
@@ -560,10 +563,21 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_470_Log_Out") {
       exec(http("ET_470_005_Log_Out")
-        .get(BaseURL + "/logout")
+        .get(baseURLETUIApp + "/logout")
         .headers(CommonHeader)
         .check(substring("Make a claim to an employment tribunal")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+  //===============================================
+	//Write session info to case to the Modify RA data file
+	//===============================================
+    .exec { session =>
+    val fw = new BufferedWriter(new FileWriter("E1Cases.csv", true))
+    try {
+      fw.write(session("username").as[String] + "," + session("password").as[String] + "," + session("caseId").as[String] + "," + "\r\n")
+    } finally fw.close()
+    session
+    } 
   
 }

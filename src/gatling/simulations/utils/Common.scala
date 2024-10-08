@@ -17,7 +17,7 @@ object Common {
   val patternYear = DateTimeFormatter.ofPattern("yyyy")
   val patternDate = DateTimeFormatter.ofPattern("yyyyMMdd")
   val BaseURL = Environment.baseURL
- // val XuiURL = Environment.xuiURL
+  val baseURLETUIApp = Environment.baseURLETUIApp
 
   val CommonHeader = Environment.commonHeader
   val PostHeader = Environment.postHeader
@@ -28,7 +28,7 @@ object Common {
   def postcodeLookup =
     feed(postcodeFeeder)
       .exec(http("XUI_Common_000_PostcodeLookup")
-        .post(BaseURL + "/address-lookup")
+        .post(baseURLETUIApp + "/address-lookup")
         .headers(PostHeader)
       //  .formParam("postcode", "#{postcode}")
         .formParam("postcode", "#{postcode}")
@@ -66,7 +66,7 @@ object Common {
 
   //Date of Birth >= 35 years
   def getDobYear(): String = {
-    now.minusYears(35 + rnd.nextInt(70)).format(patternYear)
+    now.minusYears(25 + rnd.nextInt(70)).format(patternYear)
   }
 
   //Date of Birth <= 18 years
@@ -83,88 +83,156 @@ object Common {
     randomString(2).toUpperCase() + rnd.nextInt(10).toString + " " + rnd.nextInt(10).toString + randomString(2).toUpperCase()
   }
 
+ /*======================================================================================
+  * Common XUI Calls
+  ======================================================================================*/
+
+  def healthcheck(path: String) =
+    exec(http("XUI_Common_000_Healthcheck")
+      .get(s"/api/healthCheck?path=${path}")
+      .headers(Headers.commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .check(substring("""{"healthState":true}""")))
+
+  val activity =
+    exec(http("XUI_Common_000_ActivityOptions")
+      .options(BaseURL + "/activity/cases/#{caseId}/activity")
+      .headers(Headers.commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .header("sec-fetch-site", "same-site")
+      .check(status.in(200, 304, 403)))
+
+  val caseActivityGet =
+    exec(http("XUI_Common_000_ActivityOptions")
+      .options(BaseURL + "/activity/cases/#{caseId}/activity")
+      .headers(Headers.commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .header("sec-fetch-site", "same-site")
+      .check(status.in(200, 304, 403)))
+
+    .exec(http("XUI_Common_000_ActivityGet")
+      .get(BaseURL + "/activity/cases/#{caseId}/activity")
+      .headers(Headers.commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .header("sec-fetch-site", "same-site")
+      .check(status.in(200, 304, 403)))
+
+  val caseActivityOnlyGet =
+    exec(http("XUI_Common_000_ActivityGet")
+      .get(BaseURL + "/activity/cases/#{caseId}/activity")
+      .headers(Headers.commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .header("sec-fetch-site", "same-site")
+      .check(status.in(200, 304, 403)))
+
+  val caseActivityPost =
+    exec(http("XUI_Common_000_ActivityOptions")
+      .options(BaseURL + "/activity/cases/#{caseId}/activity")
+      .headers(Headers.commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .header("sec-fetch-site", "same-site")
+      .check(status.in(200, 304, 403)))
+
+    .exec(http("XUI_Common_000_ActivityPost")
+      .post(BaseURL + "/activity/cases/#{caseId}/activity")
+      .headers(Headers.commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .header("sec-fetch-site", "same-site")
+      .body(StringBody("{\n  \"activity\": \"view\"\n}"))
+      .check(status.in(200, 201, 304, 403)))
 
   val configurationui =
     exec(http("XUI_Common_000_ConfigurationUI")
-      .get("/external/configuration-ui/")
-      .headers(Environment.commonHeader)
+      .get(BaseURL + "/external/configuration-ui/")
+      .headers(Headers.commonHeader)
       .header("accept", "*/*")
       .check(substring("ccdGatewayUrl")))
 
   val configJson =
     exec(http("XUI_Common_000_ConfigJson")
-      .get("/assets/config/config.json")
+      .get(BaseURL + "/assets/config/config.json")
       .header("accept", "application/json, text/plain, */*")
       .check(substring("caseEditorConfig")))
 
   val TsAndCs =
     exec(http("XUI_Common_000_TsAndCs")
-      .get("/api/configuration?configurationKey=termsAndConditionsEnabled")
-      .headers(Environment.commonHeader)
+      .get(BaseURL + "/api/configuration?configurationKey=termsAndConditionsEnabled")
+      .headers(Headers.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(substring("false")))
 
   val userDetails =
     exec(http("XUI_Common_000_UserDetails")
-      .get("/api/user/details")
-      .headers(Environment.commonHeader)
+      .get(BaseURL + "/api/user/details")
+      .headers(Headers.commonHeader)
       .header("accept", "application/json, text/plain, */*"))
 
   val configUI =
     exec(http("XUI_Common_000_ConfigUI")
-      .get("/external/config/ui")
-      .headers(Environment.commonHeader)
+      .get(BaseURL + "/external/config/ui")
+      .headers(Headers.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(substring("ccdGatewayUrl")))
 
   val isAuthenticated =
     exec(http("XUI_Common_000_IsAuthenticated")
-      .get("/auth/isAuthenticated")
-      .headers(Environment.commonHeader)
+      .get(BaseURL + "/auth/isAuthenticated")
+      .headers(Headers.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(regex("true|false")))
 
   val profile =
     exec(http("XUI_Common_000_Profile")
-      .get("/data/internal/profile")
-      .headers(Environment.commonHeader)
+      .get(BaseURL + "/data/internal/profile")
+      .headers(Headers.commonHeader)
       .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-user-profile.v2+json;charset=UTF-8")
       .check(jsonPath("$.user.idam.id").notNull))
 
   val monitoringTools =
     exec(http("XUI_Common_000_MonitoringTools")
-      .get("/api/monitoring-tools")
-      .headers(Environment.commonHeader)
+      .get(BaseURL + "/api/monitoring-tools")
+      .headers(Headers.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(jsonPath("$.key").notNull))
 
   val caseShareOrgs =
     exec(http("XUI_Common_000_CaseShareOrgs")
-      .get("/api/caseshare/orgs")
-      .headers(Environment.commonHeader)
-      .header("accept", "application/json, text/plain, */*"))
+      .get(BaseURL + "/api/caseshare/orgs")
+      .headers(Headers.commonHeader)
+      .header("accept", "application/json, text/plain, */*")
+      .check(jsonPath("$.name").notNull))
 
   val orgDetails =
     exec(http("XUI_Common_000_OrgDetails")
-      .get("/api/organisation")
-      .headers(Environment.commonHeader)
+      .get(BaseURL + "/api/organisation")
+      .headers(Headers.commonHeader)
       .header("accept", "application/json, text/plain, */*")
       .check(regex("name|Organisation route error"))
       .check(status.in(200, 304, 403)))
-  
-  val caseActivityGet =
-    exec(http("XUI_Common_000_ActivityOptions")
-      .options("/activity/cases/${caseId}/activity")
-      .headers(commonHeader)
-      .header("accept", "application/json, text/plain, */*")
-      .header("sec-fetch-site", "same-site")
-      .check(status.in(200, 304, 403)))
-      
-      .exec(http("XUI_Common_000_ActivityGet")
-        .get("/activity/cases/${caseId}/activity")
-        .headers(commonHeader)
-        .header("accept", "application/json, text/plain, */*")
-        .header("sec-fetch-site", "same-site")
-        .check(status.in(200, 304, 403)))
 
-}
+  val waJurisdictions = 
+    exec(http("XUI_Common_000_WAJurisdictionsGet")
+      .get(BaseURL + "/api/wa-supported-jurisdiction/get")
+			.headers(Headers.commonHeader)
+      .check(substring("[")))
+
+// CHECK BODY ON THIS REQUEST ********************
+  val waUsersByServiceName = 
+    exec(http("XUI_Common_000_WAUsersByServiceName")
+      .post(BaseURL + "/workallocation/caseworker/getUsersByServiceName")
+			.headers(Headers.commonHeader)
+      .header("Content-Type", "application/json; charset=utf-8")
+      .header("Accept", "application/json, text/plain, */*")
+      .header("x-xsrf-token", "#{XSRFToken}")
+      .check(substring("[")))
+
+  val manageLabellingRoleAssignment =
+    exec(http("XUI_Common_000_ManageLabellingRoleAssignments")
+      .post(BaseURL + "/api/role-access/roles/manageLabellingRoleAssignment/#{caseId}")
+      .headers(Headers.commonHeader)
+      .header("x-xsrf-token", "#{XSRFToken}")
+      .body(StringBody("{}"))
+      .check(status.is(204))) 
+      //No response body is returned, therefore no substring check is possible
+
+  }

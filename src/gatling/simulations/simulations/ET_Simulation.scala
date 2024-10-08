@@ -4,6 +4,7 @@ import io.gatling.core.Predef._
 import io.gatling.core.scenario.Simulation
 import scenarios._
 import utils.Environment
+import utils.Headers
 import io.gatling.core.controller.inject.open.OpenInjectionStep
 import io.gatling.http.Predef._
 import io.gatling.core.pause.PauseType
@@ -15,6 +16,7 @@ class ET_Simulation extends Simulation {
 
   val BaseURL = Environment.baseURL
   val UserFeederET = csv("UserDataET.csv").circular
+  val CasesToProgress = csv("ETCasesToProgress.csv").circular
   val CaseLinkUserFeederETXUI = csv("ETCaseLinkUsers.csv").circular
   val CaseFlagUserFeederETXUI = csv("ETCaseFlagUsers.csv").circular
   val CaseLinkFeeder = csv("CaseLinkCases.csv").circular
@@ -142,6 +144,47 @@ class ET_Simulation extends Simulation {
         .exec(ET_MakeAClaim.MakeAClaim)
         .exec(ET_MakeAClaimPt2.MakeAClaim)
     }
+
+/**========================================================================
+ Create data for ET3 Process:
+ Create Claim (Citizen) --> Process claim (caseworker) --> Letter Generation
+ =========================================================================*/
+
+  val ET3DataPrep = scenario("ETCreateClaim")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(UserFeederET)
+        .exec(ET_MakeAClaim.MakeAClaim)
+        .exec(ET_MakeAClaimPt2.MakeAClaim)
+        //Caseworker Journey starts here
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(CaseFlagUserFeederETXUI)
+        .exec(Homepage.XUIHomePage)
+        .pause(10)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseWorker.MakeAClaim)
+    }
+
+/**========================================================================
+ Create data for ET3 Process:
+  --> Process claim (caseworker) --> Letter Generation
+ =========================================================================*/
+
+  val ET3DataPrepProcessClaim = scenario("ETCreateClaim")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        //.exec(flushHttpCache)
+        //.exec(flushCookieJar)
+        .feed(CaseFlagUserFeederETXUI)
+        .feed(CasesToProgress)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseWorker.MakeAClaim)
+    }
+  
   
   /** Following scenario is for uploading the documents to existing cases  */
 
@@ -176,7 +219,8 @@ class ET_Simulation extends Simulation {
       exec(_.set("env", s"${env}"))
         .exec(flushHttpCache)
         .exec(flushCookieJar)
-        .feed(CaseLinkUserFeederETXUI).feed(CaseFileViewFeeder)
+        .feed(CaseLinkUserFeederETXUI)
+        .feed(CaseFileViewFeeder)
         .exec(Homepage.XUIHomePage)
         .exec(Login.XUILogin)
         .exec(ET_CaseFileView.CaseFileView)
@@ -222,7 +266,9 @@ class ET_Simulation extends Simulation {
   
   setUp(
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
-    ETCreateClaim.inject(rampUsers(1) during (10))
+    //ETCreateClaim.inject(rampUsers(1) during (10))
+    //ET3DataPrep.inject(rampUsers(1) during (20))
+    ET3DataPrepProcessClaim.inject(rampUsers(1) during (20))
    // XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))

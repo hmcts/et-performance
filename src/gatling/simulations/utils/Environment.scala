@@ -6,8 +6,9 @@ import io.gatling.http.Predef._
 object Environment {
 
   //val baseURL = "https://et-sya.#{env}.platform.hmcts.net"
-  val baseURL = "https://et-sya.#{env}.platform.hmcts.net"
-  //val baseURL = "https://manage-case.perftest.platform.hmcts.net"
+  val baseURLETUIApp = "https://et-sya.#{env}.platform.hmcts.net"
+  val baseURLETUIResp = "https://et-syr.#{env}.platform.hmcts.net"
+  val baseURL = "https://manage-case.perftest.platform.hmcts.net"
   val idamURL = "https://idam-web-public.#{env}.platform.hmcts.net"
 
 
