@@ -2,7 +2,7 @@
   "data": {
     "preAcceptCase": {
       "caseAccepted": "Yes",
-      "dateAccepted": "2023-08-24"
+      "dateAccepted": "#{claimAcceptedDate}"
     }
   },
   "event": {
@@ -13,7 +13,7 @@
   "event_data": {
     "preAcceptCase": {
       "caseAccepted": "Yes",
-      "dateAccepted": "2023-08-24"
+      "dateAccepted": "#{claimAcceptedDate}"
     }
   },
   "event_token": "#{event_token}",

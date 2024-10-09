@@ -1,6 +1,6 @@
 {
   "data": {
-    "et1VettingBeforeYouStart": "Open these documents to help you complete this form: <br><a target=\"_blank\" href=\"/documents/8e76535e-7d4b-4c6d-8f43-874982e1d82b/binary\">ET1 form (opens in new tab)</a>"
+    "et1VettingBeforeYouStart": "Open these documents to help you complete this form: <br><a target=\"_blank\" href=\"/documents/#{etDocHash}/binary\">ET1 form (opens in new tab)</a>"
   },
   "event": {
     "id": "et1Vetting",
@@ -8,7 +8,7 @@
     "description": ""
   },
   "event_data": {
-    "et1VettingBeforeYouStart": "Open these documents to help you complete this form: <br><a target=\"_blank\" href=\"/documents/8e76535e-7d4b-4c6d-8f43-874982e1d82b/binary\">ET1 form (opens in new tab)</a>"
+    "et1VettingBeforeYouStart": "Open these documents to help you complete this form: <br><a target=\"_blank\" href=\"/documents/#{etDocHash}/binary\">ET1 form (opens in new tab)</a>"
   },
   "event_token": "#{event_token}",
   "ignore_warning": false,

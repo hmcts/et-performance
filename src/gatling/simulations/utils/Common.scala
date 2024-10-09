@@ -16,6 +16,7 @@ object Common {
   val patternMonth = DateTimeFormatter.ofPattern("MM")
   val patternYear = DateTimeFormatter.ofPattern("yyyy")
   val patternDate = DateTimeFormatter.ofPattern("yyyyMMdd")
+  val patternDateClaim = DateTimeFormatter.ofPattern("yyyy-MM-dd")
   val BaseURL = Environment.baseURL
   val baseURLETUIApp = Environment.baseURLETUIApp
 
@@ -50,6 +51,10 @@ object Common {
 
   def getDate(): String = {
     now.format(patternDate)
+  }
+
+  def getDateClaimAccepted(): String = {
+    now.format(patternDateClaim)
   }
   
   def getCurrentDateTime (): String = {

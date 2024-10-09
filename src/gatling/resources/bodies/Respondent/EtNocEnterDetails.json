@@ -3,7 +3,7 @@
   "answers": [
     {
       "question_id": "respondentName",
-      "value": "McLIpIPRespondent"
+      "value": "#{respondentRandString}Respondent"
     },
     {
       "question_id": "claimantFirstName",

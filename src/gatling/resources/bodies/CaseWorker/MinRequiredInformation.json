@@ -1,9 +1,9 @@
 {
   "data": {
-    "et1VettingClaimantDetailsMarkUp": "<hr><h3>Claimant</h3><pre>First name &#09&#09&#09&#09&nbsp; perftest<br><br>Last name &#09&#09&#09&#09&nbsp; Employment<br><br>Contact address &#09&#09 address1GsnsFAe<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 address2GsnsFAe<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 addressTownGsnsFAe<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 LS5 2AB</pre>",
-    "et1VettingRespondentDetailsMarkUp": "<h3>Respondent </h3><pre>Name &#09&#09&#09&#09&#09&#09&nbsp; McLIpIPRespondent<br><br>Contact address &#09&#09 respondentAddress1McLIpIP<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 respondentAddress2McLIpIP<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 respondentAddressTownMcLIpIP<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 LS5 2AB</pre><hr>",
+    "et1VettingClaimantDetailsMarkUp": "<hr><h3>Claimant</h3><pre>First name &#09&#09&#09&#09&nbsp; perftest<br><br>Last name &#09&#09&#09&#09&nbsp; Employment<br><br>Contact address &#09&#09 address1#{claimantRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 address2#{claimantRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 addressTown#{claimantRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 LS5 2AB</pre>",
+    "et1VettingRespondentDetailsMarkUp": "<h3>Respondent </h3><pre>Name &#09&#09&#09&#09&#09&#09&nbsp; #{respondentRandString}Respondent<br><br>Contact address &#09&#09 respondentAddress1#{respondentRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 respondentAddress2#{respondentRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 respondentAddressTown#{respondentRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 LS5 2AB</pre><hr>",
     "et1VettingCanServeClaimYesOrNo": "Yes",
-    "et1VettingCanServeClaimGeneralNote": "#{ETRespondRandomString} General Note"
+    "et1VettingCanServeClaimGeneralNote": "General Performance Test Note"
   },
   "event": {
     "id": "et1Vetting",
@@ -11,11 +11,11 @@
     "description": ""
   },
   "event_data": {
-    "et1VettingBeforeYouStart": "Open these documents to help you complete this form: <br><a target=\"_blank\" href=\"/documents/8e76535e-7d4b-4c6d-8f43-874982e1d82b/binary\">ET1 form (opens in new tab)</a>",
-    "et1VettingClaimantDetailsMarkUp": "<hr><h3>Claimant</h3><pre>First name &#09&#09&#09&#09&nbsp; perftest<br><br>Last name &#09&#09&#09&#09&nbsp; Employment<br><br>Contact address &#09&#09 address1GsnsFAe<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 address2GsnsFAe<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 addressTownGsnsFAe<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 LS5 2AB</pre>",
-    "et1VettingRespondentDetailsMarkUp": "<h3>Respondent </h3><pre>Name &#09&#09&#09&#09&#09&#09&nbsp; McLIpIPRespondent<br><br>Contact address &#09&#09 respondentAddress1McLIpIP<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 respondentAddress2McLIpIP<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 respondentAddressTownMcLIpIP<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 LS5 2AB</pre><hr>",
+    "et1VettingBeforeYouStart": "Open these documents to help you complete this form: <br><a target=\"_blank\" href=\"/documents/#{etDocHash}/binary\">ET1 form (opens in new tab)</a>",
+    "et1VettingClaimantDetailsMarkUp": "<hr><h3>Claimant</h3><pre>First name &#09&#09&#09&#09&nbsp; perftest<br><br>Last name &#09&#09&#09&#09&nbsp; Employment<br><br>Contact address &#09&#09 address1#{claimantRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 address2#{claimantRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 addressTown#{claimantRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 LS5 2AB</pre>",
+    "et1VettingRespondentDetailsMarkUp": "<h3>Respondent </h3><pre>Name &#09&#09&#09&#09&#09&#09&nbsp; #{respondentRandString}Respondent<br><br>Contact address &#09&#09 respondentAddress1#{respondentRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 respondentAddress2#{respondentRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 respondentAddressTown#{respondentRandString}<br>&#09&#09&#09&#09&#09&#09&#09&#09&#09 LS5 2AB</pre><hr>",
     "et1VettingCanServeClaimYesOrNo": "Yes",
-    "et1VettingCanServeClaimGeneralNote": "#{ETRespondRandomString} General Note"
+    "et1VettingCanServeClaimGeneralNote": "General Performance Test Note"
   },
   "event_token": "#{event_token}",
   "ignore_warning": false,

@@ -21,27 +21,41 @@ object ET_CaseWorker {
 
   val MakeAClaim =
 
-  exec(_.setAll(
-      "ETCWRandomString" -> (Common.randomString(7))))
+  exec(session => {
+  // Generate and set the random string and date
+  val updatedSession = session.setAll(
+      "ETCWRandomString" -> (Common.randomString(7)),
+      "claimAcceptedDate" -> (Common.getDateClaimAccepted())
+  )
+  // Retrieve the date and print it to the terminal
+  val claimAcceptedDate = updatedSession("claimAcceptedDate").as[String]
+  println(s"Claim Accepted Date: $claimAcceptedDate")
+
+  // Return the updated session
+  updatedSession
+})
+
+  //exec(_.setAll(
+    //  "ETCWRandomString" -> (Common.randomString(7)),
+      //"claimAcceptedDate" -> (Common.getDateClaimAccepted())))
 
     /*======================================================================================
     * Open Case
     ======================================================================================*/
 
-       .exec(http("XUI_PRL_XXX_290_SelectCase")
+    .exec(http("XUI_PRL_XXX_500_SelectCase")
       .get(xuiURL + "/data/internal/cases/#{caseId}")
       .headers(Headers.xuiHeader)
-      .check(jsonPath("$.case_id").is("#{caseId}")))
-
-   // .exec(http("XUI_PRL_XXX_045_OpenCase")
-   //   .get(xuiURL + "/data/internal/cases/#{caseId}")
-   //   .headers(Headers.xuiHeader)
-   //   .check(jsonPath("$.tabs[7].fields[3].value.firstName").saveAs("ApplicantFirstName"))
-   //   .check(jsonPath("$.tabs[7].fields[3].value.lastName").saveAs("ApplicantLastName"))
-   //   .check(jsonPath("$.tabs[8].fields[11].value.firstName").saveAs("RespondentFirstName"))
-   //  .check(jsonPath("$.tabs[8].fields[11].value.lastName").saveAs("RespondentLastName"))
-   //  .check(status.in(200,204))
-   //   .check(jsonPath("$.case_id").is("#{caseId}")))
+      .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")
+      .check(jsonPath("$.tabs[12].fields[1].formatted_value.claimant_first_names").saveAs("ClaimantFirstName"))
+      .check(jsonPath("$.tabs[12].fields[1].formatted_value.claimant_last_name").saveAs("ClaimantLastName"))
+      .check(jsonPath("$.tabs[12].fields[3].value.claimant_addressUK.AddressLine1").saveAs("ClaimantAdressLine1")) //Strip left address1
+      .check(jsonPath("$.tabs[6].fields[0].value[0].value.respondent_name").saveAs("RespondentName")) // Strip right Respondent
+      .check(jsonPath("$.tabs[12].fields[2].value[0].value.uploadedDocument.document_url").saveAs("etDocHash"))
+      .check(jsonPath("$.tabs[4].fields[0].value[*].value.juridictionCodesList").findAll.saveAs("jurisdictionCode")) // Save all codes
+      .check(jsonPath("$.tabs[6].fields[0].value[0].value.respondent_ACAS").findAll.saveAs("acasCertID"))
+      .check(jsonPath("$.case_id").is("#{caseId}"))
+      .check(status.in(200,204)))
 
     .exec(Common.waJurisdictions)
     .exec(Common.activity)
@@ -52,6 +66,28 @@ object ET_CaseWorker {
     .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(xuiURL.replace("https://", "")).saveAs("XSRFToken")))
 
     .pause(MinThinkTime, MaxThinkTime)
+
+  // ==================================================================================================
+  // Code to strip the captured Claimant and Respondent random string for use in subsequent requests
+  // ==================================================================================================
+  .exec { session =>
+    // Access the captured value and strip the right side for `ClaimantAddressLine1`
+    val claimantAddress = session("ClaimantAdressLine1").as[String]
+    val claimantRandString = claimantAddress.stripPrefix("address1")
+    println(s"Claimant Rand String: $claimantRandString")
+    
+    // Return the session with the new value set
+    session.set("claimantRandString", claimantRandString)
+  }
+  .exec { session =>
+    // Access the captured value and strip the left side for `RespondentName`
+    val respondentName = session("RespondentName").as[String]
+    val respondentRandString = respondentName.stripSuffix("Respondent")
+    println(s"Respondent Rand String: $respondentRandString")
+    
+    // Return the session with the new value set
+    session.set("respondentRandString", respondentRandString)
+  }
 
     /*======================================================================================
     * Find Case
@@ -122,7 +158,7 @@ object ET_CaseWorker {
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting2")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/CaseWorker/MinRequiredInformation.json"))
-        .check(substring("et1VettingBeforeYouStart")))
+        .check(substring("et1VettingCanServeClaimGeneralNote")))
 
         .exec(Common.userDetails)
     }
@@ -152,7 +188,7 @@ object ET_CaseWorker {
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting4")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/CaseWorker/PossibleSubstantiveDefects.json"))
-        .check(substring("et1VettingAcasCertGeneralNote")))
+        .check(substring("et1SubstantiveDefectsGeneralNotes")))
 
         .exec(Common.userDetails)
     }
@@ -212,7 +248,7 @@ object ET_CaseWorker {
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=et1Vetting8")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/CaseWorker/ListingDetails.json"))
-        .check(substring("isTrackAllocationCorrect")))
+        .check(substring("et1HearingVenueGeneralNotes")))
 
         .exec(Common.userDetails)
     }
@@ -279,7 +315,7 @@ object ET_CaseWorker {
       .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
 
-      /*======================================================================================
+  /*======================================================================================
   * Final Notes
   ======================================================================================*/
 
@@ -303,39 +339,51 @@ object ET_CaseWorker {
         .post(xuiURL + "/data/cases/#{caseId}/events")
         .headers(CommonHeader)
         .body(ElFileBody("bodies/CaseWorker/VetCheckAnswers.json"))
-        .check(substring("$.state").is("Vetted")))
+        .check(jsonPath("$.state").is("Vetted")))
 
         .exec(Common.userDetails)
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+
+  val dateCaseAccepted = 
 
   /*======================================================================================
   * Accept or Reject Case Link
   ======================================================================================*/
 
-    .group("ET_CW_660_Accept_Or_Reject") {
+    group("ET_CW_660_Accept_Or_Reject") {
       exec(http("ET_CW_660_005_Accept_Or_Reject")
         .get(xuiURL + "/cases/case-details/#{caseId}/trigger/preAcceptanceCase/preAcceptanceCase1")
         .headers(CommonHeader)
-        .check(substring("Pre-Acceptance")))
-
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-start-event-trigger.v2+json;charset=UTF-8")
+        .check(substring("HMCTS Manage cases")))
 
         .exec(Common.configurationui)
-
         .exec(Common.configJson)
-
         .exec(Common.userDetails)
-
         .exec(Common.TsAndCs)
-
         .exec(Common.configUI)
-
         .exec(Common.isAuthenticated)
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
+  /*======================================================================================
+  * Accept Case Event
+  ======================================================================================*/
 
-    /*======================================================================================
+    .group("ET_CW_665_Accept_Case_Event") {
+      exec(http("ET_CW_665_005_Accept_Case_Event")
+        .get(xuiURL + "/data/internal/cases/#{caseId}/event-triggers/preAcceptanceCase?ignore-warning=false")
+        .headers(CommonHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-start-event-trigger.v2+json;charset=UTF-8")
+        .check(jsonPath("$.event_token").saveAs("event_token"))
+        .check(substring("preAcceptanceCase")))
+    }
+
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+  /*======================================================================================
   * Accept Case
   ======================================================================================*/
 
@@ -343,20 +391,101 @@ object ET_CaseWorker {
       exec(http("ET_CW_670_005_Accept_Case")
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=preAcceptanceCase1")
         .headers(CommonHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
         .body(ElFileBody("bodies/CaseWorker/AcceptCase.json"))
         //Date needs to be today or later date after case was made
         .check(substring("caseSource")))
 
         .exec(Common.userDetails)
 
+      .exec(http("ET_CW_670_010_Accept_Case")
+        .post(xuiURL + "/data/cases/${caseId}/events")
+        .headers(CommonHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.create-event.v2+json;charset=UTF-8")
+        .body(ElFileBody("bodies/CaseWorker/AcceptCaseEvent.json"))
+        //Date needs to be today or later date after case was made
+        .check(jsonPath("$.state").is("Accepted")))
+
+      .exec(http("XUI_PRL_670_015_Accept_Case")
+        .get(xuiURL + "/data/internal/cases/#{caseId}")
+        .headers(Headers.xuiHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")
+        .check(jsonPath("$.case_id").is("#{caseId}"))
+        .check(status.in(200,204)))
+
+      .exec(Common.waJurisdictions)
+      .exec(Common.activity)
+      .exec(Common.userDetails)
+      .exec(Common.caseActivityGet)
+      .exec(Common.isAuthenticated)
+
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-    .exec {
-      session =>
-        println(session)
-        session
+
+  val generateLetters = 
+  /*======================================================================================
+  * Select Letters Event 
+  ======================================================================================*/
+
+   group("ET_CW_680_Letters_EventTrigger") {
+      exec(http("ET_CW_680_005_Letters_EventTrigger")
+        .get(xuiURL + "/data/internal/cases/#{caseId}/event-triggers/generateCorrespondence?ignore-warning=false")
+        .headers(CommonHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-start-event-trigger.v2+json;charset=UTF-8")
+        .check(jsonPath("$.event_token").saveAs("event_token"))
+        .check(substring("generateCorrespondence")))
     }
+
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+  /*======================================================================================
+  * Select Letter types --> Part 2 --> Letter 2.6 & Submit
+  ======================================================================================*/
+
+  .group("ET_CW_680_Select_Letter_Event") {
+      exec(http("ET_CW_680_005_Select_Letter_Event")
+        .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=generateCorrespondence1")
+        .headers(CommonHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
+        .body(ElFileBody("bodies/CaseWorker/LetterGeneration.json"))
+        .check(substring("et1GovOrMajorQuestion")))
+
+      .exec(http("ET_CW_680_010_Select_Letter_Event")
+        .post(xuiURL + "/data/cases/${caseId}/events")
+        .headers(CommonHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.create-event.v2+json;charset=UTF-8")
+        .body(ElFileBody("bodies/CaseWorker/LetterGenerationEvent.json"))
+        .check(jsonPath("$.state").is("Accepted")))
+
+      .exec(http("XUI_PRL_680_015_Select_Letter_Event")
+        .get(xuiURL + "/data/internal/cases/#{caseId}")
+        .headers(Headers.xuiHeader)
+        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")
+        .check(jsonPath("$.case_id").is("#{caseId}"))
+        .check(status.in(200,204)))
+
+      .exec(Common.activity)
+  }
+  .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+  //===================================================================================
+	//Write session info to case to the E3Cases data files for Claimant and Respondent
+	//===================================================================================
+    .exec { session =>
+    val fw = new BufferedWriter(new FileWriter("E3CaseLinkData.csv", true))
+    try {
+      fw.write(session("caseId").as[String] + "," + session("respondentRandString").as[String] + "Respondent" + "," + "perftest" + "," + "Emploment" + "\r\n")
+    } finally fw.close()
+
+        session
+    } 
+
+   // val fw = new BufferedWriter(new FileWriter("E3CaseLinkDataRespondent.csv", true))
+   // try {
+   //   fw.write(session("username").as[String] + "," + session("password").as[String] + "," + session("caseId").as[String] + "," + "(respondentRandString)".as[String] + "," + "Respondent" + "\r\n")
+   // } finally fw.close()
+
 
 
 }

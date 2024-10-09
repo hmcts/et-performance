@@ -54,14 +54,20 @@ object Headers {
     "sec-fetch-site" -> "same-origin",
     "request-id" -> "|/qDn7.xWuGp")
 
-
   val xuiHeader = Map(
-    "accept-encoding" -> "gzip, deflate, br",
-    "accept-language" -> "en-GB,en;q=0.9",
-    "content-type" -> "application/json",
-    "sec-fetch-dest" -> "empty",
-    "sec-fetch-mode" -> "cors",
-    "sec-fetch-site" -> "same-origin")
+		"cache-control" -> "no-cache",
+		"dnt" -> "1",
+		"pragma" -> "no-cache",
+    "origin" -> "https://manage-case.#{env}.platform.hmcts.net",
+    "experimental" -> "true",
+		"sec-ch-ua" -> """ Not A;Brand";v="99", "Chromium";v="96", "Google Chrome";v="96""",
+		"sec-ch-ua-mobile" -> "?0",
+		//"sec-ch-ua-platform" -> "macOS",
+		"sec-fetch-dest" -> "empty",
+		"sec-fetch-mode" -> "cors",
+		"sec-fetch-site" -> "same-origin",
+    "request-id" -> "|/qDn7.xWuGp"
+  )
 
   val headers_12 = Map(
 		"accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
