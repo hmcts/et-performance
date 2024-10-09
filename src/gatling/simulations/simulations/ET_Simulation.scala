@@ -269,8 +269,8 @@ class ET_Simulation extends Simulation {
   setUp(
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
     //ETCreateClaim.inject(rampUsers(1) during (10))
-    //ET3DataPrep.inject(rampUsers(20) during (20))
-    ET3DataPrepProcessClaim.inject(rampUsers(1) during (20))
+    //ET3DataPrep.inject(rampUsers(25) during (20))
+    ET3DataPrepProcessClaim.inject(rampUsers(20) during (20))
    // XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
