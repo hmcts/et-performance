@@ -443,22 +443,22 @@ object ET_CaseWorker {
   * Select Letter types --> Part 2 --> Letter 2.6 & Submit
   ======================================================================================*/
 
-  .group("ET_CW_680_Select_Letter_Event") {
-      exec(http("ET_CW_680_005_Select_Letter_Event")
+  .group("ET_CW_690_Select_Letter_Event") {
+      exec(http("ET_CW_690_005_Select_Letter_Event")
         .post(xuiURL + "/data/case-types/ET_EnglandWales/validate?pageId=generateCorrespondence1")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
         .body(ElFileBody("bodies/CaseWorker/LetterGeneration.json"))
         .check(substring("et1GovOrMajorQuestion")))
 
-      .exec(http("ET_CW_680_010_Select_Letter_Event")
+      .exec(http("ET_CW_690_010_Select_Letter_Event")
         .post(xuiURL + "/data/cases/${caseId}/events")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.create-event.v2+json;charset=UTF-8")
         .body(ElFileBody("bodies/CaseWorker/LetterGenerationEvent.json"))
         .check(jsonPath("$.state").is("Accepted")))
 
-      .exec(http("XUI_PRL_680_015_Select_Letter_Event")
+      .exec(http("XUI_PRL_690_015_Select_Letter_Event")
         .get(xuiURL + "/data/internal/cases/#{caseId}")
         .headers(Headers.xuiHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")
