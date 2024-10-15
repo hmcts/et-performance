@@ -12,6 +12,33 @@ object Headers {
     "sec-fetch-user" -> "?1",
     "upgrade-insecure-requests" -> "1")
 
+  
+  val citUILandingHeader = Map(   //headers_0 (replace)
+  		"accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+  		"priority" -> "u=0, i",
+  		//"sec-ch-ua" -> """Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129""",
+  		"sec-ch-ua-mobile" -> "?0",
+  		//"sec-ch-ua-platform" -> "Windows",
+  		"sec-fetch-dest" -> "document",
+  		"sec-fetch-mode" -> "navigate",
+  		"sec-fetch-site" -> "none",
+  		"sec-fetch-user" -> "?1",
+  		"upgrade-insecure-requests" -> "1"
+  )
+
+    val citUICommonHeader = Map(
+  		"accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+  		"priority" -> "u=0, i",
+  		//"sec-ch-ua" -> """Google Chrome";v="129", "Not=A?Brand";v="8", "Chromium";v="129""",
+  		"sec-ch-ua-mobile" -> "?0",
+  		//"sec-ch-ua-platform" -> "Windows",
+  		"sec-fetch-dest" -> "document",
+  		"sec-fetch-mode" -> "navigate",
+  		"sec-fetch-site" -> "same-origin",
+  		"sec-fetch-user" -> "?1",
+  		"upgrade-insecure-requests" -> "1"
+    )
+
   val commonHeader = Map(
     "accept-encoding" -> "gzip, deflate, br",
     "accept-language" -> "en-GB,en;q=0.9",

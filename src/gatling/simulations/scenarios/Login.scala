@@ -3,11 +3,12 @@ package scenarios
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import utils.Environment.{commonHeader, commonHeader1, postHeader}
-import utils.{Common, Environment, Headers}
+import utils.{Common, Environment, Headers, CsrfCheck}
 
 object Login {
 
   val BaseURL = Environment.baseURL
+  val baseURLETUIResp = Environment.baseURLETUIResp
   val IdamUrl = Environment.idamURL
 
   val MinThinkTime = Environment.minThinkTime
@@ -83,4 +84,33 @@ object Login {
 
     }
 
+
+/*====================================================================================
+  *Citizen Login (Respondent)
+  *=====================================================================================*/
+
+  val CUILogin =
+
+  // *****  Add logic for if citizen already has cases assigned *****
+
+    group("CUI_XXX_Login") {
+      exec(http("XUI_XXX_005_Login")
+        .post(IdamUrl + "/login?client_id=et-syr&response_type=code&redirect_uri=" + baseURLETUIResp + "/oauth2/callback&state=#{state}&&ui_locales=en")
+        .headers(commonHeader1)
+        .headers(postHeader)
+        .formParam("username", "#{username}")
+        .formParam("password", "#{password}")
+        .formParam("selfRegistrationEnabled", "true")
+        .formParam("_csrf", "#{csrf}")
+        .checkIf(session => session("userResponses").as[String] == "multiple") {
+        // Apply this check if the user already has responses/cases 
+          substring("ET3 Responses").exists
+        }
+        .checkIf(session => session("userResponses").as[String] == "none") {
+          // Apply this check if the user is a standard user
+          substring("Self Assignment - Form").exists
+          CsrfCheck.save
+        })
+
+}
 }

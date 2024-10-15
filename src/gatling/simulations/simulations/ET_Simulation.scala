@@ -17,6 +17,8 @@ class ET_Simulation extends Simulation {
   val BaseURL = Environment.baseURL
   val UserFeederET = csv("UserDataET.csv").circular
   val CasesToProgress = csv("ETCasesToProgress.csv").circular
+  val ET3CaseLinkDataFeeder = csv("E3CaseLinkData.csv")
+  val CitizenUserFeeder = csv("EtCitizenUsers.csv")
   val CaseLinkUserFeederETXUI = csv("ETCaseLinkUsers.csv").circular
   val CaseFlagUserFeederETXUI = csv("ETCaseFlagUsers.csv").circular
   val CaseLinkFeeder = csv("CaseLinkCases.csv").circular
@@ -186,6 +188,33 @@ class ET_Simulation extends Simulation {
         .exec(ET_CaseWorker.dateCaseAccepted)
         .exec(ET_CaseWorker.generateLetters)
     }
+
+/**========================================================================
+ ET3 Process Respondent
+ =========================================================================*/
+
+  val ET3CitizenRespondent = scenario("ET3FormRespondent")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(CitizenUserFeeder)
+        .feed(ET3CaseLinkDataFeeder)
+        .exec(ET_Citizen.RespondentIntroduction)
+        .exec(Login.CUILogin)
+        //.doIfOrElse(session => session("userResponses").asOption[String].contains("multiple")) {
+        .doIf(session => session("userResponses").asOption[String].contains("multiple")) {
+          // Executes if the user already has cases assigned
+          exec(ET_Citizen.RespondentNewClaimReply)
+          }
+        .exec(ET_Citizen.RespondentSelfAssignment) 
+        .exec(ET_Citizen.RespondentET3)
+        .exec(ET_Citizen.RespondentET3ClaimantInfo)
+        .exec(ET_Citizen.RespondentET3ContestTheClaim)
+        //.exec(ET_CaseWorker.MakeAClaim)
+        //.exec(ET_CaseWorker.dateCaseAccepted)
+        //.exec(ET_CaseWorker.generateLetters)
+    }
   
   
   /** Following scenario is for uploading the documents to existing cases  */
@@ -270,7 +299,8 @@ class ET_Simulation extends Simulation {
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
     //ETCreateClaim.inject(rampUsers(1) during (10))
     //ET3DataPrep.inject(rampUsers(25) during (20))
-    ET3DataPrepProcessClaim.inject(rampUsers(20) during (20))
+    //ET3DataPrepProcessClaim.inject(rampUsers(20) during (20))
+    ET3CitizenRespondent.inject(rampUsers(1) during (20))
    // XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))

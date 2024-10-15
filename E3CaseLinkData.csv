@@ -1,20 +1,22 @@
-1728466770960336,OomVOlZRespondent,perftest,Employment
-1728466771528991,KPoLdHFRespondent,perftest,Employment
-1728466728473648,OqunqliRespondent,perftest,Employment
-1728466770280107,CCHoEOLRespondent,perftest,Employment
-1728466771010081,QfgwWyhRespondent,perftest,Employment
-1728466770976134,fbUBKwVRespondent,perftest,Employment
-1728466770842898,KJKlpWMRespondent,perftest,Employment
-1728466771080126,AuvFslzRespondent,perftest,Employment
-1728466771088970,hgvUYNPRespondent,perftest,Employment
-1728466771098961,tNSlkmJRespondent,perftest,Employment
-1728466770583641,qBGvONpRespondent,perftest,Employment
-1728466771676782,XRRQQgmRespondent,perftest,Employment
-1728466771463751,epUekPrRespondent,perftest,Employment
-1728466771718162,ttzVzkKRespondent,perftest,Employment
-1728466770835074,rSGpobCRespondent,perftest,Employment
+caseId,respondentName,applicantFirstName,applicantLastName
 1728477518131718,SfDyZsMRespondent,perftest,Employment
-1728477520010546,tpZfMdqRespondent,perftest,Employment
+////////////////////////////////,,,///////////////////
+1728477520010546,tpZfMdqRespondent,perftest,Employment  --> assigned
+1728466771718162,ttzVzkKRespondent,perftest,Employment  --> assigned
+1728466771463751,epUekPrRespondent,perftest,Employment --> assigned
+1728466770835074,rSGpobCRespondent,perftest,Employment --> Assigned
+1728466770842898,KJKlpWMRespondent,perftest,Employment --< Assigned
+1728466770583641,qBGvONpRespondent,perftest,Employment --> Assigned?
+1728466771098961,tNSlkmJRespondent,perftest,Employment --> assigned 
+1728466771088970,hgvUYNPRespondent,perftest,Employment --> assigned ?
+1728466770842898,KJKlpWMRespondent,perftest,Employment --> Assigned ?
+1728466771528991,KPoLdHFRespondent,perftest,Employment --> assigned
+1728466728473648,OqunqliRespondent,perftest,Employment --> Assigned 
+1728466770280107,CCHoEOLRespondent,perftest,Employment --> Assigned ? 
+1728466771010081,QfgwWyhRespondent,perftest,Employment --> Assigned ?
+1728466770976134,fbUBKwVRespondent,perftest,Employment --> assigned ? 
+1728466771080126,AuvFslzRespondent,perftest,Employment --> assigned unable to see case page
+1728466771676782,XRRQQgmRespondent,perftest,Employment --> Assigned ?
 1728477520048090,scSoaJbRespondent,perftest,Employment
 1728477517199229,QNGtKfYRespondent,perftest,Employment
 1728477517389226,usAHoJoRespondent,perftest,Employment
