@@ -463,6 +463,7 @@ object ET_CaseWorker {
         .headers(Headers.xuiHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")
         .check(jsonPath("$.case_id").is("#{caseId}"))
+        .check(jsonPath("$.tabs[17].fields[17].value").saveAs("ethosId"))
         .check(status.in(200,204)))
 
       .exec(Common.activity)
@@ -475,7 +476,7 @@ object ET_CaseWorker {
     .exec { session =>
     val fw = new BufferedWriter(new FileWriter("E3CaseLinkData.csv", true))
     try {
-      fw.write(session("caseId").as[String] + "," + session("respondentRandString").as[String] + "Respondent" + "," + "perftest" + "," + "Employment" + "\r\n")
+      fw.write(session("ethosId").as[String] + "," + session("caseId").as[String] + "," + session("respondentRandString").as[String] + "Respondent" + "," + "perftest" + "," + "Employment" + "\r\n")
     } finally fw.close()
 
         session

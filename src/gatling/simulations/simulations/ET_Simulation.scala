@@ -190,30 +190,66 @@ class ET_Simulation extends Simulation {
     }
 
 /**========================================================================
+ Create data for ET3 Process:
+ Create Claim (Citizen) --> Process claim (caseworker) --> Letter Generation
+ =========================================================================*/
+
+  val ET3DataPrepCombined = scenario("ETCreateClaim")
+    .exitBlockOnFail {
+      exec(_.set("env", s"${env}"))
+        .exec(flushHttpCache)
+        .exec(flushCookieJar)
+        .feed(UserFeederET)
+        .exec(ET_MakeAClaim.MakeAClaim)
+        .exec(ET_MakeAClaimPt2.MakeAClaim)
+        //Caseworker Journey starts here
+        .feed(CaseFlagUserFeederETXUI)
+        .feed(CasesToProgress)
+        .exec(Homepage.XUIHomePage)
+        .exec(Login.XUILogin)
+        .exec(ET_CaseWorker.MakeAClaim)
+        .exec(ET_CaseWorker.dateCaseAccepted)
+        .exec(ET_CaseWorker.generateLetters)
+    }
+
+/**========================================================================
  ET3 Process Respondent
  =========================================================================*/
 
   val ET3CitizenRespondent = scenario("ET3FormRespondent")
     .exitBlockOnFail {
+      group("ET3 Citizen Respondent") {
       exec(_.set("env", s"${env}"))
         .exec(flushHttpCache)
         .exec(flushCookieJar)
         .feed(CitizenUserFeeder)
         .feed(ET3CaseLinkDataFeeder)
-        .exec(ET_Citizen.RespondentIntroduction)
+        .exec(ET_Citizen.RespondentCaseNumberCheck)
+        //.exec(ET_Citizen.RespondentIntroduction)
         .exec(Login.CUILogin)
-        //.doIfOrElse(session => session("userResponses").asOption[String].contains("multiple")) {
-        .doIf(session => session("userResponses").asOption[String].contains("multiple")) {
-          // Executes if the user already has cases assigned
-          exec(ET_Citizen.RespondentNewClaimReply)
-          }
-        .exec(ET_Citizen.RespondentSelfAssignment) 
+        .exec(ET_Citizen.BeforeYouContinue)
+          // Executes if the user has no cases assigned
+          .doIf(session => 
+                session("noCaseAssignedToUserCount").as[String].toInt != 0
+          ) {
+                exec(ET_Citizen.RespondentSelfAssignment) 
+            }
+          // Executes if the user already has cases assigned to them but not the case which has been fed into the user session
+          .doIf(session => 
+                session("correctCaseAssignedToUserCount").as[String].toInt == 0 && 
+                session("casesAssignedToUserCount").as[String].toInt != 0 
+          ) {
+              exec(ET_Citizen.RespondentNewClaimReply)
+              .exec(ET_Citizen.RespondentSelfAssignment) 
+            }
         .exec(ET_Citizen.RespondentET3)
         .exec(ET_Citizen.RespondentET3ClaimantInfo)
         .exec(ET_Citizen.RespondentET3ContestTheClaim)
+        .exec(ET_Citizen.RespondentET3CheckYourAnswers)
         //.exec(ET_CaseWorker.MakeAClaim)
         //.exec(ET_CaseWorker.dateCaseAccepted)
         //.exec(ET_CaseWorker.generateLetters)
+      }
     }
   
   
@@ -299,8 +335,9 @@ class ET_Simulation extends Simulation {
    // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
     //ETCreateClaim.inject(rampUsers(1) during (10))
     //ET3DataPrep.inject(rampUsers(25) during (20))
-    //ET3DataPrepProcessClaim.inject(rampUsers(20) during (20))
-    ET3CitizenRespondent.inject(rampUsers(1) during (20))
+    //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
+    ET3DataPrepCombined.inject(rampUsers(1) during (20))
+    //ET3CitizenRespondent.inject(rampUsers(20) during (20))
    // XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))

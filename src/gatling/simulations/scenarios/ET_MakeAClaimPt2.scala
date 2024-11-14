@@ -572,10 +572,18 @@ object ET_MakeAClaimPt2 {
   //===============================================
 	//Write session info to case to the E1Cases data file
 	//===============================================
-    .exec { session =>
+    /*.exec { session =>
     val fw = new BufferedWriter(new FileWriter("E1Cases.csv", true))
     try {
       fw.write(session("username").as[String] + "," + session("password").as[String] + "," + session("caseId").as[String] + "\r\n")
+    } finally fw.close()
+    session
+    } */
+
+    .exec { session =>
+    val fw = new BufferedWriter(new FileWriter("E1Cases.csv", true))
+    try {
+      fw.write(session("caseId").as[String] + "\r\n")
     } finally fw.close()
     session
     } 

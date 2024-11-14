@@ -102,9 +102,11 @@ object Login {
         .formParam("password", "#{password}")
         .formParam("selfRegistrationEnabled", "true")
         .formParam("_csrf", "#{csrf}")
-        .checkIf(session => session("userResponses").as[String] == "multiple") {
-        // Apply this check if the user already has responses/cases 
-          substring("ET3 Responses").exists
+        //.check(CsrfCheck.save))
+       .checkIf(session => session("userResponses").as[String] == "multiple") {
+        // Apply these check if the user already has responses/cases 
+         //substring("Before you continue").exists
+         CsrfCheck.save
         }
         .checkIf(session => session("userResponses").as[String] == "none") {
           // Apply this check if the user is a standard user
