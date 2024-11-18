@@ -233,7 +233,7 @@ object ET_Citizen {
 //If the newly linked case is not yet visible, refresh the case list. 
 //======================================================================
 
-  .doIf(session => session("caseDetailID").asOption[String].isEmpty) {
+  .asLongAs(session => session("caseDetailID").asOption[String].isEmpty) {
     group("ET_CTZ_055_RefreshCaseList") {
       exec(http("ET_CTZ_055_RefreshCaseList")
         .get(baseUrlET + "/case-list")
@@ -251,15 +251,6 @@ object ET_Citizen {
   /*======================================================================================
   ET3 Responses --> Select Claim --> Continue Link
   ==========================================================================================*/
-
- // group("ET_CTZ_060_ET3ResponseCaseList") {
- //     exec(http("ET_CTZ_060_005_ET3ResponseCaseList")
- //       .get(baseUrlET + "/case-list")
- //       .headers(CitUICommonHeader)
- //       .check(substring("ET3 Responses"))
- //       .check(status.is(200))
- //   )
- // } 
 
   group("ET_CTZ_070_ET3ResponseContinue") {
       exec(http("ET_CTZ_070_ET3ResponseContinue")
@@ -573,7 +564,6 @@ object ET_Citizen {
         .headers(CitUICommonHeader)
         .formParam("_csrf", "#{csrf}")
         .formParam("personalDetailsSection", "Yes")
-        //.formParam("saveForLater", "true")
         .check(CsrfCheck.save)
         .check(substring("Hearing format"))
         .check(status.is(200))
@@ -1054,7 +1044,6 @@ val RespondentET3CheckYourAnswers =
         .get(baseUrlET + "/application-submitted")
         .headers(CitUICommonHeader)
         .check(regex("<a href=getCaseDocument\\/([a-z0-9\\-]{36})").saveAs("et3DocId"))
-        //<a href=getCaseDocument/07232fd4-0643-4ed7-88c6-0fb7a0d9369b target="_blank">ET3-perftest_Employment.pdf</a>
         .check(substring("Your response has been submitted"))
         .check(status.is(200))
       )
