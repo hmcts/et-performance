@@ -44,12 +44,17 @@ class ET_Simulation extends Simulation {
   /* ******************************** */
 
   /* PERFORMANCE TEST CONFIGURATION */
-  val rampUpDurationMins = 1//2
-  val rampDownDurationMins = 1//2
-  val testDurationMins = 5//60
+  val rampUpDurationMins = 5 //1//2
+  val rampDownDurationMins = 5 //1//2
+  val testDurationMins = 60 //5//60
 
   val hourlyTarget: Double = 1//100
   val ratePerSec = hourlyTarget / 3600
+
+  //===================================
+  //Citizen ET3 Perf Test Config
+  //===================================
+  val et3RequestPerHour: Double = 17
 
   val numberOfPipelineUsers: Double = 100
 
@@ -160,14 +165,6 @@ class ET_Simulation extends Simulation {
         .feed(UserFeederET)
         .exec(ET_MakeAClaim.MakeAClaim)
         .exec(ET_MakeAClaimPt2.MakeAClaim)
-        //Caseworker Journey starts here
-        //.exec(flushHttpCache)
-        //.exec(flushCookieJar)
-        //.feed(CaseFlagUserFeederETXUI)
-        //.exec(Homepage.XUIHomePage)
-        //.pause(10)
-        //.exec(Login.XUILogin)
-        //.exec(ET_CaseWorker.MakeAClaim)
     }
 
 /**========================================================================
@@ -178,8 +175,6 @@ class ET_Simulation extends Simulation {
   val ET3DataPrepProcessClaim = scenario("ETCreateClaim")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
-        //.exec(flushHttpCache)
-        //.exec(flushCookieJar)
         .feed(CaseFlagUserFeederETXUI)
         .feed(CasesToProgress)
         .exec(Homepage.XUIHomePage)
@@ -204,7 +199,6 @@ class ET_Simulation extends Simulation {
         .exec(ET_MakeAClaimPt2.MakeAClaim)
         //Caseworker Journey starts here
         .feed(CaseFlagUserFeederETXUI)
-        .feed(CasesToProgress)
         .exec(Homepage.XUIHomePage)
         .exec(Login.XUILogin)
         .exec(ET_CaseWorker.MakeAClaim)
@@ -225,7 +219,6 @@ class ET_Simulation extends Simulation {
         .feed(CitizenUserFeeder)
         .feed(ET3CaseLinkDataFeeder)
         .exec(ET_Citizen.RespondentCaseNumberCheck)
-        //.exec(ET_Citizen.RespondentIntroduction)
         .exec(Login.CUILogin)
         .exec(ET_Citizen.BeforeYouContinue)
           // Executes if the user has no cases assigned
@@ -246,12 +239,9 @@ class ET_Simulation extends Simulation {
         .exec(ET_Citizen.RespondentET3ClaimantInfo)
         .exec(ET_Citizen.RespondentET3ContestTheClaim)
         .exec(ET_Citizen.RespondentET3CheckYourAnswers)
-        //.exec(ET_CaseWorker.MakeAClaim)
-        //.exec(ET_CaseWorker.dateCaseAccepted)
-        //.exec(ET_CaseWorker.generateLetters)
+        .exec(ET_Citizen.RespondentET3OpenCompletedForm)
       }
     }
-  
   
   /** Following scenario is for uploading the documents to existing cases  */
 
@@ -295,7 +285,8 @@ class ET_Simulation extends Simulation {
     }
   
   //defines the Gatling simulation model, based on the inputs
-  def simulationProfile(simulationType: String, userPerSecRate: Double, numberOfPipelineUsers: Double): Seq[OpenInjectionStep] = {
+  def simulationProfile(simulationType: String, userPerHourRate: Double, numberOfPipelineUsers: Double): Seq[OpenInjectionStep] = {
+    val userPerSecRate = userPerHourRate / 3600
     simulationType match {
       case "perftest" =>
         if (debugMode == "off") {
@@ -321,7 +312,8 @@ class ET_Simulation extends Simulation {
       case "perftest" | "pipeline" => //currently using the same assertions for a performance test and the pipeline
         if (debugMode == "off") {
           Seq(global.successfulRequests.percent.gte(95),
-            details("ET_460_Final_Check_Submit").successfulRequests.percent.gte(90))
+            //details("ET_460_Final_Check_Submit").successfulRequests.percent.gte(90))
+            details("ET_CTZ_520_SubmitET3Application").successfulRequests.percent.gte(90))
         }
         else {
           Seq(global.successfulRequests.percent.is(100))
@@ -332,12 +324,20 @@ class ET_Simulation extends Simulation {
   }
   
   setUp(
-   // ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
-    //ETCreateClaim.inject(rampUsers(1) during (10))
+   /*==============================================================================================================
+   Data Prep/Debugging Scenarios
+   ===============================================================================================================*/
+    //ETCreateClaim.inject(rampUsers(2) during (10))
     //ET3DataPrep.inject(rampUsers(25) during (20))
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
-    ET3DataPrepCombined.inject(rampUsers(1) during (20))
-    //ET3CitizenRespondent.inject(rampUsers(20) during (20))
+    //ET3DataPrepCombined.inject(rampUsers(2) during (20))
+    //ET3CitizenRespondent.inject(rampUsers(10) during (20))
+
+   /*==============================================================================================================
+   Performance Test Scenarios
+   ===============================================================================================================*/
+   ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption)
+    //ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))

@@ -91,8 +91,6 @@ object Login {
 
   val CUILogin =
 
-  // *****  Add logic for if citizen already has cases assigned *****
-
     group("CUI_XXX_Login") {
       exec(http("XUI_XXX_005_Login")
         .post(IdamUrl + "/login?client_id=et-syr&response_type=code&redirect_uri=" + baseURLETUIResp + "/oauth2/callback&state=#{state}&&ui_locales=en")
@@ -102,17 +100,7 @@ object Login {
         .formParam("password", "#{password}")
         .formParam("selfRegistrationEnabled", "true")
         .formParam("_csrf", "#{csrf}")
-        //.check(CsrfCheck.save))
-       .checkIf(session => session("userResponses").as[String] == "multiple") {
-        // Apply these check if the user already has responses/cases 
-         //substring("Before you continue").exists
-         CsrfCheck.save
-        }
-        .checkIf(session => session("userResponses").as[String] == "none") {
-          // Apply this check if the user is a standard user
-          substring("Self Assignment - Form").exists
-          CsrfCheck.save
-        })
-
-}
+        .check(CsrfCheck.save)
+        .check(substring("Before you continue")))
+    }
 }

@@ -146,9 +146,7 @@ object ET_Citizen {
       .check(substring("Case Details").count.saveAs("noCaseAssignedToUserCount"))
       .check(substring("ET3 Responses").count.saveAs("casesAssignedToUserCount"))
       .check(substring("#{caseId}").count.saveAs("correctCaseAssignedToUserCount"))
-      //.check(regex("<td class=\"govuk-table__cell\"><a href=\"/case-details/1728477517389226/([a-z0-9-]{36})?lng=en\"").saveAs("caseDetailID"))
       .check(regex("""<td class="govuk-table__cell"><a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
-      //<td class="govuk-table__cell"><a href="/case-details/1728477517389226/9ae2de8e-2e76-487a-89db-f2d400a81328?lng=en"
     )
   }
   .pause(MinThinkTime, MaxThinkTime)
@@ -223,12 +221,30 @@ object ET_Citizen {
         .formParam("selfAssignmentCheck", "Yes")
         //.formParam("hiddenErrorField", "")
         //.check(CsrfCheck.save)
+        .check(regex("""<td class="govuk-table__cell"><a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
         .check(substring("ET3 Responses"))
         .check(status.is(200))
       
     )
   } 
   .pause(MinThinkTime, MaxThinkTime)
+
+//======================================================================
+//If the newly linked case is not yet visible, refresh the case list. 
+//======================================================================
+
+  .doIf(session => session("caseDetailID").asOption[String].isEmpty) {
+    group("ET_CTZ_055_RefreshCaseList") {
+      exec(http("ET_CTZ_055_RefreshCaseList")
+        .get(baseUrlET + "/case-list")
+        .headers(CitUICommonHeader)
+        .check(CsrfCheck.save)
+        .check(status.is(200))
+        .check(regex("""<td class="govuk-table__cell"><a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
+      )
+    }
+  .pause(MinThinkTime, MaxThinkTime)
+  }
 
   val RespondentET3 =
 
@@ -929,7 +945,7 @@ val RespondentET3ContestTheClaim =
         .post(baseUrlET + "/respondent-contest-claim-reason??_csrf=#{csrf}")
         .headers(CitUICommonHeader)
         .formParam("_csrf", "#{csrf}")
-        .formParam("et3ResponseContestClaimDetails", "Performance test respondent is not liable for the claim because it is full of lies and blasphemy")
+        .formParam("et3ResponseContestClaimDetails", "Performance test respondent is not liable for the claim because it is full of lies")
         .formParam("contestClaimDocument", "(binary)")
         .formParam("submit", "true")
         .check(CsrfCheck.save)
@@ -1022,10 +1038,41 @@ val RespondentET3CheckYourAnswers =
         .header("Upgrade-Insecure-Requests", "1")
         //.headers(CitUICommonHeader)
         .check(substring("Case overview"))
-        //.check(status.is(200))
+        .check(status.is(200))
     )
   } 
   .pause(MinThinkTime, MaxThinkTime)
+
+  val RespondentET3OpenCompletedForm =
+
+  /*======================================================================================
+  Select Your Response Form (ET3) Link
+  ==========================================================================================*/
+
+   group("ET_CTZ_540_ET3ApplicationSubmitted") {
+      exec(http("ET_CTZ_540_ET3ApplicationSubmitted")
+        .get(baseUrlET + "/application-submitted")
+        .headers(CitUICommonHeader)
+        .check(regex("<a href=getCaseDocument\\/([a-z0-9\\-]{36})").saveAs("et3DocId"))
+        //<a href=getCaseDocument/07232fd4-0643-4ed7-88c6-0fb7a0d9369b target="_blank">ET3-perftest_Employment.pdf</a>
+        .check(substring("Your response has been submitted"))
+        .check(status.is(200))
+      )
+   }
+   .pause(MinThinkTime, MaxThinkTime)
+
+  /*======================================================================================
+  Select the ET3 form link to download document
+  ==========================================================================================*/
+
+   .group("ET_CTZ_550_ET3GetCaseDocument") {
+      exec(http("ET_CTZ_550_ET3GetCaseDocument")
+        .get(baseUrlET + "/getCaseDocument/#{et3DocId}")
+        .headers(CitUICommonHeader)
+        .check(status.is(200))
+      )
+   }
+   .pause(MinThinkTime, MaxThinkTime)
 
   /*
     .exec { session =>

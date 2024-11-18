@@ -476,7 +476,7 @@ object ET_CaseWorker {
     .exec { session =>
     val fw = new BufferedWriter(new FileWriter("E3CaseLinkData.csv", true))
     try {
-      fw.write(session("ethosId").as[String] + "," + session("caseId").as[String] + "," + session("respondentRandString").as[String] + "Respondent" + "," + "perftest" + "," + "Employment" + "\r\n")
+      fw.write(session("ethosId").as[String] + "," + session("caseId").as[String] + "," + session("respondentRandString").as[String] + "Respondent" + "," + session("ClaimantFirstName").as[String] + "," + session("ClaimantLastName").as[String] + "\r\n")
     } finally fw.close()
 
         session

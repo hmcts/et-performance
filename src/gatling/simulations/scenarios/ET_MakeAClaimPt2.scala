@@ -40,7 +40,8 @@ object ET_MakeAClaimPt2 {
       "ETDobDay" -> Common.getDay(),
       "ETDobMonth" -> Common.getMonth(),
       "payBeforeTax" -> now.plusYears(5 + rnd.nextInt(15)).format(patternYear),
-      "acasCertNum" -> ("R" + Common.randomNumber(6) + "/" + Common.randomNumber(2) + "/" + Common.randomNumber(2)),
+      //"acasCertNum" -> ("R" + Common.randomNumber(6) + "/" + Common.randomNumber(2) + "/" + Common.randomNumber(2)),
+      "acasCertNum" -> ("R807115/23/89"),
       "payAfterTax" -> now.plusYears(2 + rnd.nextInt(3)).format(patternYear)))
      // "acasCertNum" -> ("R" + Common.randomNumber(6) + "/" + Common.randomNumber(2) + "/" + Common.randomNumber(2))))
 
