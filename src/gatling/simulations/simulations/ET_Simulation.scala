@@ -44,8 +44,8 @@ class ET_Simulation extends Simulation {
   /* ******************************** */
 
   /* PERFORMANCE TEST CONFIGURATION */
-  val rampUpDurationMins = 5 //1//2
-  val rampDownDurationMins = 5 //1//2
+  val rampUpDurationMins = 2 //1//2
+  val rampDownDurationMins = 2 //1//2
   val testDurationMins = 60 //5//60
 
   val hourlyTarget: Double = 1//100
@@ -330,13 +330,13 @@ class ET_Simulation extends Simulation {
     //ETCreateClaim.inject(rampUsers(2) during (10))
     //ET3DataPrep.inject(rampUsers(25) during (20))
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
-    //ET3DataPrepCombined.inject(rampUsers(2) during (20))
+    ET3DataPrepCombined.inject(rampUsers(20) during (20))
     //ET3CitizenRespondent.inject(rampUsers(10) during (20))
 
    /*==============================================================================================================
    Performance Test Scenarios
    ===============================================================================================================*/
-   ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption)
+   //ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption)
     //ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))

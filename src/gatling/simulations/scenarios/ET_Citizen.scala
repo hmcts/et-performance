@@ -146,7 +146,7 @@ object ET_Citizen {
       .check(substring("Case Details").count.saveAs("noCaseAssignedToUserCount"))
       .check(substring("ET3 Responses").count.saveAs("casesAssignedToUserCount"))
       .check(substring("#{caseId}").count.saveAs("correctCaseAssignedToUserCount"))
-      .check(regex("""<td class="govuk-table__cell"><a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
+      .check(regex("""<td class="govuk-table__cell"> <a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
     )
   }
   .pause(MinThinkTime, MaxThinkTime)
@@ -221,7 +221,7 @@ object ET_Citizen {
         .formParam("selfAssignmentCheck", "Yes")
         //.formParam("hiddenErrorField", "")
         //.check(CsrfCheck.save)
-        .check(regex("""<td class="govuk-table__cell"><a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
+        .check(regex("""<td class="govuk-table__cell"> <a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
         .check(substring("ET3 Responses"))
         .check(status.is(200))
       
@@ -240,7 +240,7 @@ object ET_Citizen {
         .headers(CitUICommonHeader)
         .check(CsrfCheck.save)
         .check(status.is(200))
-        .check(regex("""<td class="govuk-table__cell"><a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
+        .check(regex("""<td class="govuk-table__cell"> <a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
       )
     }
   .pause(MinThinkTime, MaxThinkTime)
