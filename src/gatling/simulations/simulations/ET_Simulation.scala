@@ -18,7 +18,7 @@ class ET_Simulation extends Simulation {
   val UserFeederET = csv("UserDataET.csv").circular
   val CasesToProgress = csv("ETCasesToProgress.csv").circular
   val ET3CaseLinkDataFeeder = csv("E3CaseLinkData.csv")
-  val CitizenUserFeeder = csv("EtCitizenUsers.csv")
+  val CitizenUserFeeder = csv("ETCitizenUsers.csv")
   val CaseLinkUserFeederETXUI = csv("ETCaseLinkUsers.csv").circular
   val CaseFlagUserFeederETXUI = csv("ETCaseFlagUsers.csv").circular
   val CaseLinkFeeder = csv("CaseLinkCases.csv").circular
