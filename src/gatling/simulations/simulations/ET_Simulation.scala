@@ -331,12 +331,12 @@ class ET_Simulation extends Simulation {
     //ET3DataPrep.inject(rampUsers(25) during (20))
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
     //ET3DataPrepCombined.inject(rampUsers(20) during (20))
-    ET3CitizenRespondent.inject(rampUsers(2) during (20))
+    //ET3CitizenRespondent.inject(rampUsers(2) during (20))
 
    /*==============================================================================================================
    Performance Test Scenarios
    ===============================================================================================================*/
-   //ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption)
+   ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption)
     //ETCreateClaim.inject(simulationProfile(testType, ratePerSec, numberOfPipelineUsers)).pauses(pauseOption)
    // XUIETFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
   //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
