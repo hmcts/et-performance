@@ -92,7 +92,7 @@ object Login {
   val CUILogin =
 
     group("CUI_XXX_Login") {
-      exec(http("XUI_XXX_005_Login")
+      exec(http("CUI_XXX_005_Login")
         .post(IdamUrl + "/login?client_id=et-syr&response_type=code&redirect_uri=" + baseURLETUIResp + "/oauth2/callback&state=#{state}&&ui_locales=en")
         .headers(commonHeader1)
         .headers(postHeader)
