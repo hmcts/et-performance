@@ -331,7 +331,7 @@ class ET_Simulation extends Simulation {
     //ET3DataPrep.inject(rampUsers(25) during (20))
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
     //ET3DataPrepCombined.inject(rampUsers(20) during (20))
-    //ET3CitizenRespondent.inject(rampUsers(2) during (20))
+    //ET3CitizenRespondent.inject(rampUsers(10) during (20))
 
    /*==============================================================================================================
    Performance Test Scenarios
