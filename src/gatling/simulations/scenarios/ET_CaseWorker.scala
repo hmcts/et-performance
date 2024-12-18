@@ -463,7 +463,7 @@ object ET_CaseWorker {
         .headers(Headers.xuiHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")
         .check(jsonPath("$.case_id").is("#{caseId}"))
-        .check(jsonPath("$.tabs[17].fields[17].value").saveAs("ethosId"))
+        .check(jsonPath("$.tabs[18].fields[17].value").saveAs("ethosId"))
         .check(status.in(200,204)))
 
       .exec(Common.activity)

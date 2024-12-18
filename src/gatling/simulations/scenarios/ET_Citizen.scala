@@ -906,6 +906,56 @@ val RespondentET3ContestTheClaim =
         .headers(CitUICommonHeader)
         .formParam("_csrf", "#{csrf}")
         .formParam("contestClaimSection", "Yes")
+        .check(substring("Your response form"))
+        .check(status.is(200))
+      )
+  }
+   .pause(MinThinkTime, MaxThinkTime)
+
+
+val RespondentET3EmployersContractClaim =
+
+  /*======================================================================================
+  Select Employers Contract Claim --> Click Link
+  ==========================================================================================*/
+
+  group("ET_CTZ_500_StartEmployersContractClaim") {
+      exec(http("ET_CTZ_500_005_StartEmployersContractClaim")
+        .get(baseUrlET + "/employers-contract-claim")
+        .headers(CitUICommonHeader)
+        .check(CsrfCheck.save)
+        .check(substring("Employer’s Contract Claim"))
+        .check(status.is(200))
+      )
+  }
+   .pause(MinThinkTime, MaxThinkTime)
+
+  /*======================================================================================
+  Does the respondent wish to make an Employer’s Contract Claim? --> No --> Save & Continue
+  ==========================================================================================*/
+
+  .group("ET_CTZ_510_EmployersContractClaim") {
+      exec(http("ET_CTZ_510_005_EmployersContractClaim")
+        .post(baseUrlET + "/employers-contract-claim")
+        .headers(CitUICommonHeader)
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et3ResponseEmployerClaim", "No")
+        .check(substring("Check your answers"))
+        .check(status.is(200))
+      )
+  }
+   .pause(MinThinkTime, MaxThinkTime)
+
+  /*======================================================================================
+  Yes completed this section --> Save & Continue
+  ==========================================================================================*/
+
+  .group("ET_CTZ_520_CheckYourAnswers") {
+      exec(http("ET_CTZ_520_005_CheckYourAnswers")
+        .post(baseUrlET + "/check-your-answers-employers-contract-claim")
+        .headers(CitUICommonHeader)
+        .formParam("_csrf", "#{csrf}")
+        .formParam("employersContractClaimSection", "Yes")
         .check(substring("Your response form (ET3)"))
         .check(status.is(200))
       )
@@ -918,7 +968,7 @@ val RespondentET3CheckYourAnswers =
   Response Task List
   ==========================================================================================*/
 
-      exec(http("ET_CTZ_500_ET3ResponseTaskList")
+      exec(http("ET_CTZ_530_ET3ResponseTaskList")
         .get(baseUrlET + "/respondent-response-task-list")
         .headers(CitUICommonHeader)
         .check(substring("Your response form (ET3)"))
@@ -930,7 +980,7 @@ val RespondentET3CheckYourAnswers =
   Select Check your answers link
   ==========================================================================================*/
 
-      .exec(http("ET_CTZ_510_ET3CheckYourAnswers")
+      .exec(http("ET_CTZ_540_ET3CheckYourAnswers")
         .get(baseUrlET + "/check-your-answers-et3")
         .headers(CitUICommonHeader)
         .check(substring("Check your answers"))
@@ -942,8 +992,8 @@ val RespondentET3CheckYourAnswers =
   Submit ET3 Form
   ==========================================================================================*/
 
-  .group("ET_CTZ_520_SubmitET3Application") {
-    exec(http("ET_CTZ_520_005_SubmitET3Application")
+  .group("ET_CTZ_540_SubmitET3Application") {
+    exec(http("ET_CTZ_540_005_SubmitET3Application")
       .post(baseUrlET + "/check-your-answers-et3")
       .headers(CitUICommonHeader)
       .formParam("_csrf", "#{csrf}")
@@ -958,7 +1008,7 @@ val RespondentET3CheckYourAnswers =
   Select close and return to case overview
   ==========================================================================================*/
 
-      .exec(http("ET_CTZ_530_ET3ResponseContinue")
+      .exec(http("ET_CTZ_560_ET3ResponseContinue")
         .get(baseUrlET + "/case-details/#{caseId}/#{caseDetailID}?lng=en")
         .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .header("Accept-Encoding", "gzip, deflate, br, zstd")
@@ -984,7 +1034,7 @@ val RespondentET3CheckYourAnswers =
   Select Your Response Form (ET3) Link
   ==========================================================================================*/
 
-      exec(http("ET_CTZ_540_ET3ApplicationSubmitted")
+      exec(http("ET_CTZ_570_ET3ApplicationSubmitted")
         .get(baseUrlET + "/application-submitted")
         .headers(CitUICommonHeader)
         .check(regex("<a href=getCaseDocument\\/([a-z0-9\\-]{36})").saveAs("et3DocId"))
@@ -997,7 +1047,7 @@ val RespondentET3CheckYourAnswers =
   Select the ET3 form link to download document
   ==========================================================================================*/
 
-      .exec(http("ET_CTZ_550_ET3GetCaseDocument")
+      .exec(http("ET_CTZ_580_ET3GetCaseDocument")
         .get(baseUrlET + "/getCaseDocument/#{et3DocId}")
         .headers(CitUICommonHeader)
         .check(status.is(200))

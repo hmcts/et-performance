@@ -18,7 +18,7 @@ class ET_Simulation extends Simulation {
   val UserFeederET = csv("UserDataET.csv").circular
   val CasesToProgress = csv("ETCasesToProgress.csv").circular
   val ET3CaseLinkDataFeeder = csv("E3CaseLinkData.csv")
-  val CitizenUserFeeder = csv("ETCitizenUsers.csv")
+  val CitizenUserFeeder = csv("ETCitizenUsers.csv").circular
   val CaseLinkUserFeederETXUI = csv("ETCaseLinkUsers.csv").circular
   val CaseFlagUserFeederETXUI = csv("ETCaseFlagUsers.csv").circular
   val CaseLinkFeeder = csv("CaseLinkCases.csv").circular
@@ -65,13 +65,13 @@ class ET_Simulation extends Simulation {
   }
 
 
-  val httpProtocol = Environment.HttpProtocol
-    .baseUrl(BaseURL)
-    .disableCaching
-    .disableAutoReferer
-   // .doNotTrackHeader("1")
-    .inferHtmlResources()
-    .silentResources
+    val httpProtocol = Environment.HttpProtocol
+      .baseUrl(BaseURL)
+      .disableCaching
+      .disableAutoReferer
+    // .doNotTrackHeader("1")
+      .inferHtmlResources()
+      //.silentResources
 
   before{
     println(s"Test Type: ${testType}")
@@ -238,6 +238,7 @@ class ET_Simulation extends Simulation {
         .exec(ET_Citizen.RespondentET3)
         .exec(ET_Citizen.RespondentET3ClaimantInfo)
         .exec(ET_Citizen.RespondentET3ContestTheClaim)
+        //.exec(ET_Citizen.RespondentET3EmployersContractClaim) //Commented out as only visible if claim type is Breach of Contract
         .exec(ET_Citizen.RespondentET3CheckYourAnswers)
         .exec(ET_Citizen.RespondentET3OpenCompletedForm)
       }
@@ -331,7 +332,7 @@ class ET_Simulation extends Simulation {
     //ET3DataPrep.inject(rampUsers(25) during (20))
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
     //ET3DataPrepCombined.inject(rampUsers(20) during (20))
-    //ET3CitizenRespondent.inject(rampUsers(10) during (20))
+    //ET3CitizenRespondent.inject(rampUsers(1) during (20))
 
    /*==============================================================================================================
    Performance Test Scenarios
