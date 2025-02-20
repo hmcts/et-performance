@@ -39,6 +39,6 @@ object ET_CaseFileView {
         .check(substring("categories")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-    .pause(20)
+    .pause(20) // required delay as per original script
   
 }
