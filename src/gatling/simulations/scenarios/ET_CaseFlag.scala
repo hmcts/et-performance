@@ -50,7 +50,11 @@ object ET_CaseFlag {
           .check(jsonPath("$.event_token").optional.saveAs("event_token"))
           .check(jsonPath("$.case_fields[3].value.partyName").saveAs("respondentName"))
           .check(jsonPath("$.case_fields[1].value.partyName").saveAs("claimantName"))
-      
+          //.check(jsonPath("$.case_fields[3].value.details[0].value.path[0].id").saveAs("partyId"))
+          //.check(jsonPath("$.case_fields[3].value.details[0].value.path[1].id").saveAs("reasonableAdjustmentsId"))
+          //.check(jsonPath("$.case_fields[3].value.details[0].value.path[2].id").saveAs("buildingAccessId"))
+          //.check(jsonPath("$.case_fields[3].value.details[0].value.dateTimeModified").saveAs("dateTimeModified"))
+          
         )
         .exec(http("ET_CaseFlag_030_020_InitiateCaseFlag")
           .get("/workallocation/case/tasks/#{caseId}/event/createFlag/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")

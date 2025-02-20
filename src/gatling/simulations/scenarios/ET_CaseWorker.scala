@@ -63,7 +63,7 @@ object ET_CaseWorker {
     .exec(Common.caseActivityGet)
     .exec(Common.isAuthenticated)
 
-    .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(xuiURL.replace("https://", "")).saveAs("XSRFToken")))
+    //.exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(xuiURL.replace("https://", "")).saveAs("XSRFToken")))
 
     .pause(MinThinkTime, MaxThinkTime)
 
@@ -481,12 +481,5 @@ object ET_CaseWorker {
 
         session
     } 
-
-   // val fw = new BufferedWriter(new FileWriter("E3CaseLinkDataRespondent.csv", true))
-   // try {
-   //   fw.write(session("username").as[String] + "," + session("password").as[String] + "," + session("caseId").as[String] + "," + "(respondentRandString)".as[String] + "," + "Respondent" + "\r\n")
-   // } finally fw.close()
-
-
 
 }

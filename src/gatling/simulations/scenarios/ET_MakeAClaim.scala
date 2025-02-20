@@ -30,7 +30,7 @@ object ET_MakeAClaim {
       "ETRandomString" -> (Common.randomString(7))))
 
     /*======================================================================================
-    * Load the home page
+    * Load the ET UI SYA home page
     ======================================================================================*/
 
     .exec(flushHttpCache)
@@ -49,8 +49,6 @@ object ET_MakeAClaim {
 
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-
     /*======================================================================================
     * Click on 'Start now'
     ======================================================================================*/
@@ -62,8 +60,6 @@ object ET_MakeAClaim {
         .check(substring("Before you continue")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-
     /*======================================================================================
     * Click on 'Continue'
     ======================================================================================*/
@@ -76,8 +72,7 @@ object ET_MakeAClaim {
         .check(substring("Claiming on your own")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-
+    
  /*   /*======================================================================================
     * Enter your work postcode
     ======================================================================================*/

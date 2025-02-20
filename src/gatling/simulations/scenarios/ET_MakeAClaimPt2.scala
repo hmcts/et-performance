@@ -76,7 +76,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Are you still working for the organisation or person you're making your claim against? - I'm working a notice period for the respondent
     ===============================================================================================*/
@@ -94,7 +93,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Employment details
     ===============================================================================================*/
@@ -111,7 +109,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Employment start date")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Employment start date
@@ -132,7 +129,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * When does your notice period end?
     ===============================================================================================*/
@@ -152,7 +148,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Is your notice period in weeks or months?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Is your notice period in weeks or months? Months
@@ -188,7 +183,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * What are your average weekly hours?
     ===============================================================================================*/
@@ -205,7 +199,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Your pay")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Your pay
@@ -226,7 +219,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Did the respondent make any contributions to your pension? - Not sure
     ===============================================================================================*/
@@ -244,7 +236,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Do you or did you receive any employee benefits?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Do or did you receive any employee benefits? - No
@@ -264,7 +255,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * What is the name of the respondent you're making the claim against?
     ===============================================================================================*/
@@ -282,7 +272,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * What is the address of Respondent?
     ===============================================================================================*/
@@ -291,7 +280,6 @@ object ET_MakeAClaimPt2 {
       exec(Common.postcodeLookup)
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Respondent Address LookUp
@@ -316,7 +304,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Did you work at address? - yes
     ===============================================================================================*/
@@ -333,7 +320,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Do you have an Acas certificate number for")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Do you have an Acas certificate number for respondent? - Yes
@@ -352,7 +338,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Check the respondent details
     ===============================================================================================*/
@@ -365,7 +350,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Have you completed this section?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Employment/Respondent submit
@@ -385,7 +369,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Describe what happened to you link
     ===============================================================================================*/
@@ -398,7 +381,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("What type of discrimination are you claiming?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * What type of discrimination are you claiming? - age, race and sex
@@ -419,7 +401,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Describe what happened to you
     ===============================================================================================*/
@@ -438,7 +419,6 @@ object ET_MakeAClaimPt2 {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * What do you want if your claim is successful? - Compensation only
     ===============================================================================================*/
@@ -455,7 +435,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("What compensation are you seeking?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * What compensation are you seeking?
@@ -474,7 +453,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Whistleblowing claims")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Whistleblowing claims - no
@@ -512,7 +490,6 @@ object ET_MakeAClaimPt2 {
       }
       .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Have you completed this section?
     ===============================================================================================*/
@@ -541,7 +518,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Check your answers")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Final submission
