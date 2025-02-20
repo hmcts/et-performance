@@ -110,8 +110,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-    //Redirect: GET https://et-sya.perftest.platform.hmcts.net/single-or-multiple-claim?lng=en
-
     /*======================================================================================
     * Are you making a claim on your own or with others? - Own claim
     ======================================================================================*/
@@ -128,8 +126,6 @@ object ET_MakeAClaim {
         .check(substring("Where you can make your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-    // Redirect: GET https://et-sya.perftest.platform.hmcts.net/claim-jurisdiction-selection?lng=en
 
     /*======================================================================================
     * Where you can make your claim ? - England & Wales
@@ -148,8 +144,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-    // Redirect: GET https://et-sya.perftest.platform.hmcts.net/do-you-have-an-acas-no-many-resps?lng=en
-
     /*===============================================================================================
     * Do you have an ‘Acas early conciliation certificate’ for the respondent or respondents you're claiming against? - Yes
     ===============================================================================================*/
@@ -166,8 +160,6 @@ object ET_MakeAClaim {
         .check(substring("What type of claim are you making?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-    // Redirect: GET https://et-sya.perftest.platform.hmcts.net/type-of-claim?lng=en
 
     /*===============================================================================================
     * What type of claim are you making? - Discrimination, Whistle blowing
@@ -191,13 +183,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-    .exec {
-      session =>
-        println(session)
-        session
-    }
-
     /*===============================================================================================
     * Log in
     ===============================================================================================*/
@@ -217,10 +202,9 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-      /*===============================================================================================
-        * You do not have to complete your claim in one go - Continue
-        ===============================================================================================*/
+  /*===============================================================================================
+    * You do not have to complete your claim in one go - Continue
+    ===============================================================================================*/
 
       .group("ET_100_One_Go") {
         exec(http("ET_100_005_One_Go")
@@ -229,7 +213,6 @@ object ET_MakeAClaim {
           .check(substring("Steps to making your claim")))
       }
       .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Personal Details - Click Link
@@ -243,7 +226,6 @@ object ET_MakeAClaim {
         .check(substring("What is your date of birth?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * What is your date of birth?
@@ -264,7 +246,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Sex and preferred title
     ===============================================================================================*/
@@ -283,7 +264,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * What is your contact or home address? - Postcode look up
     ===============================================================================================*/
@@ -292,7 +272,6 @@ object ET_MakeAClaim {
         exec(Common.postcodeLookup)
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Enter address details
@@ -315,7 +294,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * What is your telephone number?
     ===============================================================================================*/
@@ -333,8 +311,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
-
     /*===============================================================================================
     * How would you like to be contacted about your claim?
     ===============================================================================================*/
@@ -351,7 +327,6 @@ object ET_MakeAClaim {
         .check(substring("Would you be able to take part in hearings by video and phone?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Would you be able to take part in hearings by video and phone? - Yes, I can take part in video hearings
@@ -371,7 +346,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
     /*===============================================================================================
     * Extra support during your case? - No, I do not need any extra support at this time
     ===============================================================================================*/
@@ -389,7 +363,6 @@ object ET_MakeAClaim {
         .check(substring("Have you completed this section?")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Have you completed this section?

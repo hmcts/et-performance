@@ -35,10 +35,6 @@ object ET_CaseWorker {
   updatedSession
 })
 
-  //exec(_.setAll(
-    //  "ETCWRandomString" -> (Common.randomString(7)),
-      //"claimAcceptedDate" -> (Common.getDateClaimAccepted())))
-
     /*======================================================================================
     * Open Case
     ======================================================================================*/
@@ -436,7 +432,6 @@ object ET_CaseWorker {
         .check(jsonPath("$.event_token").saveAs("event_token"))
         .check(substring("generateCorrespondence")))
     }
-
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
   /*======================================================================================

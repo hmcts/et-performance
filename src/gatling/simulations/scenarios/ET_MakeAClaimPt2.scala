@@ -40,12 +40,10 @@ object ET_MakeAClaimPt2 {
       "ETDobDay" -> Common.getDay(),
       "ETDobMonth" -> Common.getMonth(),
       "payBeforeTax" -> now.plusYears(5 + rnd.nextInt(15)).format(patternYear),
-      //"acasCertNum" -> ("R" + Common.randomNumber(6) + "/" + Common.randomNumber(2) + "/" + Common.randomNumber(2)),
       "acasCertNum" -> ("R807115/23/89"),
       "payAfterTax" -> now.plusYears(2 + rnd.nextInt(3)).format(patternYear)))
-     // "acasCertNum" -> ("R" + Common.randomNumber(6) + "/" + Common.randomNumber(2) + "/" + Common.randomNumber(2))))
 
-      /*===============================================================================================
+    /*===============================================================================================
     * Employment Status link click
     ===============================================================================================*/
 
@@ -57,7 +55,6 @@ object ET_MakeAClaimPt2 {
         .check(substring("Did you work for the organisation or person you’re making your claim against")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
     /*===============================================================================================
     * Did you work for the organisation or person you’re making your claim against? - yes
@@ -529,7 +526,6 @@ object ET_MakeAClaimPt2 {
         .headers(CommonHeader)
         .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .check(substring("Your claim has been submitted"))
-        // .check(regex("""<dd class="govuk-summary-list__value">(\w{16})""".stripMargin).saveAs("submissionReference")))
         .check(regex("""<dd class="govuk-summary-list__value">\s*(\d+)\s*</dd>""".stripMargin).saveAs("submissionReference"))
         .check(regex("""<dd class="govuk-summary-list__value">\s*(\d+)\s*</dd>""".stripMargin).saveAs("caseId")))
     }
