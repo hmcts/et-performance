@@ -12,11 +12,8 @@ object ET_CaseCreation {
 
   
   val IdamURL = Environment.idamURL
-
-
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
-
   val CommonHeader = Environment.commonHeader
 
   val postcodeFeeder = csv("postcodes.csv").circular
