@@ -26,7 +26,7 @@ object ET_CaseDocUpload2 {
      ==========================================================================================*/
 
     .group("ET_CW_040_UploadDocs") {
-      exec(http("ET_CW_040_StartUploadDoc")
+      exec(http("ET_CW_040_005_StartUploadDoc")
         .get("/data/internal/cases/#{caseId}/event-triggers/uploadDocument?ignore-warning=false")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-start-event-trigger.v2+json;charset=UTF-8")
@@ -43,11 +43,10 @@ object ET_CaseDocUpload2 {
     * Upload ACAS
     ======================================================================================*/
   
-    .group("XUI_Divorce_170_UploadACAS2") {
-      exec(http("XUI_Divorce_170_005_UploadACAS2")
+    .group("ET_CW_050_UploadACAS2") {
+      exec(http("ET_CW_050_005_UploadACAS2")
         .post("/documentsv2")
         .headers(commonHeaderUpload)
-        //.headers(postHeader1)
         .header("accept", "application/json, text/plain, */*")
         .header("content-type", "multipart/form-data; boundary=----WebKitFormBoundaryKKB3qAYvMA5Pn40B")
         .header("X-Xsrf-Token", "${XSRFToken}")
@@ -67,8 +66,8 @@ object ET_CaseDocUpload2 {
     * Upload Acknowledgement
     ======================================================================================*/
   
-    .group("XUI_Divorce_170_UploadACK2") {
-      exec(http("XUI_Divorce_170_005_UploadACK2")
+    .group("ET_CW_060_UploadACK2") {
+      exec(http("ET_CW_060_005_UploadACK2")
         .post("/documentsv2")
         .headers(CommonHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -90,8 +89,8 @@ object ET_CaseDocUpload2 {
     * Upload Notice
     ======================================================================================*/
   
-    .group("XUI_Divorce_170_UploadNotice2") {
-      exec(http("XUI_Divorce_170_005_UploadNotice2")
+    .group("ET_CW_070_UploadNotice2") {
+      exec(http("ET_CW_070_005_UploadNotice2")
         .post("/documentsv2")
         .headers(CommonHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -113,8 +112,8 @@ object ET_CaseDocUpload2 {
     * Upload TribunalCase
     ======================================================================================*/
   
-    .group("XUI_Divorce_170_UploadTribunalCaseFile2") {
-      exec(http("XUI_Divorce_170_005_UploadTribunalCaseFile2")
+    .group("ET_CW_080_UploadTribunalCaseFile2") {
+      exec(http("ET_CW_080_005_UploadTribunalCaseFile2")
         .post("/documentsv2")
         .headers(CommonHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -136,8 +135,8 @@ object ET_CaseDocUpload2 {
     * Upload TribunalOrder
     ======================================================================================*/
   
-    .group("XUI_Divorce_170_UploadTribunalOrder2") {
-      exec(http("XUI_Divorce_170_005_UploadTribunalOrder2")
+    .group("ET_CW_090_UploadTribunalOrder2") {
+      exec(http("ET_CW_090_005_UploadTribunalOrder2")
         .post("/documentsv2")
         .headers(CommonHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -159,8 +158,8 @@ object ET_CaseDocUpload2 {
     * Upload Other
     ======================================================================================*/
   
-    .group("XUI_Divorce_170_UploadOther2") {
-      exec(http("XUI_Divorce_170_005_UploadOther2")
+    .group("ET_CW_100_UploadOther2") {
+      exec(http("ET_CW_100_005_UploadOther2")
         .post("/documentsv2")
         .headers(CommonHeader)
         .header("accept", "application/json, text/plain, */*")
@@ -182,8 +181,8 @@ object ET_CaseDocUpload2 {
     * Click Continue
     ======================================================================================*/
   
-    .group("XUI_Divorce_180_ConfirmDocumentUploads") {
-      exec(http("XUI_Divorce_180_005_ConfirmDocumentUploads")
+    .group("ET_CW_110_ConfirmDocumentUploads") {
+      exec(http("ET_CW_110_005_ConfirmDocumentUploads")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=uploadDocument1")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
@@ -197,8 +196,8 @@ object ET_CaseDocUpload2 {
   * Click Submit
   ======================================================================================*/
 
-    .group("CD_CreateClaim_400_NotifyDetailsEventSubmit") {
-      exec(http("CD_CreateClaim_370_EventSubmit")
+    .group("ET_CW_CreateClaim_120_NotifyDetailsEventSubmit") {
+      exec(http("ET_CW_CreateClaim_120_005_NotifyDetailsEventSubmit")
         .post("/data/cases/#{caseId}/events")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.create-event.v2+json;charset=UTF-8")
@@ -207,7 +206,7 @@ object ET_CaseDocUpload2 {
         .check(substring("#{caseId}"))
         .check(status.in(200, 201)))
 
-      .exec(http("CD_CreateClaim_400_010_case")
+      .exec(http("ET_CW_CreateClaim_120_010_case")
         .get("/data/internal/cases/#{caseId}")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")

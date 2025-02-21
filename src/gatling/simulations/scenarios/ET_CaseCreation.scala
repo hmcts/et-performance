@@ -24,7 +24,7 @@ object ET_CaseCreation {
       "ETCWRandomString" -> (Common.randomString(7))))
   
     /*======================================================================================
-    Create Civil Claim - Create Case
+    Create Claim - Create Case
     ==========================================================================================*/
 
     .group("ET_CW_040_StartCreateCase") {
@@ -38,11 +38,11 @@ object ET_CaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
 
     /*======================================================================================
-     * Create Civil Claim - Initiate Case
+     * Create Claim - Initiate Case
     ==========================================================================================*/
 
-    .group("ET_CW_040_StartCreateCase") {
-      exec(http("ET_CW_040_StartCreateCase1")
+    .group("ET_CW_050_StartCreateCase") {
+      exec(http("ET_CW_050_005_StartCreateCase")
         .get("/data/internal/case-types/ET_EnglandWales/event-triggers/initiateCase?ignore-warning=false")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-start-case-trigger.v2+json;charset=UTF-8")
@@ -53,11 +53,11 @@ object ET_CaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      * Create Civil Claim - Initiate case 1
+      * Create Claim - Initiate case 1
     ==========================================================================================*/
 
-    .group("ET_CW_040_StartCreateCase1") {
-      exec(http("ET_CW_040__StartCreateCase1")
+    .group("ET_CW_060_StartCreateCase1") {
+      exec(http("ET_CW_060_005_StartCreateCase1")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase1")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
@@ -69,11 +69,11 @@ object ET_CaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     * Create Civil Claim - Initiate case 2 - claimant details
+     * Create Claim - Initiate case 2 - claimant details
     ========================================================================================*/
 
-    .group("ET_CW_040__StartCreateCase2") {
-      exec(http("ET_CW_040_StartCreateCase2")
+    .group("ET_CW_070_StartCreateCase2") {
+      exec(http("ET_CW_070_005_StartCreateCase2")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase2")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
@@ -84,11 +84,11 @@ object ET_CaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     * Create Civil Claim - Initiate case 3 - Respondent
+     * Create Claim - Initiate case 3 - Respondent
     ==========================================================================================*/
 
-    .group("ET_CW_040_StartCreateCase3") {
-      exec(http("ET_CW_040_StartCreateCase3")
+    .group("ET_CW_080_StartCreateCase3") {
+      exec(http("ET_CW_080_005_StartCreateCase3")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase3")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
@@ -100,11 +100,11 @@ object ET_CaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     * Create Civil Claim - Initiate case 4 - Is address same for both
+     * Create Claim - Initiate case 4 - Is address same for both
     ==========================================================================================*/
 
-    .group("ET_CW_040_StartCreateCase4") {
-      exec(http("ET_CW_040_StartCreateCase4")
+    .group("ET_CW_090_StartCreateCase4") {
+      exec(http("ET_CW_090_005_StartCreateCase4")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase4")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
@@ -115,11 +115,11 @@ object ET_CaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      * Create Civil Claim - Initiate case 7 -claimant occupation details
+      * Create - Initiate case 7 -claimant occupation details
     ==========================================================================================*/
 
-    .group("ET_CW_040_StartCreateCase4") {
-      exec(http("ET_CW_040_StartCreateCase7")
+    .group("ET_CW_100_StartCreateCase4") {
+      exec(http("ET_CW_100_005_StartCreateCase7")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase7")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
@@ -130,11 +130,11 @@ object ET_CaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      * Create Civil Claim - Initiate case 8 -Is claimant represented by any one
+      * Create Claim - Initiate case 8 -Is claimant represented by any one
     ==========================================================================================*/
 
-    .group("ET_CW_040_StartCreateCase8") {
-      exec(http("ET_CW_040_StartCreateCase8")
+    .group("ET_CW_110_StartCreateCase8") {
+      exec(http("ET_CW_110_005_StartCreateCase8")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase8")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
@@ -145,11 +145,11 @@ object ET_CaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     * Create Civil Claim - Initiate case 9 -Is claimant represented by any one
+     * Create Claim - Initiate case 9 -Is claimant represented by any one
     ==========================================================================================*/
 
-    .group("ET_CW_040_StartCreateCase9") {
-      exec(http("ET_CW_040_StartCreateCase9")
+    .group("ET_CW_120_StartCreateCase9") {
+      exec(http("ET_CW_120_005_StartCreateCase9")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase9")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.case-data-validate.v2+json;charset=UTF-8")
@@ -157,7 +157,7 @@ object ET_CaseCreation {
         .check(substring("hearing_assistance"))
         .check(status.is(200)))
 
-      .exec(http("Civil_CreateClaim_005_Submit")
+      .exec(http("ET_CW_120_010_StartCreateCase9")
         .post("/data/case-types/ET_EnglandWales/cases?ignore-warning=false")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.create-case.v2+json;charset=UTF-8")
@@ -166,7 +166,7 @@ object ET_CaseCreation {
         .check(status.is(201))
         .check(jsonPath("$.id").optional.saveAs("caseId")))
   
-      .exec(http("Civil_CreateClaim_010_Submit")
+      .exec(http("ET_CW_120_015_StartCreateCase9")
         .get("/data/internal/cases/#{caseId}")
         .headers(CommonHeader)
         .check(substring("ET_EnglandWales"))
