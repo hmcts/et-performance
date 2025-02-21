@@ -354,7 +354,7 @@ class ET_Simulation extends Simulation {
         if (debugMode == "off") {
           Seq(global.successfulRequests.percent.gte(95),
             details("ET_460_Final_Check_Submit").successfulRequests.percent.gte(90),
-            details("ET_CTZ_490_SubmitET3Application").successfulRequests.percent.gte(90),
+            details("ET_CTZ_490_005_SubmitET3Application").successfulRequests.percent.gte(90),
             details("XUI_ET_450_ETCaseSubmit").successfulRequests.percent.gte(90),
             details("ET_CaseFlag_090_UpdateFlagComments").successfulRequests.percent.gte(90),
             details("ET_CaseLink_090_SubmitUnlinkCases").successfulRequests.percent.gte(90),
