@@ -44,46 +44,13 @@ object Login {
       .exec(Common.isAuthenticated)
       
 
-
-
       //if there is no in-flight case, set the case to 0 for the activity calls
       .doIf("#{caseId.isUndefined()}") {
         exec(_.set("caseId", "0"))
       }
-
-    .pause(MinThinkTime , MaxThinkTime)
-
-      //.exec(Common.caseActivityGet)
-      //  .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(BaseURL.replace("https://", "")).saveAs("XSRFToken")))
-
-    /*  .exec(http("XUI_020_010_Jurisdictions")
-        .get("/aggregated/caseworkers/:uid/jurisdictions?access=read")
-        //.headers(commonHeader)
-        .headers(postHeader)
-        .header("accept", "application/json")
-        .check(substring("id")))
-
-      .exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(BaseURL.replace("https://", "")).saveAs("XSRFToken")))
-
-      .exec(Common.orgDetails)*/
-      
-    /*  .exec(http("XUI_020_015_WorkBasketInputs")
-        .get("/data/internal/case-types/CIVIL/work-basket-inputs")
-        .headers(commonHeader)
-        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-workbasket-input-details.v2+json;charset=UTF-8")
-        .check(regex("workbasketInputs|Not Found"))
-        .check(status.in(200, 404)))
-
-      .exec(http("XUI_020_020_SearchCases")
-        .post("/data/internal/searchCases?ctid=CIVIL&use_case=WORKBASKET&view=WORKBASKET&page=1")
-        .headers(commonHeader)
-        .header("accept", "application/json")
-        .formParam("x-xsrf-token", "#{XSRFToken}")
-        .body(StringBody("""{"size":25}"""))
-        .check(substring("columns")))*/
-
     }
 
+    .pause(MinThinkTime , MaxThinkTime)
 
 /*====================================================================================
   *Citizen Login (Respondent)
