@@ -21,7 +21,7 @@ object Common {
   val baseURLETUIApp = Environment.baseURLETUIApp
 
   val CommonHeader = Environment.commonHeader
-  val PostHeader = Environment.postHeader
+  val PostHeader = headers.postHeaderEnv
 
   val postcodeFeeder = csv("postcodes.csv").circular
 

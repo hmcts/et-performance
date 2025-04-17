@@ -16,7 +16,7 @@ object ET_Respondent {
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
 
-  val CommonHeader = Environment.commonHeader
+  val CommonHeader = Headers.commonHeader
 
   val postcodeFeeder = csv("postcodes.csv").circular
 
@@ -26,11 +26,9 @@ object ET_Respondent {
     * Notice Of Change
     ======================================================================================*/
 
-    .group("ET_Respond_680_NoC") {
-
+    group("ET_Respond_680_NoC") {
       exec(Common.isAuthenticated)
       .exec(Common.userDetails)
-
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
@@ -139,7 +137,7 @@ object ET_Respondent {
     .group("ET_Respond_740_Amend_Response_Upload") {
       exec(http("ET_Respond_740_005_Amend_Response_Upload")
         .post("/documents")
-        .headers(Environment.commonHeader)
+        .headers(Headers.commonHeader)
         .header("accept", "application/json, text/plain, */*")
         .header("content-type", "multipart/form-data")
         .header("x-xsrf-token", "${XSRFToken}")
@@ -316,7 +314,7 @@ object ET_Respondent {
     .group("ET_Respond_820_Supporting_Material_Document") {
       exec(http("ET_Respond_820_005_Supporting_Material_Document")
         .post("/documentsv2")
-        .headers(Environment.commonHeader)
+        .headers(Headers.commonHeader)
         .header("accept", "application/json, text/plain, */*")
         .header("content-type", "multipart/form-data")
         .header("x-xsrf-token", "${XSRFToken}")

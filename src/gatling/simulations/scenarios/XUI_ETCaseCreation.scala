@@ -16,7 +16,7 @@ object XUI_ETCaseCreation {
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
 
-  val CommonHeader = Environment.commonHeader
+  val CommonHeader = Headers.commonHeader
 
   val postcodeFeeder = csv("postcodes.csv").circular
 
@@ -26,7 +26,7 @@ object XUI_ETCaseCreation {
       "ETCWRandomString" -> (Common.randomString(7))))
   
     /*======================================================================================
-     Create Civil Claim - Create Case
+     Create ET Claim - Create Case
     ==========================================================================================*/
 
     .group("XUI_ET_040_StartCreateCase") {
@@ -40,7 +40,7 @@ object XUI_ETCaseCreation {
      .pause(MinThinkTime, MaxThinkTime)
 
     /*======================================================================================
-    * Create Civil Claim - Initiate Case
+    * Create ET Claim - Initiate Case
     ==========================================================================================*/
 
     .group("XUI_ET_050_InitiateCase") {
@@ -55,7 +55,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - Initiate case 1 - Enter Work Location
+    Create ET Claim - Initiate case 1 - Enter Work Location
     ==========================================================================================*/
 
     .group("XUI_ET_060_EnterLocation") {
@@ -86,7 +86,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - ET Section 1- click on Claimant Details
+     Create ET Claim - ET Section 1- click on Claimant Details
     ==========================================================================================*/
 
     val ETFormClaimantDetailsSection1=
@@ -106,12 +106,7 @@ object XUI_ETCaseCreation {
         .check(jsonPath("$.event_token").optional.saveAs("event_token_section1"))
         .check(status.is(200)))
   
-        .exec(http("XUI_ET_070_015_ClickOnSectionOne")
-          .get("/data/internal/profile")
-          .headers(CommonHeader)
-          .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-user-profile.v2+json;charset=UTF-8")
-          .check(substring("internal/profile"))
-          .check(status.is(200)))
+        .exec(Common.profile)
   
         .exec(Common.configurationui)
   
@@ -128,7 +123,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section 1 - Continue
+    Create ET Claim - ET Section 1 - Continue
     ==========================================================================================*/
 
     .group("XUI_ET_080_SectionOneContinue") {
@@ -143,7 +138,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
     
     /*======================================================================================
-    Create Civil Claim - ET Section one 2 -- claimant details
+    Create ET Claim - ET Section one 2 -- claimant details
     ==========================================================================================*/
 
     .group("XUI_ET_090_ClaimantDetails2") {
@@ -159,7 +154,7 @@ object XUI_ETCaseCreation {
   
   
   /*======================================================================================
-   Create Civil Claim - ET Section one 3 -- claimant details
+   Create ET Claim - ET Section one 3 -- claimant details
   ==========================================================================================*/
 
     .group("XUI_ET_100_ClaimantDetails3") {
@@ -174,7 +169,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section one 4 -- claimant post code
+    Create ET Claim - ET Section one 4 -- claimant post code
     ==========================================================================================*/
 
     .group("XUI_ET_110_ClaimantDetails4") {
@@ -189,7 +184,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section one 5 -- hearing type
+    Create ET Claim - ET Section one 5 -- hearing type
     ==========================================================================================*/
 
     .group("XUI_ET_120_ClaimantDetails5") {
@@ -205,7 +200,7 @@ object XUI_ETCaseCreation {
     }
   
     /*======================================================================================
-    Create Civil Claim - ET Section one 6 -- Any support required
+    Create ET Claim - ET Section one 6 -- Any support required
     ==========================================================================================*/
 
     .group("XUI_ET_130_ClaimantDetails6") {
@@ -220,7 +215,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
 
     /*======================================================================================
-    Create Civil Claim - ET Section one 7 -- mode of correspondance
+    Create ET Claim - ET Section one 7 -- mode of correspondance
     ==========================================================================================*/
 
     .group("XUI_ET_140_ClaimantDetails7") {
@@ -235,7 +230,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
 
     /*======================================================================================
-    Create Civil Claim - ET Section one -- save as draft
+    Create ET Claim - ET Section one -- save as draft
     ==========================================================================================*/
 
     .group("XUI_ET_150_SectionOneSaveAsDraft") {
@@ -257,7 +252,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section One -- back to details
+    Create ET Claim - ET Section One -- back to details
     ==========================================================================================*/
 
     .group("XUI_ET_160_SectionOneBacktoCaseDetails") {
@@ -271,7 +266,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
   /*======================================================================================
-  Create Civil Claim - Create Draft - dowload initiation after section1 
+  Create ET Claim - Create Draft - dowload initiation after section1 
   ==========================================================================================*/
 
   val downloadETformAfterSection1=
@@ -292,7 +287,7 @@ object XUI_ETCaseCreation {
         .check(substring("Download draft ET1 Form")))
   
       .exec(http("XUI_ET_170_015_DownloadETAfterSection1")
-        .get("/case/tasks/1715167319753506/event/createDraftEt1/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")
+        .get("/case/tasks/#{caseId}/event/createDraftEt1/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")
         .headers(CommonHeader)
         .header("accept", "application/json")
         .check(status.in(200, 201, 204))
@@ -301,7 +296,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
       
     /*======================================================================================
-     Create Civil Claim -  -- download ET form after section1
+     Create ET Claim -  -- download ET form after section1
       ==========================================================================================*/
 
       .group("XUI_ET_180_downlaodETFormAfterSection1") {
@@ -331,7 +326,7 @@ object XUI_ETCaseCreation {
       .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section two 1-- Employment and respondent details
+    Create ET Claim - ET Section two 1-- Employment and respondent details
     ==========================================================================================*/
       
       val ETFormEmploymentDetailsSection2=
@@ -373,7 +368,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section Two - Continue
+    Create ET Claim - ET Section Two - Continue
     ==========================================================================================*/
 
     .group("XUI_ET_200_SectionTwoContinue") {
@@ -388,7 +383,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - ET Section Two 2 -- Respondant Yes or No --Yes
+     Create ET Claim - ET Section Two 2 -- Respondant Yes or No --Yes
     ==========================================================================================*/
 
     .group("XUI_ET_210_SectionTwo2") {
@@ -403,7 +398,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section Two 3 -- claimant details
+    Create ET Claim - ET Section Two 3 -- claimant details
     ==========================================================================================*/
 
     .group("XUI_ET_220_SectionTwo3") {
@@ -418,7 +413,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - ET Section two 4 -- claimant post code
+     Create ET Claim - ET Section two 4 -- claimant post code
     ==========================================================================================*/
 
     .group("XUI_ET_230_SectionOne4") {
@@ -433,7 +428,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      Create Civil Claim - ET Section two 7 -- hearing type
+      Create ET Claim - ET Section two 7 -- hearing type
     ==========================================================================================*/
 
       .group("XUI_ET_240_SectionOne7") {
@@ -448,7 +443,7 @@ object XUI_ETCaseCreation {
       .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section two 7 -- hearing type
+    Create ET Claim - ET Section two 7 -- hearing type
     ==========================================================================================*/
 
     .group("XUI_ET_250_SectionOne8") {
@@ -463,7 +458,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
 
     /*======================================================================================
-      Create Civil Claim - ET Section one 8 -- Any support required
+      Create ET Claim - ET Section one 8 -- Any support required
     ==========================================================================================*/
 
     .group("XUI_ET_260_SectionOne9") {
@@ -478,7 +473,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - ET Section two 9 -- mode of correspondance
+     Create ET Claim - ET Section two 9 -- mode of correspondance
     ==========================================================================================*/
 
     .group("XUI_ET_120_SectionOne10") {
@@ -493,7 +488,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
     
     /*======================================================================================
-      Create Civil Claim - ET Section two 11 -- mode of correspondance
+      Create ET Claim - ET Section two 11 -- mode of correspondance
     ==========================================================================================*/
 
       .group("XUI_ET_270_SectionOne11") {
@@ -508,7 +503,7 @@ object XUI_ETCaseCreation {
       .pause(MinThinkTime, MaxThinkTime)
     
       /*======================================================================================
-        Create Civil Claim - ET Section two 12 -- mode of correspondance
+        Create ET Claim - ET Section two 12 -- mode of correspondance
       ==========================================================================================*/
       .group("XUI_ET_280_SectionOne12") {
         exec(http("XUI_ET_280_SectionOne12")
@@ -522,7 +517,7 @@ object XUI_ETCaseCreation {
       .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      Create Civil Claim - ET Section two 10 -- mode of correspondance
+      Create ET Claim - ET Section two 10 -- mode of correspondance
     ==========================================================================================*/
 
     .group("XUI_ET_290_SectionOne13") {
@@ -537,7 +532,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      Create Civil Claim - ET Section two 11 -- mode of correspondance
+      Create ET Claim - ET Section two 11 -- mode of correspondance
     ==========================================================================================*/
 
     .group("XUI_ET_300_SectionOne14") {
@@ -552,7 +547,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      Create Civil Claim - ET Section two 12 -- mode of correspondance
+      Create ET Claim - ET Section two 12 -- mode of correspondance
     ==========================================================================================*/
 
     .group("XUI_ET_310_SectionOne15") {
@@ -567,7 +562,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
     
     /*======================================================================================
-      Create Civil Claim - ET Section two 13 -- mode of correspondance
+      Create ET Claim - ET Section two 13 -- mode of correspondance
     ==========================================================================================*/
 
     .group("XUI_ET_320_SectionOne17") {
@@ -582,7 +577,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      Create Civil Claim - ET Section two 14 -- mode of correspondance
+      Create ET Claim - ET Section two 14 -- mode of correspondance
     ==========================================================================================*/
 
     .group("XUI_ET_330_SectionOne19") {
@@ -597,7 +592,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
     
     /*======================================================================================
-      Create Civil Claim - ET Section two -- save as draft
+      Create ET Claim - ET Section two -- save as draft
     ==========================================================================================*/
 
     .group("XUI_ET_340_SectionTwoSaveAsDraft") {
@@ -619,7 +614,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
       
     /*======================================================================================
-      Create Civil Claim - ET Section two -- back to details
+      Create ET Claim - ET Section two -- back to details
     ==========================================================================================*/
 
     .group("XUI_ET_350_SectionTwoBacktoCaseDetails") {
@@ -633,7 +628,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      Create Civil Claim - ET Section 3- Details Of Claim
+      Create ET Claim - ET Section 3- Details Of Claim
     ==========================================================================================*/
       
     val ETFormClaimDetailsSection3=
@@ -675,7 +670,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-    Create Civil Claim - ET Section 3 - Continue
+    Create ET Claim - ET Section 3 - Continue
     ==========================================================================================*/
 
     .group("XUI_ET_370_SectionOneContinue") {
@@ -690,7 +685,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-      Create Civil Claim - ET Section three 2 -- claimant details
+      Create ET Claim - ET Section three 2 -- claimant details
     ==========================================================================================*/
 
     .group("XUI_ET_380_SectionThree2") {
@@ -705,7 +700,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
     
     /*======================================================================================
-     Create Civil Claim - ET Section one 3 -- claimant details
+     Create ET Claim - ET Section one 3 -- claimant details
     ==========================================================================================*/
 
     .group("XUI_ET_390_SectionThree3") {
@@ -720,7 +715,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - ET Section one 4 -- claimant post code
+     Create ET Claim - ET Section one 4 -- claimant post code
     ==========================================================================================*/
 
     .group("XUI_ET_400_SectionThree4") {
@@ -735,7 +730,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - ET Section one 5 -- hearing type
+     Create ET Claim - ET Section one 5 -- hearing type
     ==========================================================================================*/
 
     .group("XUI_ET_410_SectionThree5") {
@@ -750,7 +745,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - ET Section three -- save as draft
+     Create ET Claim - ET Section three -- save as draft
     ==========================================================================================*/
 
     .group("XUI_ET_420_SectionThreeSaveAsDraft") {
@@ -772,7 +767,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
     
     /*======================================================================================
-      Create Civil Claim - ET Section Three -- back to details
+      Create ET Claim - ET Section Three -- back to details
     ==========================================================================================*/
 
     .group("XUI_ET_430_SectionThreeBacktoCaseDetails") {
@@ -786,7 +781,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - Click On ET case Submit
+     Create ET Claim - Click On ET case Submit
     ==========================================================================================*/
 
     val submitETForm=
@@ -806,12 +801,7 @@ object XUI_ETCaseCreation {
         .check(jsonPath("$.event_token").optional.saveAs("event_token_submit"))
         .check(status.is(200)))
     
-      .exec(http("XUI_ET_440_015_ClickOnETCaseSubmit")
-        .get("/data/internal/profile")
-        .headers(CommonHeader)
-        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-user-profile.v2+json;charset=UTF-8")
-        .check(substring("internal/profile"))
-        .check(status.is(200)))
+        .exec(Common.profile)
       
         .exec(Common.configurationui)
       
@@ -828,7 +818,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
     /*======================================================================================
-     Create Civil Claim - ET case Submit
+     Create ET Claim - ET case Submit
     ==========================================================================================*/
 
     .group("XUI_ET_450_ETCaseSubmit") {
@@ -858,7 +848,7 @@ object XUI_ETCaseCreation {
     .pause(MinThinkTime, MaxThinkTime)
   
       /*======================================================================================
-                     * Create Civil Claim - ET after submit -- back to details
+                     * Create ET Claim - ET after submit -- back to details
       ==========================================================================================*/
 
       .group("XUI_ET_460_AfterSubmitBacktoCaseDetails") {

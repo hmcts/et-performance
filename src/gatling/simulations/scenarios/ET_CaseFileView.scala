@@ -16,7 +16,7 @@ object ET_CaseFileView {
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
 
-  val CommonHeader = Environment.commonHeader
+  val CommonHeader = Headers.commonHeader
 
   val postcodeFeeder = csv("postcodes.csv").circular
 

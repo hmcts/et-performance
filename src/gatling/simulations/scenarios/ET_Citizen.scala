@@ -15,7 +15,7 @@ object ET_Citizen {
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
 
-  val CommonHeader = Environment.commonHeader
+  val CommonHeader = Headers.commonHeader
   val CitUILandingHeader = Headers.citUILandingHeader
   val CitUICommonHeader = Headers.citUICommonHeader
   val postcodeFeeder = csv("postcodes.csv").circular

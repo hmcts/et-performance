@@ -398,7 +398,7 @@ class ET_Simulation extends Simulation {
    /*==============================================================================================================
    Data Prep/Debugging Scenarios
    ===============================================================================================================*/
-    ET3DataPrepCombined.inject(rampUsers(10) during (20))
+    ET3DataPrepCombined.inject(rampUsers(5) during (20))
     //ETCreateClaim.inject(rampUsers(1) during (3)),
     //ET3DataPrep.inject(rampUsers(1) during (3)),
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
@@ -418,15 +418,34 @@ class ET_Simulation extends Simulation {
   //  ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
   //  ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
 
-  // // //==============================================================================================================
-  // // // ET XUI
-  // // //===============================================================================================================
+  //==============================================================================================================
+  // ET XUI
+  //===============================================================================================================
   //   ETXUIFormClaimScenario.inject(simulationProfile(testType, et1LegalRepRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
   //   ETXUICreateCaseAndCaseFlag.inject(simulationProfile(testType, etLegalRepCaseFlag, numberOfPipelineUsers)).pauses(pauseOption),
   //   ETXUICaseLink.inject(simulationProfile(testType, etLegalRepCaseLink, numberOfPipelineUsers)).pauses(pauseOption),
   //   ETCaseFileView.inject(simulationProfile(testType, etCaseFileView, numberOfPipelineUsers)).pauses(pauseOption)
 
 
+   ).protocols(httpProtocol)
+  .assertions(assertions(testType))
+
+} 
+
+// Archive scenarios
+  //======================
+    // ETXUIFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
+    //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
+    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
+    // ETUploadDocs2.inject(nothingFor(5), rampUsers(1) during (1))
+    // ETXUICaseLink.inject(nothingFor(10), rampUsers(30) during (3600)),
+    // ETXUICaseFlag.inject(nothingFor(30), rampUsers(50) during (3600)),
+    //   ETCaseFileView.inject(nothingFor(50), rampUsers(45) during (3600))
+      /* ETXUICaseLink.inject(nothingFor(10), rampUsers(1) during (3)),
+    // ETXUICaseFlag.inject(nothingFor(30), rampUsers(1) during (36)),
+    // ETCaseFileView.inject(nothingFor(50), rampUsers(1) during (36))*/
+
+//Archive Workload Profile:
   //ETCreateClaim.inject(constantUsersPerSec(7).during(10))
    // ET3CitizenRespondent.inject(constantUsersPerSec(2).during(10))
 
@@ -476,21 +495,5 @@ class ET_Simulation extends Simulation {
   //       .separatedByRampsLasting(10)
   //       .startingFrom(10) // Int
   //   )
+  
 
-  //======================
-  // Archive scenarios
-  //======================
-    // ETXUIFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
-    //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
-    // ETUploadDocs.inject(nothingFor(5), rampUsers(23) during (1200))
-    // ETUploadDocs2.inject(nothingFor(5), rampUsers(1) during (1))
-    // ETXUICaseLink.inject(nothingFor(10), rampUsers(30) during (3600)),
-    // ETXUICaseFlag.inject(nothingFor(30), rampUsers(50) during (3600)),
-    //   ETCaseFileView.inject(nothingFor(50), rampUsers(45) during (3600))
-      /* ETXUICaseLink.inject(nothingFor(10), rampUsers(1) during (3)),
-    // ETXUICaseFlag.inject(nothingFor(30), rampUsers(1) during (36)),
-    // ETCaseFileView.inject(nothingFor(50), rampUsers(1) during (36))*/
-  ).protocols(httpProtocol)
-  .assertions(assertions(testType))
-
-}

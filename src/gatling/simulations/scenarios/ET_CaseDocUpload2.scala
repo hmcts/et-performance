@@ -2,7 +2,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.Environment.commonHeaderUpload
+import utils.Headers.commonHeaderUpload
 import utils.{Common, Environment}
 
 
@@ -12,7 +12,7 @@ object ET_CaseDocUpload2 {
   val IdamURL = Environment.idamURL
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
-  val CommonHeader = Environment.commonHeader
+  val CommonHeader = Headers.commonHeader
 
   val postcodeFeeder = csv("postcodes.csv").circular
 

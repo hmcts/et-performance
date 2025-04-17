@@ -12,8 +12,6 @@ object RespondentLogin {
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
 
-
-
   val XUIHomePage =
 
     exec(flushHttpCache)
@@ -22,7 +20,7 @@ object RespondentLogin {
       .group("XUI_010_Homepage") {
         exec(http("XUI_010_005_Homepage")
           .get("/")
-          .headers(Environment.commonHeader)
+          .headers(Headers.commonHeader)
           .header("sec-fetch-site", "none"))
 
           .exec(Common.configurationui)
@@ -39,14 +37,12 @@ object RespondentLogin {
 
           .exec(http("XUI_010_010_AuthLogin")
             .get(XuiUrl + "/auth/login")
-            .headers(Environment.commonHeader)
-          //  .check(CsrfCheck.save)
+            .headers(Headers.commonHeader)
             .check(regex("/oauth2/callback&amp;state=(.*)&amp;nonce=").saveAs("state"))
             .check(regex("&nonce=(.*)&response_type").saveAs("nonce")))
       }
 
       .pause(MinThinkTime, MaxThinkTime)
-
 
   /*====================================================================================
   *Manage Case Login
@@ -62,7 +58,7 @@ object RespondentLogin {
         .formParam("save", "Sign in")
         .formParam("selfRegistrationEnabled", "false")
         .formParam("_csrf", "${csrf}")
-        .headers(Environment.commonHeader)
+        //.headers(Headers.commonHeader)
         .headers(Environment.postHeader)
         .check(regex("Manage cases")))
 
@@ -85,11 +81,9 @@ object RespondentLogin {
         exec(_.set("caseId", "0"))
       }
 
-     // .exec(Common.caseActivityGet)
-
       .exec(http("XUI_020_010_Jurisdictions")
         .get("/aggregated/caseworkers/:uid/jurisdictions?access=read")
-        .headers(Environment.commonHeader)
+        .headers(Headers.commonHeader)
         .header("accept", "application/json")
         .check(substring("id")))
 
@@ -99,14 +93,14 @@ object RespondentLogin {
       
       .exec(http("XUI_020_015_WorkBasketInputs")
         .get("/data/internal/case-types/${caseType}/work-basket-inputs")
-        .headers(Environment.commonHeader)
+        .headers(Headers.commonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-workbasket-input-details.v2+json;charset=UTF-8")
         .check(regex("workbasketInputs|Not Found"))
         .check(status.in(200, 404)))
 
       .exec(http("XUI_020_020_SearchCases")
         .post("/data/internal/searchCases?ctid=${caseType}&use_case=WORKBASKET&view=WORKBASKET&page=1")
-        .headers(Environment.commonHeader)
+        .headers(Headers.commonHeader)
         .header("accept", "application/json")
         .formParam("x-xsrf-token", "${XSRFToken}")
         .body(StringBody("""{"size":25}"""))

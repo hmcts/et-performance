@@ -12,7 +12,7 @@ object ET_CaseLink {
   val IdamURL = Environment.idamURL
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
-  val CommonHeader = Environment.commonHeader
+  val CommonHeader = Headers.commonHeader
 
   val postcodeFeeder = csv("postcodes.csv").circular
 

@@ -15,7 +15,7 @@ object Homepage {
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
 
-  val CommonHeader = Environment.commonHeader
+  val CommonHeader = Headers.commonHeader
   
   /*====================================================================================
   *Manage Case Homepage
