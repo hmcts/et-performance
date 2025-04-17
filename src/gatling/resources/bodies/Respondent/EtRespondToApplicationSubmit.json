@@ -26,8 +26,8 @@
           "shortDescription": "Uploaded file",
           "typeOfDocument": null,
           "uploadedDocument": {
-            "document_url": "http://dm-store-perftest.service.core-compute-perftest.internal/documents/f93784c5-5ae2-4700-86e6-286480b363cd",
-            "document_binary_url": "http://dm-store-perftest.service.core-compute-perftest.internal/documents/f93784c5-5ae2-4700-86e6-286480b363cd/binary",
+            "document_url": "http://dm-store-#{env}.service.core-compute-#{env}.internal/documents/f93784c5-5ae2-4700-86e6-286480b363cd",
+            "document_binary_url": "http://dm-store-#{env}.service.core-compute-#{env}.internal/documents/f93784c5-5ae2-4700-86e6-286480b363cd/binary",
             "document_filename": "TestFile.pdf",
             "document_hash": "f585cd64dd62770b97fac8227bc83921d214942d99be89a8f27eae7d7c478ed3"
           }
