@@ -22,10 +22,7 @@ object ET_CaseFileView {
 
   val CaseFileView =
 
-  exec(_.setAll(
-      "ETRespondRandomString" -> (Common.randomString(7)),
-    "currentDateTime" -> Common.getCurrentDateTime()
-  ))
+  exec(_.set("currentDateTime" -> Common.getCurrentDateTime()))
 
     /*======================================================================================
     * ET -Case Link  - select Create Case Links from the Next Step on case detail page

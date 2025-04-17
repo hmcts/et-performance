@@ -7,9 +7,7 @@ import utils.{Common, Environment}
 import java.io.{BufferedWriter, FileWriter}
 import scala.concurrent.duration._
 
-
 object ET_CaseFlag {
-
   
   val IdamURL = Environment.idamURL
   val MinThinkTime = Environment.minThinkTime
@@ -20,10 +18,7 @@ object ET_CaseFlag {
 
   val manageCaseFlag =
 
-  exec(_.setAll(
-      "ETRespondRandomString" -> (Common.randomString(7)),
-    "currentDateTime" -> Common.getCurrentDateTime()
-  ))
+  exec(_.set("currentDateTime" -> Common.getCurrentDateTime()))
 
     /*======================================================================================
     * ET -Case Flag Management - select Create Case Flag from the Next Step on case detail page
@@ -112,11 +107,11 @@ object ET_CaseFlag {
     )
      
      .exec(http("ET_CaseFlag_070_010_ReviewFlagDetails")
-        .options("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
+        .options("https://gateway-ccd.#{env}.platform.hmcts.net/activity/cases/#{caseId}/activity")
         .headers(CommonHeader))
       
         .exec(http("ET_CaseFlag_070_015_ReviewFlagDetails")
-          .post("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
+          .post("https://gateway-ccd.#{env}.platform.hmcts.net/activity/cases/#{caseId}/activity")
           .headers(CommonHeader)
           .header("Authorization", "#{bearertoken}")
           .body(ElFileBody("bodies/caseflag/Viewcaseflag.json"))
@@ -166,7 +161,7 @@ object ET_CaseFlag {
         .check(substring("canShareCases")))
 
       .exec(http("ET_CaseFlag_080_030_ReviewFlagDetails")
-        .post("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
+        .post("https://gateway-ccd.#{env}.platform.hmcts.net/activity/cases/#{caseId}/activity")
         .headers(CommonHeader)
         .header("Authorization", "#{bearertokenmanage}")
         .body(ElFileBody("bodies/caseflag/Updatecaseflag.json"))
@@ -195,11 +190,11 @@ object ET_CaseFlag {
         .check(substring("#{caseId}")))
 
       .exec(http("ET_CaseFlag_090_015_ReviewFlagDetails")
-        .options("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
+        .options("https://gateway-ccd.#{env}.platform.hmcts.net/activity/cases/#{caseId}/activity")
         .headers(CommonHeader))
 
       .exec(http("ET_CaseFlag_090_020_ReviewFlagDetails")
-        .post("https://gateway-ccd.perftest.platform.hmcts.net/activity/cases/#{caseId}/activity")
+        .post("https://gateway-ccd.#{env}.platform.hmcts.net/activity/cases/#{caseId}/activity")
         .headers(CommonHeader)
         .header("Authorization", "#{bearertokenmanage}")
         .body(ElFileBody("bodies/caseflag/Updatecaseflag.json"))

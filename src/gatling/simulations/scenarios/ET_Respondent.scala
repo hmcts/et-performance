@@ -22,9 +22,6 @@ object ET_Respondent {
 
   val MakeAClaim =
 
-  exec(_.setAll(
-      "ETRespondRandomString" -> (Common.randomString(7))))
-
     /*======================================================================================
     * Notice Of Change
     ======================================================================================*/

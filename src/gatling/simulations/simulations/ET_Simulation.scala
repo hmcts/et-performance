@@ -477,8 +477,6 @@ class ET_Simulation extends Simulation {
   //       .startingFrom(10) // Int
   //   )
 
-
-
   //======================
   // Archive scenarios
   //======================

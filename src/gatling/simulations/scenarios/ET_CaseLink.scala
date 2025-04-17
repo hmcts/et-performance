@@ -18,10 +18,7 @@ object ET_CaseLink {
 
   val manageCaseLink =
 
-  exec(_.setAll(
-      "ETRespondRandomString" -> (Common.randomString(7)),
-    "currentDateTime" -> Common.getCurrentDateTime()
-  ))
+  exec(_.set("currentDateTime" -> Common.getCurrentDateTime()))
 
     /*======================================================================================
     * ET -Case Link  - Initiate Case Link
