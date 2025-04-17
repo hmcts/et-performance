@@ -7,7 +7,6 @@ import java.io.{BufferedWriter, FileWriter}
 
 import scala.concurrent.duration._
 
-
 object ET_CaseWorker {
 
   val xuiURL = Environment.baseURL
@@ -34,7 +33,6 @@ object ET_CaseWorker {
   // Return the updated session
   updatedSession
 })
-
     /*======================================================================================
     * Open Case
     ======================================================================================*/
@@ -58,8 +56,6 @@ object ET_CaseWorker {
     .exec(Common.userDetails)
     .exec(Common.caseActivityGet)
     .exec(Common.isAuthenticated)
-
-    //.exec(getCookieValue(CookieKey("XSRF-TOKEN").withDomain(xuiURL.replace("https://", "")).saveAs("XSRFToken")))
 
     .pause(MinThinkTime, MaxThinkTime)
 
@@ -85,29 +81,6 @@ object ET_CaseWorker {
     session.set("respondentRandString", respondentRandString)
   }
 
-    /*======================================================================================
-    * Find Case
-    ======================================================================================*/
-
-    /*.group("ET_CW_500_FindCase") {
-      exec(http("ET_CW_500_005_Find_Case")
-        .get(xuiURL + "/api/role-access/roles/manageLabellingRoleAssignment/#{caseId}")
-        .headers(CommonHeader)
-        .header("sec-fetch-site", "none")
-        .check(substring("Claimant")))
-
-      .exec(http("ET_CW_500_010_Find_Case")
-        .get(xuiURL + "/api/wa-supported-jurisdiction/get")
-        .headers(CommonHeader)
-        .header("sec-fetch-site", "none")
-        .check(substring("CIVIL")))
-
-        .exec(Common.userDetails)
-    }
-
-    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-*/
     /*======================================================================================
     * Click on 'ET1 Case Vetting'
     ======================================================================================*/
@@ -310,7 +283,6 @@ object ET_CaseWorker {
       }
       .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-
   /*======================================================================================
   * Final Notes
   ======================================================================================*/
@@ -340,7 +312,6 @@ object ET_CaseWorker {
         .exec(Common.userDetails)
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
   val dateCaseAccepted = 
 
@@ -417,7 +388,6 @@ object ET_CaseWorker {
 
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
 
   val generateLetters = 
   /*======================================================================================

@@ -61,8 +61,8 @@ object ET_CaseLink {
     *Enter the case number for linking
     ======================================================================================*/
 
-    .group("ET_CaseLink_040_caseLinking") {
-      exec(http("ET_CaseLink_040_005_caseLinking")
+    .group("ET_CaseLink_040_CaseLinking") {
+      exec(http("ET_CaseLink_040_005_CaseLinking")
         .get("/data/internal/cases/#{linkcaseId}")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-case-view.v2+json")
@@ -127,11 +127,7 @@ object ET_CaseLink {
         .header("accept", "application/json")
         .check(substring("tasks")))
 
-      .exec(http("ET_CaseLink_060_020_InitiateManageCaseLink")
-        .get("/data/internal/profile")
-        .headers(CommonHeader)
-        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-user-profile.v2+json;charset=UTF-8")
-        .check(substring("EMPLOYMENT")))
+      .exec(common.profile)
 
       .exec(http("ET_CaseLink_060_025_InitiateManageCaseLink")
         .get("/data/internal/cases/#{caseId}")

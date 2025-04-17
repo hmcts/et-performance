@@ -30,10 +30,7 @@ object ET_CaseFlag {
         .headers(CommonHeader)
         .check(substring("tasks")))
       
-      .exec(http("ET_CaseFlag_030_010_InitiateCaseFlag")
-        .get("/data/internal/profile")
-        .headers(CommonHeader)
-        .check(substring("EMPLOYMENT")))
+      .exec(common.profile)
     
       .exec(http("ET_CaseFlag_030_015_InitiateCaseFlag")
         .get("/data/internal/cases/#{caseId}/event-triggers/createFlag?ignore-warning=false")
@@ -143,11 +140,7 @@ object ET_CaseFlag {
         .check(jsonPath("$..value.details[0].value.path[1].id").saveAs("reasonableadjid"))
         .check(jsonPath("$..value.details[0].value.path[2].id").saveAs("ineedadjid")))
 
-      .exec(http("ET_CaseFlag_080_015_InitiateManageCaseFlag")
-        .get("/data/internal/profile")
-        .headers(CommonHeader)
-        .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-user-profile.v2+json;charset=UTF-8")
-        .check(substring("create")))
+      .exec(common.profile)
     
       .exec(http("ET_CaseFlag_080_020_InitiateManageCaseFlag")
         .get("/workallocation/case/tasks/#{caseId}/event/manageFlags/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")
