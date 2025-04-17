@@ -2,6 +2,8 @@ package simulations
 
 import io.gatling.core.Predef._
 import io.gatling.core.scenario.Simulation
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import scenarios._
 import utils.Environment
 import utils.Headers
@@ -43,8 +45,8 @@ class ET_Simulation extends Simulation {
   /* ******************************** */
 
   /* PERFORMANCE TEST CONFIGURATION */
-  val rampUpDurationMins = 2 
-  val rampDownDurationMins = 2 
+  val rampUpDurationMins = 5
+  val rampDownDurationMins = 2
   val testDurationMins = 60
 
   val hourlyTarget: Double = 1
@@ -53,8 +55,8 @@ class ET_Simulation extends Simulation {
   //===================================
   //Citizen Hub Perf Test Config
   //===================================
-  val et3RequestPerHour: Double = 17
-  val et1CitizenRequestPerHour: Double = 49
+  val et3RequestPerHour: Double = 17 //25 //17
+  val et1CitizenRequestPerHour: Double = 49 //105 // 70 // 49
   //===================================
   //ET XUI Perf Test Config
   //===================================
@@ -72,22 +74,44 @@ class ET_Simulation extends Simulation {
   }
 
   //============================================================
-  // Define protocol, base URL, DT Header, and other settings 
+  // Define protocol, base URL, DT Header, and other settings
   //============================================================
+
+     // The Load Test Name uniquely identifies a test execution
+    val LTN =
+      getClass.getSimpleName +
+      "_" +
+      LocalDateTime.now.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+
+    // Load Script Name - name of the load testing script.
+    val LSN = "PeakLoad" // Get LSN
 
     val httpProtocol = Environment.HttpProtocol
       .baseUrl(BaseURL)
-      .header("x-dynatrace-test", "TSN=GatlingTest;VU=#{username}")
       .disableCaching
       .disableAutoReferer
-    // .doNotTrackHeader("1")
+    //.doNotTrackHeader("1")
       .inferHtmlResources()
       .silentResources
+     // Define a global signing function to be applied on all generated requests.
+      .sign { (request, session) =>
+     // Test Step Name is a logical test step within your load testing script
+      val TSN = request.getName
 
+      request.getHeaders.set(
+        "x-dynatrace-test",
+        s"TSN=$TSN;LSN=$LSN;LTN=$LTN"
+      )
+      request
+    }
+
+      //.header("x-dynatrace-test", "TSN=GatlingTest;VU=#{username}")
   before{
     println(s"Test Type: ${testType}")
     println(s"Test Environment: ${env}")
     println(s"Debug Mode: ${debugMode}")
+    println(s"LTN: ${LTN}")
+    println(s"LSN: ${LSN}")
   }
 
 /**========================================================================
@@ -102,13 +126,13 @@ class ET_Simulation extends Simulation {
         .feed(CaseLinkUserFeederETXUI)
         .exec(Homepage.XUIHomePage)
         .exec(Login.XUILogin)
-          .exec(ET_CaseCreation.MakeAClaim)      
+          .exec(ET_CaseCreation.MakeAClaim)
     }
-  
+
   /*=======================================================================
   Initiate a claim scenario within XUI
   ========================================================================*/
-  
+
   val ETXUIFormClaimScenario = scenario("ET Create Claim - XUI")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
@@ -127,7 +151,7 @@ class ET_Simulation extends Simulation {
   /*=======================================================================
   Link a case scenario within XUI
   ========================================================================*/
-  
+
   val ETXUICaseLink = scenario("ET Case Link - XUI")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
@@ -144,7 +168,7 @@ class ET_Simulation extends Simulation {
   /*=======================================================================
   Case Flag scenario within XUI
   ========================================================================*/
-  
+
   val ETXUICaseFlag = scenario("ET Case Flag")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
@@ -161,7 +185,7 @@ class ET_Simulation extends Simulation {
   /*=======================================================================
   Create case and Add Case Flag scenario within XUI
   ========================================================================*/
-  
+
   val ETXUICreateCaseAndCaseFlag = scenario("ET Create Case and Case Flag - XUI")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
@@ -170,7 +194,7 @@ class ET_Simulation extends Simulation {
         .exec(Homepage.XUIHomePage)
         .exec(Login.XUILogin)
           .exec(ET_CaseCreation.MakeAClaim)
-          .exec(Logout.XUILogout) 
+          .exec(Logout.XUILogout)
       //Case Flag steps & feeder
         .feed(CaseFlagUserFeederETXUI)//.feed(CaseFlagFeeder)
         .exec(Homepage.XUIHomePage)
@@ -183,7 +207,7 @@ class ET_Simulation extends Simulation {
   /*=======================================================================
   ET Create claim as a Citizen
   ========================================================================*/
-  
+
   val ETCreateClaim = scenario("ET Citizen Create Clain - Citizen UI")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
@@ -217,6 +241,7 @@ class ET_Simulation extends Simulation {
  =========================================================================*/
 
   val ET3DataPrepCombined = scenario("ETCreateClaimAndProgress")
+    .exec(session => session.set("LSN", "ET3DataPrepCombined")) // Set script name
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
         .exec(flushHttpCache)
@@ -249,18 +274,18 @@ class ET_Simulation extends Simulation {
         .exec(Login.CUILogin)
         .exec(ET_Citizen.BeforeYouContinue)
           // Executes if the user has no cases assigned
-          .doIf(session => 
+          .doIf(session =>
                 session("noCaseAssignedToUserCount").as[String].toInt != 0
           ) {
-                exec(ET_Citizen.RespondentSelfAssignment) 
+                exec(ET_Citizen.RespondentSelfAssignment)
             }
           // Executes if the user already has cases assigned to them but not the case which has been fed into the user session
-          .doIf(session => 
-                session("correctCaseAssignedToUserCount").as[String].toInt == 0 && 
-                session("casesAssignedToUserCount").as[String].toInt != 0 
+          .doIf(session =>
+                session("correctCaseAssignedToUserCount").as[String].toInt == 0 &&
+                session("casesAssignedToUserCount").as[String].toInt != 0
           ) {
               exec(ET_Citizen.RespondentNewClaimReply)
-              .exec(ET_Citizen.RespondentSelfAssignment) 
+              .exec(ET_Citizen.RespondentSelfAssignment)
             }
         .exec(ET_Citizen.RespondentET3)
         .exec(ET_Citizen.RespondentET3ClaimantInfo)
@@ -270,9 +295,9 @@ class ET_Simulation extends Simulation {
         .exec(ET_Citizen.RespondentET3OpenCompletedForm)
       }
     }
-  
+
   /*=========================================================================
-  Following scenario is for uploading the documents to existing cases  
+  Following scenario is for uploading the documents to existing cases
   ==========================================================================*/
 
   val ETUploadDocs = scenario("ET Upload Documents")
@@ -286,11 +311,11 @@ class ET_Simulation extends Simulation {
         .exec(ET_CaseDocUpload.DocUpload)
         .exec(Logout.XUILogout)
     }
-  
+
    /*=========================================================================
     Following scenario is for uploading the documents to existing cases
   ============================================================================*/
-  
+
   val ETUploadDocs2 = scenario("ET Upload Documents2")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
@@ -306,7 +331,7 @@ class ET_Simulation extends Simulation {
   /*=========================================================================
     Case File View Scenario
   ============================================================================*/
-  
+
   val ETCaseFileView = scenario("ET Case File View - XUI")
     .exitBlockOnFail {
       exec(_.set("env", s"${env}"))
@@ -319,7 +344,7 @@ class ET_Simulation extends Simulation {
         .exec(ET_CaseFileView.CaseFileView)
         .exec(Logout.XUILogout)
     }
-  
+
   //===========================================================================
   // defines the Gatling simulation model, based on the inputs
   //============================================================================
@@ -367,17 +392,17 @@ class ET_Simulation extends Simulation {
         Seq()
     }
   }
-  
+
   setUp(
 
    /*==============================================================================================================
    Data Prep/Debugging Scenarios
    ===============================================================================================================*/
-    //ET3DataPrepCombined.inject(rampUsers(1) during (3))
+    ET3DataPrepCombined.inject(rampUsers(10) during (20))
     //ETCreateClaim.inject(rampUsers(1) during (3)),
     //ET3DataPrep.inject(rampUsers(1) during (3)),
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
-    
+
     //ET3CitizenRespondent.inject(rampUsers(1) during (3))
     //ETXUICaseLink.inject(rampUsers(1) during (3)),
     //ETXUICaseFlag.inject(nothingFor(1), rampUsers(1) during (3))
@@ -387,22 +412,75 @@ class ET_Simulation extends Simulation {
 
    /*==============================================================================================================
    Performance Test Scenarios
-   ===============================================================================================================*/
+   //===============================================================================================================*/
    // ET Citizen Hub
    //==============================================================================================================
-   ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
-   ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+  //  ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+  //  ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
 
-  //==============================================================================================================
-  // ET XUI
-  //===============================================================================================================
-    ETXUIFormClaimScenario.inject(simulationProfile(testType, et1LegalRepRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
-    ETXUICreateCaseAndCaseFlag.inject(simulationProfile(testType, etLegalRepCaseFlag, numberOfPipelineUsers)).pauses(pauseOption),
-    ETXUICaseLink.inject(simulationProfile(testType, etLegalRepCaseLink, numberOfPipelineUsers)).pauses(pauseOption),
-    ETCaseFileView.inject(simulationProfile(testType, etCaseFileView, numberOfPipelineUsers)).pauses(pauseOption)
+  // // //==============================================================================================================
+  // // // ET XUI
+  // // //===============================================================================================================
+  //   ETXUIFormClaimScenario.inject(simulationProfile(testType, et1LegalRepRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+  //   ETXUICreateCaseAndCaseFlag.inject(simulationProfile(testType, etLegalRepCaseFlag, numberOfPipelineUsers)).pauses(pauseOption),
+  //   ETXUICaseLink.inject(simulationProfile(testType, etLegalRepCaseLink, numberOfPipelineUsers)).pauses(pauseOption),
+  //   ETCaseFileView.inject(simulationProfile(testType, etCaseFileView, numberOfPipelineUsers)).pauses(pauseOption)
+
+
+  //ETCreateClaim.inject(constantUsersPerSec(7).during(10))
+   // ET3CitizenRespondent.inject(constantUsersPerSec(2).during(10))
+
+  // generate an open workload injection profile
+  // with levels of 10, 15, 20, 25 and 30 arriving users per second
+  // each level lasting 10 seconds
+  // separated by linear ramps lasting 10 seconds
+  // ETCreateClaim.inject(
+  //     incrementUsersPerSec(5)
+  //       .times(5)
+  //       .eachLevelLasting(60)
+  //       .separatedByRampsLasting(10)
+  //       .startingFrom(5) // Int
+  // )
+  //   ET3CitizenRespondent.inject(
+  //     incrementConcurrentUsers(10)
+  //       .times(5)
+  //       .eachLevelLasting(120)
+  //       .separatedByRampsLasting(10)
+  //       .startingFrom(10) // Int
+  //   ),
+  //   ETXUIFormClaimScenario.inject(
+  //     incrementConcurrentUsers(10)
+  //       .times(5)
+  //       .eachLevelLasting(120)
+  //       .separatedByRampsLasting(10)
+  //       .startingFrom(10) // Int
+  //   ),
+  //   ETXUICreateCaseAndCaseFlag.inject(
+  //     incrementConcurrentUsers(10)
+  //       .times(5)
+  //       .eachLevelLasting(120)
+  //       .separatedByRampsLasting(10)
+  //       .startingFrom(10) // Int
+  //   ),
+  //   ETXUICaseLink.inject(
+  //     incrementConcurrentUsers(10)
+  //       .times(5)
+  //       .eachLevelLasting(120)
+  //       .separatedByRampsLasting(10)
+  //       .startingFrom(10) // Int
+  //   ),
+  //   ETCaseFileView.inject(
+  //     incrementConcurrentUsers(10)
+  //       .times(5)
+  //       .eachLevelLasting(120)
+  //       .separatedByRampsLasting(10)
+  //       .startingFrom(10) // Int
+  //   )
+
+
 
   //======================
-  // Archive scenarios 
+  // Archive scenarios
   //======================
     // ETXUIFormClaimScenario.inject(nothingFor(5), rampUsers(20) during (3600))
     //  ETXUIClaim.inject(nothingFor(5), rampUsers(1) during (1))
@@ -416,5 +494,5 @@ class ET_Simulation extends Simulation {
     // ETCaseFileView.inject(nothingFor(50), rampUsers(1) during (36))*/
   ).protocols(httpProtocol)
   .assertions(assertions(testType))
-  
+
 }

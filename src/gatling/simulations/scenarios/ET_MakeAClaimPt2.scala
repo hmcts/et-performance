@@ -281,11 +281,10 @@ object ET_MakeAClaimPt2 {
     /*===============================================================================================
     * Respondent Address LookUp
     ===============================================================================================*/
+    .feed(postcodeFeeder)
 
     .group("ET_335_Respondent_Address_LookUp") {
-      feed(postcodeFeeder)
-
-      .exec(http("ET_335_Respondent_Address_LookUp")
+        exec(http("ET_335_005__Respondent_Address_LookUp")
         .post(baseURLETUIApp + "/respondent/1/respondent-address")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
@@ -323,7 +322,7 @@ object ET_MakeAClaimPt2 {
     ===============================================================================================*/
 
     .group("ET_350_Respondent_Acas") {
-      exec(http("ET_350_Respondent_Acas")
+      exec(http("ET_350_005_Respondent_Acas")
         .post(baseURLETUIApp + "/respondent/1/acas-cert-num")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
@@ -384,7 +383,7 @@ object ET_MakeAClaimPt2 {
     ===============================================================================================*/
 
     .group("ET_390_Type_Of_Descrimination") {
-      exec(http("ET_390_Type_Of_Descrimination")
+      exec(http("ET_390_005_Type_Of_Descrimination")
         .post(baseURLETUIApp + "/claim-type-discrimination")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
