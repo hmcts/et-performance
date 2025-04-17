@@ -118,7 +118,7 @@ object ET_CaseCreation {
       * Create - Initiate case 7 -claimant occupation details
     ==========================================================================================*/
 
-    .group("ET_CW_100_StartCreateCase4") {
+    .group("ET_CW_100_StartCreateCase7") {
       exec(http("ET_CW_100_005_StartCreateCase7")
         .post("/data/case-types/ET_EnglandWales/validate?pageId=initiateCase7")
         .headers(CommonHeader)
