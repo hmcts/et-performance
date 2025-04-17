@@ -46,7 +46,6 @@ object ET_Citizen {
       .get(baseUrlET + "/interruption-card")
       .headers(CitUICommonHeader)
       .check(status.is(200))
-      //.check(jsonPath("$.event_token").optional.saveAs("event_token"))
     )
   }
   .pause(MinThinkTime, MaxThinkTime)
@@ -113,7 +112,6 @@ object ET_Citizen {
         .check(CsrfCheck.save)
         .check(regex("/oauth2/callback&amp;state=(.*)&amp;ui_locales=").saveAs("state"))
         .check(substring("Sign in or create an account"))
-        //.check(status.is(200))
       )
    }
   .pause(MinThinkTime, MaxThinkTime)
@@ -172,9 +170,7 @@ object ET_Citizen {
         .formParam("firstName", "#{applicantFirstName}") 
         .formParam("lastName", "#{applicantLastName}") 
         .formParam("hiddenErrorField", "")
-        //.check(CsrfCheck.save)
         .check(substring("Check and submit"))
-        //.check(status.is(200))
     )
   } 
   .pause(MinThinkTime, MaxThinkTime)
@@ -203,8 +199,6 @@ object ET_Citizen {
         .header("Content-Type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
         .formParam("selfAssignmentCheck", "Yes")
-        //.formParam("hiddenErrorField", "")
-        //.check(CsrfCheck.save)
         .check(regex("""<td class="govuk-table__cell"> <a href="/case-details/#{caseId}/([a-z0-9\-]{36})\?lng=en"""").optional.saveAs("caseDetailID"))
         .check(substring("ET3 Responses"))
         .check(status.is(200))
@@ -247,9 +241,7 @@ object ET_Citizen {
         .header("Sec-Fetch-Site", "same-origin")
         .header("Sec-Fetch-User", "?1")
         .header("Upgrade-Insecure-Requests", "1")
-        //.headers(CitUICommonHeader)
         .check(substring("Case overview"))
-        //.check(status.is(200))
     )
   .pause(MinThinkTime, MaxThinkTime)
 
@@ -600,7 +592,7 @@ object ET_Citizen {
   Response Task List --> Acas early conciliation certificate, Click Link
   ==========================================================================================*/
     
-      .exec(http("ET_CTZ_290_ACASEarlyConciliationStart")
+      .exec(http("ET_CTZ_295_ACASEarlyConciliationStart")
         .get(baseUrlET + "/acas-early-conciliation-certificate")
         .headers(CitUICommonHeader)
         .check(substring("Acas early conciliation certificate"))
@@ -861,7 +853,6 @@ val RespondentET3ContestTheClaim =
   }
    .pause(MinThinkTime, MaxThinkTime)
 
-
 val RespondentET3EmployersContractClaim =
 
   /*======================================================================================
@@ -941,8 +932,8 @@ val RespondentET3CheckYourAnswers =
   Submit ET3 Form
   ==========================================================================================*/
 
-  .group("ET_CTZ_490_SubmitET3Application") {
-    exec(http("ET_CTZ_490_005_SubmitET3Application")
+  .group("ET_CTZ_495_SubmitET3Application") {
+    exec(http("ET_CTZ_495_005_SubmitET3Application")
       .post(baseUrlET + "/check-your-answers-et3")
       .headers(CitUICommonHeader)
       .formParam("_csrf", "#{csrf}")
@@ -971,7 +962,6 @@ val RespondentET3CheckYourAnswers =
         .header("Sec-Fetch-Site", "same-origin")
         .header("Sec-Fetch-User", "?1")
         .header("Upgrade-Insecure-Requests", "1")
-        //.headers(CitUICommonHeader)
         .check(substring("Case overview"))
         .check(status.is(200))
     )

@@ -73,26 +73,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
     
- /*   /*======================================================================================
-    * Enter your work postcode
-    ======================================================================================*/
-
-    .group("ET_040_Work_Postcode") {
-      feed(postcodeFeeder)
-
-        .exec(http("ET_040_005_Work_Postcode")
-          .post(baseURLETUIApp + "/work-postcode")
-          .headers(CommonHeader)
-          .header("content-type", "application/x-www-form-urlencoded")
-          .formParam("_csrf", "#{csrf}")
-          .formParam("et-sya-session", "#{etSession}")
-          .formParam("workPostcode", "#{postcode}")
-          .check(CsrfCheck.save)
-          .check(substring("Are you making the claim for yourself, or representing someone else?")))
-    }
-    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-*/
     /*======================================================================================
     * Are you making the claim for yourself, or representing someone else? - my own claim
     ======================================================================================*/
