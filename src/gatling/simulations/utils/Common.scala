@@ -2,7 +2,7 @@ package utils
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.Environment.commonHeader
+import utils.{Environment, Headers}
 
 import java.time.{LocalDate, ZonedDateTime}
 import java.time.format.DateTimeFormatter
@@ -20,8 +20,8 @@ object Common {
   val BaseURL = Environment.baseURL
   val baseURLETUIApp = Environment.baseURLETUIApp
 
-  val CommonHeader = Environment.commonHeader
-  val PostHeader = headers.postHeaderEnv
+  val CommonHeader = Headers.commonHeader
+  val PostHeader = Headers.postHeaderEnv
 
   val postcodeFeeder = csv("postcodes.csv").circular
 

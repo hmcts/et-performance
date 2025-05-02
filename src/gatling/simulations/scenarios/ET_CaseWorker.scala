@@ -89,13 +89,18 @@ object ET_CaseWorker {
       exec(http("ET_CW_510_005_Case_Vetting")
         .get(xuiURL + "/workallocation/case/tasks/#{caseId}/event/et1Vetting/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")
         .headers(CommonHeader)
-        .check(substring("Before you start")))
+        .check(jsonPath("$.task_required_for_event").is("false")))
 
-      .exec(Common.profile)
-
-      exec(http("ET_CW_510_010_Case_Vetting")
+      .exec(http("ET_CW_510_010_Case_Vetting")
         .get(xuiURL + "/data/internal/cases/#{caseId}/event-triggers/et1Vetting?ignore-warning=false")
-        .headers(CommonHeader)
+        //.headers(CommonHeader)
+        .header("accept","application/vnd.uk.gov.hmcts.ccd-data-store-api.ui-start-event-trigger.v2+json;charset=UTF-8")
+        .header("accept-encoding","gzip, deflate, br, zstd")
+        .header("accept-language","en-GB,en-US;q=0.9,en;q=0.8")
+        .header("content-type","application/json")
+        .header("sec-fetch-dest","empty")
+        .header("sec-fetch-mode","cors")
+        .header("sec-fetch-site","same-origin")
         .check(jsonPath("$.event_token").saveAs("event_token"))
         .check(substring("Before you start")))
 

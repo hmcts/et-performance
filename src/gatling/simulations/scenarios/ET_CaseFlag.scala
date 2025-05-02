@@ -2,7 +2,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Common, Environment}
+import utils.{Common, Environment, Headers}
 
 import java.io.{BufferedWriter, FileWriter}
 import scala.concurrent.duration._
@@ -18,7 +18,7 @@ object ET_CaseFlag {
 
   val manageCaseFlag =
 
-  exec(_.set("currentDateTime" -> Common.getCurrentDateTime()))
+  exec(_.setAll("currentDateTime" -> Common.getCurrentDateTime()))
 
     /*======================================================================================
     * ET -Case Flag Management - select Create Case Flag from the Next Step on case detail page
@@ -30,7 +30,7 @@ object ET_CaseFlag {
         .headers(CommonHeader)
         .check(substring("tasks")))
       
-      .exec(common.profile)
+      .exec(Common.profile)
     
       .exec(http("ET_CaseFlag_030_015_InitiateCaseFlag")
         .get("/data/internal/cases/#{caseId}/event-triggers/createFlag?ignore-warning=false")
@@ -140,7 +140,7 @@ object ET_CaseFlag {
         .check(jsonPath("$..value.details[0].value.path[1].id").saveAs("reasonableadjid"))
         .check(jsonPath("$..value.details[0].value.path[2].id").saveAs("ineedadjid")))
 
-      .exec(common.profile)
+      .exec(Common.profile)
     
       .exec(http("ET_CaseFlag_080_020_InitiateManageCaseFlag")
         .get("/workallocation/case/tasks/#{caseId}/event/manageFlags/caseType/ET_EnglandWales/jurisdiction/EMPLOYMENT")

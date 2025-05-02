@@ -2,7 +2,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Common, Environment}
+import utils.{Common, Environment, Headers}
 
 import scala.concurrent.duration._
 
@@ -18,7 +18,7 @@ object ET_CaseLink {
 
   val manageCaseLink =
 
-  exec(_.set("currentDateTime" -> Common.getCurrentDateTime()))
+  exec(_.setAll("currentDateTime" -> Common.getCurrentDateTime()))
 
     /*======================================================================================
     * ET -Case Link  - Initiate Case Link
@@ -127,7 +127,7 @@ object ET_CaseLink {
         .header("accept", "application/json")
         .check(substring("tasks")))
 
-      .exec(common.profile)
+      .exec(Common.profile)
 
       .exec(http("ET_CaseLink_060_025_InitiateManageCaseLink")
         .get("/data/internal/cases/#{caseId}")

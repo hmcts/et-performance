@@ -2,12 +2,13 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Common, Environment}
+import utils.{Common, Environment, Headers}
 
 object RespondentLogin {
   
   val IdamUrl = Environment.idamURL
-  val XuiUrl = Environment.baseURL
+  val XuiUrl = Environment.respLoginURL
+
 
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
@@ -37,6 +38,7 @@ object RespondentLogin {
 
           .exec(http("XUI_010_010_AuthLogin")
             .get(XuiUrl + "/auth/login")
+            //.get("https://manage-case.#{env}.platform.hmcts.net")
             .headers(Headers.commonHeader)
             .check(regex("/oauth2/callback&amp;state=(.*)&amp;nonce=").saveAs("state"))
             .check(regex("&nonce=(.*)&response_type").saveAs("nonce")))
@@ -59,7 +61,7 @@ object RespondentLogin {
         .formParam("selfRegistrationEnabled", "false")
         .formParam("_csrf", "${csrf}")
         //.headers(Headers.commonHeader)
-        .headers(Environment.postHeader)
+        .headers(Headers.postHeader)
         .check(regex("Manage cases")))
 
         .exec(Common.configurationui)

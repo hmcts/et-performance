@@ -2,8 +2,8 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.Environment.{commonHeaderUpload, postHeader1}
-import utils.{Common, Environment}
+import utils.Headers.{commonHeaderUpload, postHeader1}
+import utils.{Common, Environment, Headers}
 
 import java.io.{BufferedWriter, FileWriter}
 

@@ -2,7 +2,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Common, Environment}
+import utils.{Common, Environment, Headers}
 
 import scala.concurrent.duration._
 
@@ -22,7 +22,7 @@ object ET_CaseFileView {
 
   val CaseFileView =
 
-  exec(_.set("currentDateTime" -> Common.getCurrentDateTime()))
+  exec(_.setAll("currentDateTime" -> Common.getCurrentDateTime()))
 
     /*======================================================================================
     * ET -Case Link  - select Create Case Links from the Next Step on case detail page

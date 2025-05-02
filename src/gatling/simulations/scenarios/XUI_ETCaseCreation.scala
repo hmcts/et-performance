@@ -2,7 +2,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Common, Environment}
+import utils.{Common, Environment, Headers}
 
 import java.io.{BufferedWriter, FileWriter}
 

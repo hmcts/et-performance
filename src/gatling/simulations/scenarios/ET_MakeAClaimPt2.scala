@@ -3,7 +3,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Common, CsrfCheck, Environment}
+import utils.{Common, CsrfCheck, Environment, Headers}
 import java.io.{BufferedWriter, FileWriter}
 
 import java.time.LocalDate

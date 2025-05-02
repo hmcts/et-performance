@@ -3,7 +3,7 @@ package scenarios
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import utils.Headers.commonHeaderUpload
-import utils.{Common, Environment}
+import utils.{Common, Environment, Headers}
 
 
 object ET_CaseDocUpload2 {

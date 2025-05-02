@@ -2,7 +2,7 @@ package scenarios
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.Environment.{commonHeader, commonHeader1, postHeader}
+import utils.Headers.{commonHeader, commonHeader1, postHeader}
 import utils.{Common, Environment, Headers, CsrfCheck}
 
 object Login {

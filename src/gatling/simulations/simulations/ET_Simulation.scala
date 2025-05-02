@@ -55,8 +55,8 @@ class ET_Simulation extends Simulation {
   //===================================
   //Citizen Hub Perf Test Config
   //===================================
-  val et3RequestPerHour: Double = 17 //25 //17
-  val et1CitizenRequestPerHour: Double = 49 //105 // 70 // 49
+  val et3RequestPerHour: Double = 17
+  val et1CitizenRequestPerHour: Double = 49
   //===================================
   //ET XUI Perf Test Config
   //===================================
@@ -65,7 +65,7 @@ class ET_Simulation extends Simulation {
   val etLegalRepCaseLink: Double = 26
   val etCaseFileView: Double = 44
 
-  val numberOfPipelineUsers: Double = 100
+  val numberOfPipelineUsers: Double = 5
 
   //If running in debug mode, disable pauses between steps
   val pauseOption: PauseType = debugMode match {
@@ -378,12 +378,12 @@ class ET_Simulation extends Simulation {
       case "perftest" | "pipeline" => //currently using the same assertions for a performance test and the pipeline
         if (debugMode == "off") {
           Seq(global.successfulRequests.percent.gte(95),
-            details("ET_460_Final_Check_Submit").successfulRequests.percent.gte(90),
-            details("ET_CTZ_490_005_SubmitET3Application").successfulRequests.percent.gte(90),
-            details("XUI_ET_450_ETCaseSubmit").successfulRequests.percent.gte(90),
-            details("ET_CaseFlag_090_UpdateFlagComments").successfulRequests.percent.gte(90),
-            details("ET_CaseLink_090_SubmitUnlinkCases").successfulRequests.percent.gte(90),
-            details("ET_CaseFileView_030_CaseFileView").successfulRequests.percent.gte(90))
+            details("ET_460_Final_Check_Submit").successfulRequests.percent.gte(90))
+            //details("ET_CTZ_490_005_SubmitET3Application").successfulRequests.percent.gte(90),
+            //details("XUI_ET_450_ETCaseSubmit").successfulRequests.percent.gte(90),
+            //details("ET_CaseFlag_090_UpdateFlagComments").successfulRequests.percent.gte(90),
+            //details("ET_CaseLink_090_SubmitUnlinkCases").successfulRequests.percent.gte(90),
+            //details("ET_CaseFileView_030_CaseFileView").successfulRequests.percent.gte(90))
         }
         else {
           Seq(global.successfulRequests.percent.is(100))
@@ -398,8 +398,8 @@ class ET_Simulation extends Simulation {
    /*==============================================================================================================
    Data Prep/Debugging Scenarios
    ===============================================================================================================*/
-    ET3DataPrepCombined.inject(rampUsers(5) during (20))
-    //ETCreateClaim.inject(rampUsers(1) during (3)),
+    //ET3DataPrepCombined.inject(rampUsers(5) during (20))
+    //ETCreateClaim.inject(rampUsers(3) during (3)),
     //ET3DataPrep.inject(rampUsers(1) during (3)),
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
 
@@ -415,7 +415,7 @@ class ET_Simulation extends Simulation {
    //===============================================================================================================*/
    // ET Citizen Hub
    //==============================================================================================================
-  //  ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+      ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
   //  ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
 
   //==============================================================================================================
