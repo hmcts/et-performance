@@ -1,0 +1,52 @@
+{
+  "data": {
+    "caseFlags": {},
+    "respondentFlags": {
+      "roleOnCase": "respondent",
+      "partyName": "#{respondentName}",
+      "details": [
+        {
+          "value": {
+            "name": "Step free / wheelchair access",
+            "subTypeValue": null,
+            "subTypeKey": null,
+            "otherDescription": null,
+            "flagComment": "flag create comment",
+            "dateTimeCreated": "#{currentDateTime}",
+            "path": [
+              {
+                "id": null,
+                "value": "Party"
+              },
+              {
+                "id": null,
+                "value": "Reasonable adjustment"
+              },
+              {
+                "id": null,
+                "value": "I need adjustments to get to, into and around our buildings"
+              }
+            ],
+            "hearingRelevant": "Yes",
+            "flagCode": "RA0019",
+            "status": "Active"
+          }
+        }
+      ],
+      "flagType": "RA0019",
+      "otherFlagTypeDescription": "",
+      "flagComments": "asasasasas"
+    },
+    "claimantFlags": {
+      "roleOnCase": "claimant",
+      "partyName": "#{claimantName}"
+    }
+  },
+  "event": {
+    "id": "createFlag",
+    "summary": "",
+    "description": ""
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false
+}

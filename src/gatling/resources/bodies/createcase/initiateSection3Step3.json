@@ -1,0 +1,27 @@
+{
+  "data": {
+    "et1SectionThreeTypeOfClaim": [
+      "discrimination"
+    ],
+    "discriminationTypesOfClaim": [
+      "Age"
+    ]
+  },
+  "event": {
+    "id": "et1SectionThree",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "et1SectionThreeClaimDetails": "asasasasasasa",
+    "et1SectionThreeTypeOfClaim": [
+      "discrimination"
+    ],
+    "discriminationTypesOfClaim": [
+      "Age"
+    ]
+  },
+  "event_token": "#{event_token_section3}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

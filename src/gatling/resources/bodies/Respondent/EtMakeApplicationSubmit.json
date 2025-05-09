@@ -1,0 +1,20 @@
+{
+  "data": {
+    "resTseSelectApplication": "Amend response",
+    "resTseDocument1": {
+      "document_url": "http://dm-store-#{env}.service.core-compute-#{env}.internal/documents/c6c558cb-7d7a-432b-84a1-56f3a70b1901",
+      "document_binary_url": "http://dm-store-#{env}.service.core-compute-#{env}.internal/documents/c6c558cb-7d7a-432b-84a1-56f3a70b1901/binary",
+      "document_filename": "TestFile.pdf"
+    },
+    "resTseTextBox1": "eqwfdrs",
+    "resTseCopyToOtherPartyYesOrNo": "No",
+    "resTseCopyToOtherPartyTextArea": "wefgsvrdfb"
+  },
+  "event": {
+    "id": "respondentTSE",
+    "summary": "",
+    "description": ""
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false
+}

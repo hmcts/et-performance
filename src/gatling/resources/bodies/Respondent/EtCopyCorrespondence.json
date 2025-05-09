@@ -1,0 +1,23 @@
+{
+  "data": {
+    "resTseCopyToOtherPartyYesOrNo": "No"
+  },
+  "event": {
+    "id": "respondentTSE",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "resTseSelectApplication": "Amend response",
+    "resTseDocument1": {
+      "document_url": "http://dm-store-#{env}.service.core-compute-#{env}.internal/documents/df7abd20-cbb6-4f6f-9eba-a334fd426404",
+      "document_binary_url": "http://dm-store-#{env}.service.core-compute-#{env}.internal/documents/df7abd20-cbb6-4f6f-9eba-a334fd426404/binary",
+      "document_filename": "TestFile.pdf"
+    },
+    "resTseTextBox1": "WHo knows at this point",
+    "resTseCopyToOtherPartyYesOrNo": "No"
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

@@ -1,0 +1,16 @@
+{
+  "data": {
+    "et1VettingBeforeYouStart": "Open these documents to help you complete this form: <br><a target=\"_blank\" href=\"/documents/#{etDocHash}/binary\">ET1 form (opens in new tab)</a>"
+  },
+  "event": {
+    "id": "et1Vetting",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "et1VettingBeforeYouStart": "Open these documents to help you complete this form: <br><a target=\"_blank\" href=\"/documents/#{etDocHash}/binary\">ET1 form (opens in new tab)</a>"
+  },
+  "event_token": "#{event_token}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

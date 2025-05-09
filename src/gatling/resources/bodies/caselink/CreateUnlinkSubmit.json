@@ -1,0 +1,12 @@
+{
+  "data": {
+    "caseLinks": []
+  },
+  "event": {
+    "id": "maintainCaseLink",
+    "summary": "",
+    "description": ""
+  },
+  "event_token": "#{event_token_link_manage}",
+  "ignore_warning": false
+}

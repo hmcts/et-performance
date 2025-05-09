@@ -1,0 +1,22 @@
+{
+   "data": {
+      "correspondenceType": {
+         "topLevel_Documents": "EM-TRB-EGW-ENG-00027",
+         "part_2_Documents": "2.6 Reform"
+      }
+   },
+   "event": {
+      "id": "generateCorrespondence",
+      "summary": "",
+      "description": ""
+   },
+   "event_data": {
+      "correspondenceType": {
+         "topLevel_Documents": "EM-TRB-EGW-ENG-00027",
+         "part_2_Documents": "2.6 Reform"
+      }
+   },
+   "event_token": "#{event_token}",
+   "ignore_warning": false,
+   "case_reference": "#{caseId}"
+}

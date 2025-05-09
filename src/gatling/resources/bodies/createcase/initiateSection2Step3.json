@@ -1,0 +1,23 @@
+{
+  "data": {
+    "claimantStillWorking": [
+      "No longer working"
+    ]
+  },
+  "event": {
+    "id": "et1SectionTwo",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "didClaimantWorkForOrg": [
+      "Yes"
+    ],
+    "claimantStillWorking": [
+      "No longer working"
+    ]
+  },
+  "event_token": "#{event_token_section2}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}

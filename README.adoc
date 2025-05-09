@@ -13,3 +13,23 @@ Flags:
 Before running locally, update the client secret in src/gatling/resources/application.conf then run `git update-index --assume-unchanged src/gatling/resources/application.conf` to ensure the changes aren't pushed to github.
 
 To make other configuration changes to the file, first run `git update-index --no-assume-unchanged src/gatling/resources/application.conf`, ensuring to remove the client secret before pushing to origin
+
+================================================================================
+============== Performance Test Scenario Info ==================================
+
+The main performance test scenario's includes user journeys within both the ET SYA and SYR citizen hub and Judicial/Solicitor Journeys within XUI. These are:
+
+- ETXUIFormClaimScenario - Main ET1 Journey as Legal Rep (XUI)
+- ETXUICreateCaseAndCaseFlag - Case Creation and Case Flag as Case worker (XUI)
+- ETXUICaseLink - Case link (XUI)
+- ETCaseFileView - Case file view as case worker (XUI)
+- ETCreateClaim - Create ET1 Claim as a Citizen (SYA CUI)
+- ET3CitizenRespondent - ET3 Response as a Citizen (SYR CUI)
+
+DataPrep:
+The ET3CitizenRespondent scenario requires ET1 cases to be created and progressed by a caseworker so that citizen respondents can complete the ET3 journey within CUI. TO do this the following
+data prep scenario can be executed:
+
+ET3DataPrepCombined -> This will write to an output file: E3CaseLinkData (Which sits outside of the resources directory) --> The data can then be pasted into 
+the E3CaseLinkData.csv file (inside resources directory) to be fed into the ET3CitizenRespondent scenario. This data is consumed each time the ET3 process is run. 
+

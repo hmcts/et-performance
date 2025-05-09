@@ -1,0 +1,25 @@
+{
+  "data": {
+    "claimantSex": [
+      "Male"
+    ],
+    "claimantPreferredTitle": "asasasa"
+  },
+  "event": {
+    "id": "et1SectionOne",
+    "summary": "",
+    "description": ""
+  },
+  "event_data": {
+    "claimantFirstName": "perf first",
+    "claimantLastName": "perf last",
+    "claimantDateOfBirth": "1982-08-01",
+    "claimantSex": [
+      "Male"
+    ],
+    "claimantPreferredTitle": "asasasa"
+  },
+  "event_token": "#{event_token_section1}",
+  "ignore_warning": false,
+  "case_reference": "#{caseId}"
+}
