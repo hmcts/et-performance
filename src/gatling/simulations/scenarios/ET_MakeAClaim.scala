@@ -137,29 +137,8 @@ object ET_MakeAClaim {
         .formParam("et-sya-session", "#{etSession}")
         .formParam("acasMultiple", "Yes")
         .check(CsrfCheck.save)
-        .check(substring("What type of claim are you making?")))
-    }
-    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-    /*===============================================================================================
-    * What type of claim are you making? - Discrimination, Whistle blowing
-    ===============================================================================================*/
-
-    .group("ET_080_Representative") {
-      exec(http("ET_080_005_Representative")
-        .post(baseURLETUIApp + "/type-of-claim?lng=en")
-        .headers(CommonHeader)
-        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
-        .header("content-type", "application/x-www-form-urlencoded")
-        .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
-        .formParam("typeOfClaim", "discrimination")
-        .formParam("typeOfClaim", "whistleBlowing")
-        .formParam("otherClaim", "")
         .check(regex("""callback&state=(\w{8}-\w{4}-\w{4}-\w{4}-\w{12}-en)""").saveAs("state"))
-        .check(CsrfCheck.save)
         .check(substring("Sign in or create an account")))
-
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 

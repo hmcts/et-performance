@@ -366,6 +366,27 @@ object ET_MakeAClaimPt2 {
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
     /*===============================================================================================
+    * What type of claim are you making? - Discrimination, Whistle blowing
+    ===============================================================================================*/
+
+    .group("ET_375_Representative") {
+      exec(http("ET_375_005_Representative")
+        .post(baseURLETUIApp + "/type-of-claim?lng=en")
+        .headers(CommonHeader)
+        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+        .header("content-type", "application/x-www-form-urlencoded")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
+        .formParam("typeOfClaim", "discrimination")
+        .formParam("typeOfClaim", "whistleBlowing")
+        .formParam("otherClaim", "")
+        .check(CsrfCheck.save)
+        .check(substring("What type of discrimination are you claiming?")))
+
+    }
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    /*===============================================================================================
     * Describe what happened to you link
     ===============================================================================================*/
 
@@ -498,7 +519,7 @@ object ET_MakeAClaimPt2 {
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
         .formParam("claimDetailsCheck", "Yes")
-        .check(substring("Describe what happened to you\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
+        .check(substring("Tell us about your claim\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
         .check(substring("Tell us what you want from your claim\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
         .check(substring("Steps to making your claim")))
     }
