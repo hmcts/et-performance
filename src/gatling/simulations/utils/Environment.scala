@@ -10,6 +10,7 @@ object Environment {
   val baseURL = "https://manage-case.#{env}.platform.hmcts.net"
   val respLoginURL = "https://manage-case.#{env}.platform.hmcts.net"
   val idamURL = "https://idam-web-public.#{env}.platform.hmcts.net"
+  val pcqURL = "https://pcq.#{env}.platform.hmcts.net"
 
 
   val minThinkTime = 5

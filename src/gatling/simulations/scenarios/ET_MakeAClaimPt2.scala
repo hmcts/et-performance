@@ -16,6 +16,7 @@ object ET_MakeAClaimPt2 {
 
   val BaseURL = Environment.baseURL
   val baseURLETUIApp = Environment.baseURLETUIApp
+  val pcqURL = Environment.pcqURL
   val IdamURL = Environment.idamURL
 
   val now = LocalDate.now()
@@ -366,6 +367,27 @@ object ET_MakeAClaimPt2 {
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
     /*===============================================================================================
+    * What type of claim are you making? - Discrimination, Whistle blowing
+    ===============================================================================================*/
+
+    .group("ET_375_Representative") {
+      exec(http("ET_375_005_Representative")
+        .post(baseURLETUIApp + "/type-of-claim?lng=en")
+        .headers(CommonHeader)
+        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+        .header("content-type", "application/x-www-form-urlencoded")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
+        .formParam("typeOfClaim", "discrimination")
+        .formParam("typeOfClaim", "whistleBlowing")
+        .formParam("otherClaim", "")
+        .check(CsrfCheck.save)
+        .check(substring("What type of discrimination are you claiming?")))
+
+    }
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    /*===============================================================================================
     * Describe what happened to you link
     ===============================================================================================*/
 
@@ -472,19 +494,19 @@ object ET_MakeAClaimPt2 {
       * Linked cases - no
       ===============================================================================================*/
 
-      .group("ET_435_Linked_Cases") {
-        exec(http("ET_435_005_Linked_Cases")
-          .post(baseURLETUIApp + "/linked-cases?lng=en")
-          .headers(CommonHeader)
-          .header("content-type", "application/x-www-form-urlencoded")
-          .formParam("_csrf", "#{csrf}")
-          .formParam("et-sya-session", "#{etSession}")
-          .formParam("linkedCases", "No")
-          .formParam("linkedCasesDetail", "")
-          .check(CsrfCheck.save)
-          .check(substring("Have you completed this section?")))
+    .group("ET_435_Linked_Cases") {
+      exec(http("ET_435_005_Linked_Cases")
+        .post(baseURLETUIApp + "/linked-cases?lng=en")
+        .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("et-sya-session", "#{etSession}")
+        .formParam("linkedCases", "No")
+        .formParam("linkedCasesDetail", "")
+        .check(CsrfCheck.save)
+        .check(substring("Have you completed this section?")))
       }
-      .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
     /*===============================================================================================
     * Have you completed this section?
@@ -492,17 +514,53 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_440_Claim_Section_Complete") {
       exec(http("ET_440_005_Claim_Section_Complete")
-        .post(baseURLETUIApp + "/claim-details-check")
+        .post(baseURLETUIApp + "/claim-details-check?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
         .formParam("claimDetailsCheck", "Yes")
-        .check(substring("Describe what happened to you\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
+        .check(substring("Tell us about your claim\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
         .check(substring("Tell us what you want from your claim\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
         .check(substring("Steps to making your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+
+    /*======================================================================================
+    * Select Check your Answers Link - Redirect to PCQ 
+    ======================================================================================*/
+
+    .group("ET_441_CheckYourAnswers_PCQ") {
+      exec(http("ET_441_005_CheckYourAnswers_PCQ")
+      .get(baseURLETUIApp + "/pcq?lng=en")
+      .headers(CommonHeader)
+      .check(CsrfCheck.save)
+      .check(substring("Equality and diversity questions")))
+  }
+  .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    /*======================================================================================
+    * Equality and diversity questions - I don't want to answer these questions 
+    ======================================================================================*/
+
+    .group("ET_445_PCQStartNo") {
+      exec(http("ET_445_005_PCQStartNo")
+        .post(pcqURL + "/opt-out")
+        .headers(Headers.commonHeader)
+        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+        .header("content-type", "application/x-www-form-urlencoded")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("opt-out-button", "")
+        .check(regex("""card-details" name="cardDetails" method="POST" action="/card_details/(.*)"""").optional.saveAs("chargeId"))
+        .check(regex("""<strong>(.{16})<\/strong>""").optional.saveAs("caseNumber"))
+        .check(regex("""csrf" name="csrfToken" type="hidden" value="(.*)"""").optional.saveAs("csrf"))
+        .check(regex("""csrf2" name="csrfToken" type="hidden" value="(.*)"""").optional.saveAs("csrf2"))
+        .check(status.in(302, 200)))
+    } 
+
+     .pause(MinThinkTime, MaxThinkTime)
+
     /*===============================================================================================
     * Check your answers link
     ===============================================================================================*/
