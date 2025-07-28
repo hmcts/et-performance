@@ -399,7 +399,7 @@ class ET_Simulation extends Simulation {
    Data Prep/Debugging Scenarios
    ===============================================================================================================*/
     //ET3DataPrepCombined.inject(rampUsers(5) during (20))
-    //ETCreateClaim.inject(rampUsers(3) during (3)),
+    ETCreateClaim.inject(rampUsers(3) during (3)),
     //ET3DataPrep.inject(rampUsers(1) during (3)),
     //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
 
@@ -415,7 +415,7 @@ class ET_Simulation extends Simulation {
    //===============================================================================================================*/
    // ET Citizen Hub
    //==============================================================================================================
-      ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+      //ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
   //  ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
 
 //==============================================================================================================

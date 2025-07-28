@@ -335,9 +335,9 @@ object ET_MakeAClaim {
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
         .formParam("personalDetailsCheck", "Yes")
-        .check(substring("Personal details\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
-        .check(substring("Contact details\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
-        .check(substring("Your preferences\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  COMPLETED"))
+        .check(substring("Personal details\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  Completed"))
+        .check(substring("Contact details\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  Completed"))
+        .check(substring("Your preferences\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  Completed"))
         .check(substring("Steps to making your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
