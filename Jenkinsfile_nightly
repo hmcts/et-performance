@@ -16,7 +16,7 @@ def component = "sya"
 
 withNightlyPipeline("java", product, component) {
 
-    enablePerformanceTest(20)
+    enablePerformanceTest(timeout=20, perfGatlingAlerts=true, perfRerunOnFail=true)
 
     after('performanceTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
