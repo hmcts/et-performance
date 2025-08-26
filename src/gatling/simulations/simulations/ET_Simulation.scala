@@ -430,7 +430,7 @@ class ET_Simulation extends Simulation {
     .maxDuration(9.minutes)  // Stop at 9 minutes to ensure report generation before Jenkins 10-minute timeout
 
   } else {
-    println("*** TRADITIONAL MODE - NO TIMEOUT ***")
+    println("*** NORMAL MODE - NO TIMEOUT ***")
     setUp(
 
   /*==============================================================================================================
