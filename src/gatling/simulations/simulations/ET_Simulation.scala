@@ -32,6 +32,13 @@ class ET_Simulation extends Simulation {
   /* perftest (default) = performance test against the perftest environment */
   val testType = scala.util.Properties.envOrElse("TEST_TYPE", "perftest")
 
+  // Pipeline variables (these work for main Jenkins build pipeline)
+  val pipelineProduct = scala.util.Properties.envOrElse("PRODUCT", "")
+  val pipelineComponent = scala.util.Properties.envOrElse("COMPONENT", "")
+  val pipelineUsers = scala.util.Properties.envOrElse("GATLING_USERS", "5").toInt
+  //Check if jenkinsBuildPipeline
+  val isJenkinsBuildPipeline = pipelineProduct.nonEmpty && pipelineComponent.nonEmpty
+
   //set the environment based on the test type
   val environment = testType match{
     case "perftest" => "perftest"
@@ -112,6 +119,16 @@ class ET_Simulation extends Simulation {
     println(s"Debug Mode: ${debugMode}")
     println(s"LTN: ${LTN}")
     println(s"LSN: ${LSN}")
+
+    // Pipeline Detection
+    if (isJenkinsBuildPipeline) {
+      println(s"*** BUILD PIPELINE MODE DETECTED ***")
+      println(s"Product: ${pipelineProduct}")
+      println(s"Component: ${pipelineComponent}")
+      println(s"Pipeline Users: ${pipelineUsers}")
+    } else {
+      println(s"*** TRADITIONAL MODE ***")
+    }
   }
 
 /**========================================================================
@@ -330,7 +347,7 @@ class ET_Simulation extends Simulation {
 
   /*=========================================================================
     Case File View Scenario
-  ============================================================================*/
+  ============================================================================*/  
 
   val ETCaseFileView = scenario("ET Case File View - XUI")
     .exitBlockOnFail {
@@ -393,42 +410,63 @@ class ET_Simulation extends Simulation {
     }
   }
 
-  setUp(
+  // Create the setUp conditionally and return it
+  val simulationSetup = if (isJenkinsBuildPipeline) {
+    println(s"*** RUNNING BUILD PIPELINE: ${pipelineProduct}-${pipelineComponent} ***")
+    println("Using 9-minute maxDuration to ensure Gatling completes and generates reports")
 
-/*==============================================================================================================
-   Data Prep/Debugging Scenarios
-   ===============================================================================================================*/
-    //ET3DataPrepCombined.inject(rampUsers(5) during (20))
-    //ETCreateClaim.inject(rampUsers(3) during (3)),
-    //ET3DataPrep.inject(rampUsers(1) during (3)),
-    //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
+    setUp(
+      pipelineComponent match {
+        case "sya-frontend" =>
+          println("Executing ETCreateClaim with 5 concurrent users")
+          ETCreateClaim.inject(atOnceUsers(5)).pauses(pauseOption)
 
-    //ET3CitizenRespondent.inject(rampUsers(1) during (3))
-    //ETXUICaseLink.inject(rampUsers(1) during (3)),
-    //ETXUICaseFlag.inject(nothingFor(1), rampUsers(1) during (3))
-    //ETXUICreateCaseAndCaseFlag.inject(nothingFor(1), rampUsers(1) during (3))
-    //ETCaseFileView.inject(nothingFor(1), rampUsers(1) during (3))
-    //ETXUIFormClaimScenario.inject(nothingFor(1), rampUsers(1) during (3))
+        case _ =>
+          println(s"Unknown component '${pipelineComponent}' - using default")
+          ETCreateClaim.inject(atOnceUsers(5)).pauses(pauseOption)
+      }
+    ).protocols(httpProtocol)
+    .assertions(assertions(testType))
+    .maxDuration(9.minutes)  // Stop at 9 minutes to ensure report generation before Jenkins 10-minute timeout
 
-   /*==============================================================================================================
-   Performance Test Scenarios
-   //===============================================================================================================*/
-   // ET Citizen Hub
-   //==============================================================================================================
-      ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
-  //  ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+  } else {
+    println("*** TRADITIONAL MODE - NO TIMEOUT ***")
+    setUp(
 
-//==============================================================================================================
-  // ET XUI
-  //===============================================================================================================
-  //   ETXUIFormClaimScenario.inject(simulationProfile(testType, et1LegalRepRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
-  //   ETXUICreateCaseAndCaseFlag.inject(simulationProfile(testType, etLegalRepCaseFlag, numberOfPipelineUsers)).pauses(pauseOption),
-  //   ETXUICaseLink.inject(simulationProfile(testType, etLegalRepCaseLink, numberOfPipelineUsers)).pauses(pauseOption),
-  //   ETCaseFileView.inject(simulationProfile(testType, etCaseFileView, numberOfPipelineUsers)).pauses(pauseOption)
+  /*==============================================================================================================
+    Data Prep/Debugging Scenarios
+    ===============================================================================================================*/
+      ET3DataPrepCombined.inject(rampUsers(10) during (20))
+      //ETCreateClaim.inject(rampUsers(3) during (3)),
+      //ET3DataPrep.inject(rampUsers(1) during (3)),
+      //ET3DataPrepProcessClaim.inject(rampUsers(19) during (20))
+
+      //ET3CitizenRespondent.inject(rampUsers(1) during (3))
+      //ETXUICaseLink.inject(rampUsers(1) during (3)),
+      //ETXUICaseFlag.inject(nothingFor(1), rampUsers(1) during (3))
+      //ETXUICreateCaseAndCaseFlag.inject(nothingFor(1), rampUsers(1) during (3))
+      //ETCaseFileView.inject(nothingFor(1), rampUsers(1) during (3))
+      //ETXUIFormClaimScenario.inject(nothingFor(1), rampUsers(1) during (3))
+
+    /*==============================================================================================================
+    Performance Test Scenarios
+    //===============================================================================================================*/
+    // ET Citizen Hub
+    //==============================================================================================================
+        //ETCreateClaim.inject(simulationProfile(testType, et1CitizenRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+    //  ET3CitizenRespondent.inject(simulationProfile(testType, et3RequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+
+  //==============================================================================================================
+    // ET XUI
+    //===============================================================================================================
+    //   ETXUIFormClaimScenario.inject(simulationProfile(testType, et1LegalRepRequestPerHour, numberOfPipelineUsers)).pauses(pauseOption),
+    //   ETXUICreateCaseAndCaseFlag.inject(simulationProfile(testType, etLegalRepCaseFlag, numberOfPipelineUsers)).pauses(pauseOption),
+    //   ETXUICaseLink.inject(simulationProfile(testType, etLegalRepCaseLink, numberOfPipelineUsers)).pauses(pauseOption),
+    //   ETCaseFileView.inject(simulationProfile(testType, etCaseFileView, numberOfPipelineUsers)).pauses(pauseOption)
 
 
-   ).protocols(httpProtocol)
-  .assertions(assertions(testType))
+    ).protocols(httpProtocol)
+    .assertions(assertions(testType))
 
 } 
 
