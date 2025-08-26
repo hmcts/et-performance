@@ -468,7 +468,8 @@ class ET_Simulation extends Simulation {
     ).protocols(httpProtocol)
     .assertions(assertions(testType))
 
-} 
+}
+}
 
 // Archive scenarios
   //======================
