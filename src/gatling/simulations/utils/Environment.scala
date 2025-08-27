@@ -5,17 +5,24 @@ import io.gatling.http.Predef._
 
 object Environment {
 
-  val baseURLETUIApp = "https://et-sya.#{env}.platform.hmcts.net"
-  val baseURLETUIResp = "https://et-syr.#{env}.platform.hmcts.net"
-  val baseURL = "https://manage-case.#{env}.platform.hmcts.net"
-  val respLoginURL = "https://manage-case.#{env}.platform.hmcts.net"
-  val idamURL = "https://idam-web-public.#{env}.platform.hmcts.net"
-  val pcqURL = "https://pcq.#{env}.platform.hmcts.net"
+    // Get environment from Jenkins pipeline (passed via ENVIRONMENT variable)
+    val targetEnvironment = Option(System.getenv("ENVIRONMENT")).getOrElse("perftest")
 
+    // Handle special cases for preview environment (PR-based URLs)
+    val environmentSuffix = targetEnvironment match {
+      case env if env.startsWith("preview") => "preview"
+      case env => env
+    }
 
-  val minThinkTime = 5
-  val maxThinkTime = 10
+    val baseURLETUIApp = s"https://et-sya.${environmentSuffix}.platform.hmcts.net"
+    val baseURLETUIResp = s"https://et-syr.${environmentSuffix}.platform.hmcts.net"
+    val baseURL = s"https://manage-case.${environmentSuffix}.platform.hmcts.net"
+    val respLoginURL = s"https://manage-case.${environmentSuffix}.platform.hmcts.net"
+    val idamURL = s"https://idam-web-public.${environmentSuffix}.platform.hmcts.net"
+    val pcqURL = s"https://pcq.${environmentSuffix}.platform.hmcts.net"
 
-  val HttpProtocol = http
+    val minThinkTime = 5
+    val maxThinkTime = 10
 
-}
+    val HttpProtocol = http
+  }
