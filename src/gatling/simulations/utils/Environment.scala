@@ -39,6 +39,23 @@ object Environment {
     val idamURL = s"https://idam-web-public.${platformDomain}"
     val pcqURL = s"https://pcq.${platformDomain}"
 
+    // Debug output to verify environment detection and URL construction
+    println("=" * 80)
+    println("GATLING ENVIRONMENT DETECTION")
+    println("=" * 80)
+    println(s"Target Environment: ${targetEnvironment}")
+    println(s"TEST_URL from Jenkins: ${if (testUrl.nonEmpty) testUrl else "NOT SET"}")
+    println(s"Component: ${component}")
+    println(s"Platform Domain: ${platformDomain}")
+    println("-" * 80)
+    println("CONSTRUCTED URLS:")
+    println(s"ET SYA App URL: ${baseURLETUIApp}")
+    println(s"ET SYR Resp URL: ${baseURLETUIResp}")
+    println(s"Manage Case URL: ${baseURL}")
+    println(s"IDAM URL: ${idamURL}")
+    println(s"PCQ URL: ${pcqURL}")
+    println("=" * 80)
+
     val minThinkTime = 5
     val maxThinkTime = 10
 
