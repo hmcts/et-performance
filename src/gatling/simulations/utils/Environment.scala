@@ -25,11 +25,9 @@ object Environment {
         s"https://et-syr.${targetEnvironment}.platform.hmcts.net"
     }
 
-    // Standard platform services - extract domain from TEST_URL for preview, otherwise use environment
-    val platformDomain = if (testUrl.nonEmpty && testUrl.contains("preview")) {
-        // Extract domain from TEST_URL: "https://et-sya-pr-2129.preview.platform.hmcts.net" -> "preview.platform.hmcts.net"
-        val urlParts = testUrl.replace("https://", "").split("\\.")
-        urlParts.drop(1).mkString(".") // Skip the first part (et-sya-pr-2129), keep the rest
+    // Shared platform services use AAT when running in preview, otherwise use target environment
+    val platformDomain = if (targetEnvironment.contains("preview")) {
+        "aat.platform.hmcts.net"  // Preview uses AAT shared services
     } else {
         s"${targetEnvironment}.platform.hmcts.net"
     }
