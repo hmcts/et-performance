@@ -2,10 +2,9 @@ package utils
 
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
-import utils.{Environment, Headers}
 
-import java.time.{LocalDate, ZonedDateTime}
 import java.time.format.DateTimeFormatter
+import java.time.{LocalDate, ZonedDateTime}
 import scala.util.Random
 
 object Common {
@@ -29,17 +28,11 @@ object Common {
   def postcodeLookup =
     feed(postcodeFeeder)
       .exec(http("XUI_Common_000_PostcodeLookup")
-        .post(baseURLETUIApp + "/address-lookup")
+        .post(baseURLETUIApp + "/address-postcode-enter")
         .headers(PostHeader)
-      //  .formParam("postcode", "#{postcode}")
-        .formParam("postcode", "#{postcode}")
-        .header("content-type", "application/json")
+        .formParam("addressEnterPostcode", "#{postcode}")
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}"))
-       // .check(regex(""""(street1)_.+" : "(.+?)",(?s).*?"(?:street2)" : "(.+?)",.*?"town" : "(.+?)",.*?"country" : "(.+?)"""")
-      //    .check(regex("""^"street1:"(.*\,$)""")
-       // .ofType[(String, String, String, String)].findRandom.saveAs("addressLines")))
-       // .check(regex("""<option value="([0-9]+)">""").findRandom.saveAs("addressIndex")))
 
   def randomString(length: Int) = {
     rnd.alphanumeric.filter(_.isLetter).take(length).mkString
