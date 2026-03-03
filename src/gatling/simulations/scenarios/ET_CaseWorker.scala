@@ -371,7 +371,7 @@ object ET_CaseWorker {
         .exec(Common.userDetails)
 
       .exec(http("ET_CW_670_010_Accept_Case")
-        .post(xuiURL + "/data/cases/${caseId}/events")
+        .post(xuiURL + "/data/cases/#{caseId}/events")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.create-event.v2+json;charset=UTF-8")
         .body(ElFileBody("bodies/CaseWorker/AcceptCaseEvent.json"))
@@ -422,7 +422,7 @@ object ET_CaseWorker {
         .check(substring("et1GovOrMajorQuestion")))
 
       .exec(http("ET_CW_690_010_Select_Letter_Event")
-        .post(xuiURL + "/data/cases/${caseId}/events")
+        .post(xuiURL + "/data/cases/#{caseId}/events")
         .headers(CommonHeader)
         .header("accept", "application/vnd.uk.gov.hmcts.ccd-data-store-api.create-event.v2+json;charset=UTF-8")
         .body(ElFileBody("bodies/CaseWorker/LetterGenerationEvent.json"))
