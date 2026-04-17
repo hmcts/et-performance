@@ -83,7 +83,7 @@ configurations {
 
 /* Generate stats per transaction for use in Jenkins*/
 ext {
-  transactionNamesToGraph = ["ET_190_Contact_Completed, ET_460_Final_Check_Submit"]
+  transactionNamesToGraph = ["ET_190_Contact_Completed", "ET_460_Final_Check_Submit"]
 }
 
 tasks.register('generateStats', JavaExec) {
