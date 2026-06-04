@@ -50,7 +50,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_200_Employment_Status") {
       exec(http("ET_200_005_Employment_Status")
-        .get(baseURLETUIApp + "/past-employer")
+        .get(baseURLETUIApp + "/past-employer?lng=en")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("Did you work for the organisation or person you’re making your claim against")))
@@ -63,11 +63,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_210_Work_For_Org") {
       exec(http("ET_210_005_Work_For_Organisation")
-        .post(baseURLETUIApp + "/past-employer")
+        .post(baseURLETUIApp + "/past-employer?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("pastEmployer", "Yes")
         .check(CsrfCheck.save)
         .check(substring("Are you still working for the organisation or person")))
@@ -80,11 +79,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_220_Still_Work_For_Org") {
       exec(http("ET_220_005_Still_Work_For_Org")
-        .post(baseURLETUIApp + "/are-you-still-working")
+        .post(baseURLETUIApp + "/are-you-still-working?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("isStillWorking", "Notice")
         .check(CsrfCheck.save)
         .check(substring("Employment details")))
@@ -97,11 +95,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_230_Employment_Details") {
       exec(http("ET_230_005_Employment_Details")
-        .post(baseURLETUIApp + "/job-title")
+        .post(baseURLETUIApp + "/job-title?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("jobTitle", "#{ETRandomString}" + "Job")
         .check(CsrfCheck.save)
         .check(substring("Employment start date")))
@@ -114,11 +111,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_240_Start_Date") {
       exec(http("ET_240_005_Start_Date")
-        .post(baseURLETUIApp + "/start-date")
+        .post(baseURLETUIApp + "/start-date?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("startDate-day", "#{ETDobDay}")
         .formParam("startDate-month", "#{ETDobMonth}")
         .formParam("startDate-year", Common.getJobStartDate())
@@ -133,11 +129,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_250_Notice_End") {
       exec(http("ET_250_005_Notice_End")
-        .post(baseURLETUIApp + "/notice-end")
+        .post(baseURLETUIApp + "/notice-end?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("noticeEnds-day", "#{ETDobDay}")
         .formParam("noticeEnds-month", "#{ETDobMonth}")
         .formParam("noticeEnds-year", Common.getNoticeEndDate())
@@ -153,11 +148,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_260_Weeks_Or_Months") {
       exec(http("ET_260_005_Weeks_Or_Months")
-        .post(baseURLETUIApp + "/notice-type")
+        .post(baseURLETUIApp + "/notice-type?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("noticePeriodUnit", "Months")
         .check(CsrfCheck.save)
         .check(substring("How many months in your notice period?")))
@@ -170,11 +164,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_270_Number_Of_Months") {
       exec(http("ET_270_005_Number_Of_Months")
-        .post(baseURLETUIApp + "/notice-length")
+        .post(baseURLETUIApp + "/notice-length?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("noticePeriodLength", "#{ETDobDay}")
         .check(CsrfCheck.save)
         .check(substring("What are your average weekly hours?")))
@@ -187,11 +180,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_280_Weekly_Hours") {
       exec(http("ET_280_005_Weekly_Hours")
-        .post(baseURLETUIApp + "/average-weekly-hours")
+        .post(baseURLETUIApp + "/average-weekly-hours?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("avgWeeklyHrs","1" + "#{ETDobDay}")
         .check(CsrfCheck.save)
         .check(substring("Your pay")))
@@ -204,11 +196,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_290_Your_Pay") {
       exec(http("ET_290_005_Your_Pay")
-        .post(baseURLETUIApp + "/pay")
+        .post(baseURLETUIApp + "/pay?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("payBeforeTax", "#{payBeforeTax}")
         .formParam("payAfterTax", "#{payAfterTax}")
         .formParam("payInterval", "Months")
@@ -223,11 +214,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_300_Pension_Contributions") {
       exec(http("ET_300_005_Pension_Contributions")
-        .post(baseURLETUIApp + "/pension")
+        .post(baseURLETUIApp + "/pension?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("claimantPensionWeeklyContribution", "")
         .formParam("claimantPensionContribution", "Not Sure")
         .check(CsrfCheck.save)
@@ -241,11 +231,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_310_Employee_Benefits") {
       exec(http("ET_310_005_Employee_Benefits")
-        .post(baseURLETUIApp + "/benefits")
+        .post(baseURLETUIApp + "/benefits?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("benefitsCharCount", "")
         .formParam("employeeBenefits", "No")
         .check(CsrfCheck.save)
@@ -259,11 +248,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_320_Respondent_Name") {
       exec(http("ET_320_005_Respondent_Name")
-        .post(baseURLETUIApp + "/respondent/1/respondent-name")
+        .post(baseURLETUIApp + "/respondent/1/respondent-name?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("respondentName", "#{ETRandomString}" + "Respondent")
         .check(CsrfCheck.save)
         .check(substring("What is the address of")))
@@ -286,11 +274,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_335_Respondent_Address_LookUp") {
         exec(http("ET_335_005__Respondent_Address_LookUp")
-        .post(baseURLETUIApp + "/respondent/1/respondent-address")
+        .post(baseURLETUIApp + "/respondent/1/respondent-address?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("respondentAddress1", "respondentAddress1" + "#{ETRandomString}")
         .formParam("respondentAddress2", "respondentAddress2" + "#{ETRandomString}")
         .formParam("respondentAddressTown", "respondentAddressTown" + "#{ETRandomString}")
@@ -307,11 +294,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_340_Work_At") {
       exec(http("ET_340_005_Work_At")
-        .post(baseURLETUIApp + "/respondent/1/work-address")
+        .post(baseURLETUIApp + "/respondent/1/work-address?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("claimantWorkAddressQuestion", "Yes")
         .check(CsrfCheck.save)
         .check(substring("Do you have an Acas certificate number for")))
@@ -324,11 +310,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_350_Respondent_Acas") {
       exec(http("ET_350_005_Respondent_Acas")
-        .post(baseURLETUIApp + "/respondent/1/acas-cert-num")
+        .post(baseURLETUIApp + "/respondent/1/acas-cert-num?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("acasCert", "Yes")
         .formParam("acasCertNum", "#{acasCertNum}")
         .check(substring("Check the respondent details")))
@@ -341,7 +326,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_360_Respondent_Check") {
       exec(http("ET_360_005_Respondent_Check")
-        .get(baseURLETUIApp + "/employment-respondent-task-check")
+        .get(baseURLETUIApp + "/employment-respondent-task-check?lng=en")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("Have you completed this section?")))
@@ -354,14 +339,13 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_370_Respondent_Submit") {
       exec(http("ET_370_005_Respondent_Submit")
-        .post(baseURLETUIApp + "/employment-respondent-task-check")
+        .post(baseURLETUIApp + "/employment-respondent-task-check?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("employmentAndRespondentCheck", "Yes")
-        .check(substring("Employment status"))
-        .check(substring("Respondent details"))
+        .check(regex("""(?s)Employment status.*?govuk-task-list__status[^>]*>\s*(.+?)\s*</div>""").is("Completed"))
+        .check(regex("""(?s)Respondent details.*?govuk-task-list__status[^>]*>\s*(.+?)\s*</div>""").is("Completed"))
         .check(substring("Steps to making your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
@@ -377,7 +361,6 @@ object ET_MakeAClaimPt2 {
         .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("typeOfClaim", "discrimination")
         .formParam("typeOfClaim", "whistleBlowing")
         .formParam("otherClaim", "")
@@ -393,7 +376,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_380_Claim_Details") {
       exec(http("ET_380_005_Claim_Details")
-        .get(baseURLETUIApp + "/claim-type-discrimination")
+        .get(baseURLETUIApp + "/claim-type-discrimination?lng=en")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("What type of discrimination are you claiming?")))
@@ -406,11 +389,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_390_Type_Of_Descrimination") {
       exec(http("ET_390_005_Type_Of_Descrimination")
-        .post(baseURLETUIApp + "/claim-type-discrimination")
+        .post(baseURLETUIApp + "/claim-type-discrimination?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("claimTypeDiscrimination", "Age")
         .formParam("claimTypeDiscrimination", "Race")
         .formParam("claimTypeDiscrimination", "Sex")
@@ -429,7 +411,6 @@ object ET_MakeAClaimPt2 {
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("claimSummaryText", "#{ETRandomString}" + "Description")
         .formParam("claimSummaryFileName", "(binary)")
         .check(CsrfCheck.save)
@@ -443,11 +424,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_410_Outcome_If_Successful") {
       exec(http("ET_410_005_Outcome_If_Successful")
-        .post(baseURLETUIApp + "/tell-us-what-you-want")
+        .post(baseURLETUIApp + "/tell-us-what-you-want?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("tellUsWhatYouWant", "compensation")
         .check(CsrfCheck.save)
         .check(substring("What compensation are you seeking?")))
@@ -460,11 +440,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_420_Compensation") {
       exec(http("ET_420_005_Compensation")
-        .post(baseURLETUIApp + "/compensation")
+        .post(baseURLETUIApp + "/compensation?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("compensationOutcome", "#{ETRandomString}" + "Compensation")
         .formParam("compensationAmount", Common.getDobYear())
         .check(CsrfCheck.save)
@@ -478,11 +457,10 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_430_Whistleblowing") {
       exec(http("ET_430_005_Whistleblowing")
-        .post(baseURLETUIApp + "/whistleblowing-claims")
+        .post(baseURLETUIApp + "/whistleblowing-claims?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("whistleblowingEntityName", "")
         .formParam("whistleblowingClaim", "No")
         .check(CsrfCheck.save)
@@ -500,7 +478,6 @@ object ET_MakeAClaimPt2 {
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("linkedCases", "No")
         .formParam("linkedCasesDetail", "")
         .check(CsrfCheck.save)
@@ -518,10 +495,9 @@ object ET_MakeAClaimPt2 {
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("et-sya-session", "#{etSession}")
         .formParam("claimDetailsCheck", "Yes")
-        .check(substring("Tell us about your claim"))
-        .check(substring("Tell us what you want from your claim"))
+        .check(regex("""(?s)Tell us about your claim.*?govuk-task-list__status[^>]*>\s*(.+?)\s*</div>""").is("Completed"))
+        .check(regex("""(?s)Tell us what you want from your claim.*?govuk-task-list__status[^>]*>\s*(.+?)\s*</div>""").is("Completed"))
         .check(substring("Steps to making your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
@@ -546,7 +522,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_445_PCQStartNo") {
       exec(http("ET_445_005_PCQStartNo")
-        .post(pcqURL + "/opt-out")
+        .post(pcqURL + "/opt-out?lng=en")
         .headers(Headers.commonHeader)
         .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .header("content-type", "application/x-www-form-urlencoded")
@@ -567,7 +543,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_450_Final_Check_Answers") {
       exec(http("ET_450_005_Final_Check_Answers")
-        .get(baseURLETUIApp + "/check-your-answers")
+        .get(baseURLETUIApp + "/check-your-answers?lng=en")
         .headers(CommonHeader)
         .check(substring("Check your answers")))
     }
