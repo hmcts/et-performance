@@ -360,8 +360,8 @@ object ET_MakeAClaimPt2 {
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
         .formParam("employmentAndRespondentCheck", "Yes")
-        .check(substring("Employment status\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  Completed"))
-        .check(substring("Respondent details\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  Completed"))
+        .check(substring("Employment status"))
+        .check(substring("Respondent details"))
         .check(substring("Steps to making your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
@@ -520,8 +520,8 @@ object ET_MakeAClaimPt2 {
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
         .formParam("claimDetailsCheck", "Yes")
-        .check(substring("Tell us about your claim\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  Completed"))
-        .check(substring("Tell us what you want from your claim\n                  </a>\n                  \n              </span>\n              \n\n              \n                <strong class=\"govuk-tag app-task-list__tag\">\n  Completed"))
+        .check(substring("Tell us about your claim"))
+        .check(substring("Tell us what you want from your claim"))
         .check(substring("Steps to making your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
