@@ -335,13 +335,11 @@ object ET_MakeAClaim {
         .formParam("_csrf", "#{csrf}")
         .formParam("et-sya-session", "#{etSession}")
         .formParam("personalDetailsCheck", "Yes")
-        .check(substring("Personal details"))
-        .check(substring("Contact details"))
-        .check(substring("Your preferences"))
+        .check(regex("""(?s)Personal details.*?govuk-task-list__status[^>]*>\s*(.+?)\s*</div>""").is("Completed"))
+        .check(regex("""(?s)Contact details.*?govuk-task-list__status[^>]*>\s*(.+?)\s*</div>""").is("Completed"))
+        .check(regex("""(?s)Your preferences.*?govuk-task-list__status[^>]*>\s*(.+?)\s*</div>""").is("Completed"))
         .check(substring("Steps to making your claim")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
-
 
 }
