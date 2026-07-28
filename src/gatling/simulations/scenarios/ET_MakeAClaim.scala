@@ -183,25 +183,6 @@ object ET_MakeAClaim {
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
-    // /*===============================================================================================
-    // * Log in
-    // ===============================================================================================*/
-
-    // .group("ET_090_Log_In") {
-      // exec(http("ET_090_005_Log_In")
-        // .post(IdamURL + "/login?client_id=et-sya&response_type=code&redirect_uri=" + baseURLETUIApp + "/oauth2/callback&state=#{state}&ui_locales=en")
-        // .headers(CommonHeader)
-        // .header("content-type", "application/x-www-form-urlencoded")
-        // .formParam("username", "#{username}")
-        // .formParam("password", "#{password}")
-        // .formParam("save", "Sign in")
-        // .formParam("selfRegistrationEnabled", "true")
-        // .formParam("_csrf", "#{csrf}")
-        // .formParam("et-sya-session", "#{etSession}")
-        // .check(substring("You do not have to complete your claim in one go")))
-    // }
-    // .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
-
   /*===============================================================================================
     * You do not have to complete your claim in one go - Continue
     ===============================================================================================*/
