@@ -60,13 +60,14 @@ object ET_MakeAClaim {
         .check(substring("Before you continue")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
     /*======================================================================================
     * Click on 'Continue'
     ======================================================================================*/
 
    .group("ET_030_Before_You_Continue") {
       exec(http("ET_030_005_Before_You_Continue")
-        .get(baseURLETUIApp + "/lip-or-representative?lng=en")
+        .get(baseURLETUIApp + "/lip-or-representative")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("Claiming on your own")))
@@ -79,11 +80,10 @@ object ET_MakeAClaim {
 
     .group("ET_050_Claim_Yourself") {
       exec(http("ET_050_005_Claim_Yourself")
-        .post(baseURLETUIApp + "/lip-or-representative?lng=en")
+        .post(baseURLETUIApp + "/lip-or-representative")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        //.formParam("et-sya-session", "#{etSession}")
         .formParam("claimantRepresentedQuestion", "No")
         .check(CsrfCheck.save)
         .check(substring("Are you making a claim on your own or with others?")))
@@ -96,11 +96,10 @@ object ET_MakeAClaim {
 
     .group("ET_060_Claim_Own_Or_Others") {
       exec(http("ET_060_005_Claim_Own_Or_Others")
-        .post(baseURLETUIApp + "/single-or-multiple-claim?lng=en")
+        .post(baseURLETUIApp + "/single-or-multiple-claim")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        //.formParam("et-sya-session", "#{etSession}")
         .formParam("caseType", "Single")
         .check(CsrfCheck.save)
         .check(substring("Where you can make your claim")))
@@ -113,11 +112,10 @@ object ET_MakeAClaim {
 
     .group("ET_065_Where_You_Can_Make_Claim") {
       exec(http("ET_065_005_ET_070_Where_You_Can_Make_Claim")
-        .post(baseURLETUIApp + "/claim-jurisdiction-selection?lng=en")
+        .post(baseURLETUIApp + "/claim-jurisdiction-selection")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        //.formParam("et-sya-session", "#{etSession}")
         .formParam("claimJurisdiction", "ET_EnglandWales")
         .check(CsrfCheck.save)
         .check(substring("Acas early conciliation certificate")))
@@ -130,36 +128,79 @@ object ET_MakeAClaim {
 
     .group("ET_070_ACAS_Certificate") {
       exec(http("ET_070_005_ACAS_Certificate")
-        .post(baseURLETUIApp + "/do-you-have-an-acas-no-many-resps?lng=en")
+        .post(baseURLETUIApp + "/do-you-have-an-acas-no-many-resps")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        //.formParam("et-sya-session", "#{etSession}")
         .formParam("acasMultiple", "Yes")
         .check(CsrfCheck.save)
-        .check(regex("""callback&state=(\w{8}-\w{4}-\w{4}-\w{4}-\w{12}-en)""").saveAs("state"))
         .check(substring("Sign in or create an account")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
     /*===============================================================================================
-    * Log in
+    * Sign in or Create (Select Sign in) *
     ===============================================================================================*/
 
-    .group("ET_090_Log_In") {
-      exec(http("ET_090_005_Log_In")
-        .post(IdamURL + "/login?client_id=et-sya&response_type=code&redirect_uri=" + baseURLETUIApp + "/oauth2/callback&state=#{state}&ui_locales=en")
+    .group("ET_080_SignIn") {
+      exec(http("ET_080_005_SignIn")
+        .get(IdamURL + "/enter-email")
+        .headers(CommonHeader)
+        .check(CsrfCheck.save)
+        .check(substring("Enter your email address")))
+    }
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    /*===============================================================================================
+    * Enter Email 
+    ===============================================================================================*/
+
+    .group("ET_085_Login_EnterEmail") {
+      exec(http("ET_085_005_Login_EnterEmail")
+        .post(IdamURL + "/enter-email")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
-        .formParam("username", "#{username}")
-        .formParam("password", "#{password}")
-        .formParam("save", "Sign in")
-        .formParam("selfRegistrationEnabled", "true")
+        .formParam("email", "#{username}")
         .formParam("_csrf", "#{csrf}")
-        //.formParam("et-sya-session", "#{etSession}")
+        .check(CsrfCheck.save)
+        .check(substring("Enter your password")))
+    }
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    /*===============================================================================================
+    * Enter Password (login)
+    ===============================================================================================*/
+
+    .group("ET_090_Login_EnterPassword") {
+      exec(http("ET_090_005_Login_EnterPassword")
+        .post(IdamURL + "/enter-password")
+        .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
+        .formParam("action", "_submit")
+        .formParam("password", "#{password}")
+        .formParam("_csrf", "#{csrf}")
         .check(substring("You do not have to complete your claim in one go")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    // /*===============================================================================================
+    // * Log in
+    // ===============================================================================================*/
+
+    // .group("ET_090_Log_In") {
+      // exec(http("ET_090_005_Log_In")
+        // .post(IdamURL + "/login?client_id=et-sya&response_type=code&redirect_uri=" + baseURLETUIApp + "/oauth2/callback&state=#{state}&ui_locales=en")
+        // .headers(CommonHeader)
+        // .header("content-type", "application/x-www-form-urlencoded")
+        // .formParam("username", "#{username}")
+        // .formParam("password", "#{password}")
+        // .formParam("save", "Sign in")
+        // .formParam("selfRegistrationEnabled", "true")
+        // .formParam("_csrf", "#{csrf}")
+        // .formParam("et-sya-session", "#{etSession}")
+        // .check(substring("You do not have to complete your claim in one go")))
+    // }
+    // .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
 
   /*===============================================================================================
     * You do not have to complete your claim in one go - Continue
