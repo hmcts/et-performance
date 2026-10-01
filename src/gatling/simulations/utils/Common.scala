@@ -77,11 +77,6 @@ object Common {
     now.plusYears(1).format(patternYear)
   }
 
-    //Now year - 1
-  def getRecentEventYear(): String = {
-    now.minusYears(1).format(patternYear)
-  }
-
   def getPostcode(): String = {
     randomString(2).toUpperCase() + rnd.nextInt(10).toString + " " + rnd.nextInt(10).toString + randomString(2).toUpperCase()
   }
