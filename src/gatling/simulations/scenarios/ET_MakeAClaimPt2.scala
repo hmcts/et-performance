@@ -397,6 +397,25 @@ object ET_MakeAClaimPt2 {
         .formParam("claimTypeDiscrimination", "Race")
         .formParam("claimTypeDiscrimination", "Sex")
         .check(CsrfCheck.save)
+        .check(substring("What is the date of the most recent event you are complaining about?")))
+    }
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    /*===============================================================================================
+    * What is the date of the most recent event you are complaining about?
+    ===============================================================================================*/
+
+    .group("ET_395_Date_Of_Last_Event") {
+      exec(http("ET_395_005_Date_Of_Last_Event")
+        .post(baseURLETUIApp + "/date-of-last-event?lng=en")
+        .headers(CommonHeader)
+        .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+        .header("content-type", "application/x-www-form-urlencoded")
+        .formParam("_csrf", "#{csrf}")
+        .formParam("dateOfLastEvent-day", Common.getDay())
+        .formParam("dateOfLastEvent-month", Common.getDay())
+        .formParam("dateOfLastEvent-year", Common.getRecentEventYear())
+        .check(CsrfCheck.save)
         .check(substring("Describe what happened to you")))
     }
     .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
@@ -407,7 +426,7 @@ object ET_MakeAClaimPt2 {
 
     .group("ET_400_Describe_What_Happened") {
       exec(http("ET_400_005_Describe_What_Happened")
-        .post(baseURLETUIApp + "/describe-what-happened?_csrf=#{csrf}")
+        .post(baseURLETUIApp + "/describe-what-happened?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
