@@ -3,6 +3,7 @@ package scenarios
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import utils.{AuthCheck, Common, CsrfCheck, Environment, Headers}
+import utilities.DateUtils
 import java.io.{BufferedWriter, FileWriter}
 
 import scala.concurrent.duration._
@@ -10,7 +11,6 @@ import scala.util.Random
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import scala.util.Random
-
 
 object ET_MakeAClaim {
 
@@ -218,9 +218,9 @@ object ET_MakeAClaim {
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("dobDate-day", Common.getDay())
-        .formParam("dobDate-month", Common.getMonth())
-        .formParam("dobDate-year", Common.getDobYear())
+        .formParam("dobDate-day", _ => DateUtils.getRandomDayOfMonth())
+        .formParam("dobDate-month", _ => DateUtils.getRandomMonthOfYear())
+        .formParam("dobDate-year", _ => DateUtils.getDatePast("yyyy", years = 35))
         .check(CsrfCheck.save)
         .check(substring("Sex and preferred title")))
     }
