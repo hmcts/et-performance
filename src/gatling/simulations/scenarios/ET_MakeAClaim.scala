@@ -189,7 +189,7 @@ object ET_MakeAClaim {
 
       .group("ET_100_One_Go") {
         exec(http("ET_100_005_One_Go")
-          .get(baseURLETUIApp + "/steps-to-making-your-claim")
+          .get(baseURLETUIApp + "/steps-to-making-your-claim?lng=en")
           .headers(CommonHeader)
           .check(substring("Steps to making your claim")))
       }
@@ -201,7 +201,7 @@ object ET_MakeAClaim {
 
     .group("ET_110_Personal_Details") {
       exec(http("ET_110_005_Personal_Details")
-        .get(baseURLETUIApp + "/dob-details")
+        .get(baseURLETUIApp + "/dob-details?lng=en")
         .headers(CommonHeader)
         .check(CsrfCheck.save)
         .check(substring("What is your date of birth?")))
@@ -214,11 +214,10 @@ object ET_MakeAClaim {
 
     .group("ET_120_DoB") {
       exec(http("ET_120_005_DoB")
-        .post(baseURLETUIApp + "/dob-details")
+        .post(baseURLETUIApp + "/dob-details?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        //.formParam("et-sya-session", "#{etSession}")
         .formParam("dobDate-day", Common.getDay())
         .formParam("dobDate-month", Common.getMonth())
         .formParam("dobDate-year", Common.getDobYear())
@@ -233,11 +232,10 @@ object ET_MakeAClaim {
 
     .group("ET_130_Sex") {
       exec(http("ET_130_005_Sex")
-        .post(baseURLETUIApp + "/sex-and-title")
+        .post(baseURLETUIApp + "/sex-and-title?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        //.formParam("et-sya-session", "#{etSession}")
         .formParam("claimantSex", "Male")
         .formParam("preferredTitle", "")
         .check(CsrfCheck.save)
@@ -260,7 +258,7 @@ object ET_MakeAClaim {
 
     .group("ET_145_Your_Address_Select") {
       exec(http("ET_145_005_Your_Address_Select")
-        .post(baseURLETUIApp + "/address-details")
+        .post(baseURLETUIApp + "/address-details?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -281,7 +279,7 @@ object ET_MakeAClaim {
 
     .group("ET_150_Telephone_Number") {
       exec(http("ET_150_005_Telephone_Number")
-        .post(baseURLETUIApp + "/telephone-number")
+        .post(baseURLETUIApp + "/telephone-number?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -298,12 +296,14 @@ object ET_MakeAClaim {
 
     .group("ET_160_Contact_Method") {
       exec(http("ET_160_005_Contact_Method")
-        .post(baseURLETUIApp + "/how-would-you-like-to-be-updated-about-your-claim")
+        .post(baseURLETUIApp + "/how-would-you-like-to-be-updated-about-your-claim?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
         //.formParam("et-sya-session", "#{etSession}")
         .formParam("claimantContactPreference", "Email")
+        .formParam("claimantContactLanguagePreference", "English")
+        .formParam("claimantHearingLanguagePreference", "English")
         .check(CsrfCheck.save)
         .check(substring("Would you be able to take part in hearings by video and phone?")))
     }
@@ -315,13 +315,32 @@ object ET_MakeAClaim {
 
     .group("ET_170_Hearing_Participation") {
       exec(http("ET_170_005_Hearing_Participation")
-        .post(baseURLETUIApp + "/would-you-want-to-take-part-in-video-hearings")
+        .post(baseURLETUIApp + "/would-you-want-to-take-part-in-video-hearings?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
         //.formParam("et-sya-session", "#{etSession}")
         .formParam("hearingPreferences", "Video")
         .formParam("hearingAssistance", "")
+        .check(CsrfCheck.save)
+        .check(substring("How do you prefer to have your case heard?")))
+    }
+    .pause(MinThinkTime.seconds, MaxThinkTime.seconds)
+
+    /*===============================================================================================
+    * Preference for judge or panel
+    ===============================================================================================*/
+
+    .group("ET_175_Hearing_Preference") {
+      exec(http("ET_175_005_Hearing_Preference")
+        .post(baseURLETUIApp + "/hearing-panel-preference?lng=en")
+        .headers(CommonHeader)
+        .header("content-type", "application/x-www-form-urlencoded")
+        .formParam("_csrf", "#{csrf}")
+        //.formParam("et-sya-session", "#{etSession}")
+        .formParam("claimantHearingPanelPreference", "No preference")
+        .formParam("claimantHearingPanelPreferenceWhy", "")
+        .formParam("claimantHearingPanelPreferenceWhy", "")
         .check(CsrfCheck.save)
         .check(substring("Do you have a physical, mental or learning disability or long term health condition that means you need support during your case?")))
     }
@@ -333,7 +352,7 @@ object ET_MakeAClaim {
 
     .group("ET_180_Need_Support") {
       exec(http("ET_180_005_Need_Support")
-        .post(baseURLETUIApp + "/reasonable-adjustments")
+        .post(baseURLETUIApp + "/reasonable-adjustments?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
@@ -351,7 +370,7 @@ object ET_MakeAClaim {
 
     .group("ET_190_Contact_Completed") {
       exec(http("ET_190_005_Contact_Completed")
-        .post(baseURLETUIApp + "/personal-details-check")
+        .post(baseURLETUIApp + "/personal-details-check?lng=en")
         .headers(CommonHeader)
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
