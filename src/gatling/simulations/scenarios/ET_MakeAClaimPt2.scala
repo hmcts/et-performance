@@ -5,6 +5,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import utils.{Common, CsrfCheck, Environment, Headers}
 import java.io.{BufferedWriter, FileWriter}
+import utilities.DateUtils
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -412,9 +413,9 @@ object ET_MakeAClaimPt2 {
         .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
         .header("content-type", "application/x-www-form-urlencoded")
         .formParam("_csrf", "#{csrf}")
-        .formParam("dateOfLastEvent-day", Common.getDay())
-        .formParam("dateOfLastEvent-month", Common.getDay())
-        .formParam("dateOfLastEvent-year", Common.getRecentEventYear())
+        .formParam("dateOfLastEvent-day", _ => DateUtils.getRandomDayOfMonth())
+        .formParam("dateOfLastEvent-month", _ => DateUtils.getRandomMonthOfYear())
+        .formParam("dateOfLastEvent-year", _ => DateUtils.getDatePast("yyyy", years = 1))
         .check(CsrfCheck.save)
         .check(substring("Describe what happened to you")))
     }
